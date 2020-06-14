@@ -132,7 +132,7 @@ int main(int argc, char *argv[]) {
                 for (int i = 0; i < 512; ++i) {
                     if ((d = fgetc(p)) != '\0') {
                         printf("mytar: A lone zero block at %d\n", no_zero);
-                        return (0);
+                        // return (0);
                     }
                 }
             }
@@ -143,20 +143,20 @@ int main(int argc, char *argv[]) {
                 //     fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
                 //     return (2);
                 // }
-                if ((char_count % 512) != 0) {
-                    fflush(stdout);
-                    fprintf(stderr, "mytar: Unexpected EOF in archive\n");
-                    fflush(stdout);
-                    fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
-                    return (2);
-                }
-                if (start != 0) {
-                    fflush(stdout);
-                    fprintf(stderr, "mytar: Unexpected EOF in archive\n");
-                    fflush(stdout);
-                    fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
-                    return (2);
-                }
+                // if ((char_count % 512) != 0) {
+                //     fflush(stdout);
+                //     fprintf(stderr, "mytar: Unexpected EOF in archive\n");
+                //     fflush(stdout);
+                //     fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
+                //     return (2);
+                // }
+                // if (start != 0) {
+                //     fflush(stdout);
+                //     fprintf(stderr, "mytar: Unexpected EOF in archive\n");
+                //     fflush(stdout);
+                //     fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
+                //     return (2);
+                // }
                 break;
             }
 
