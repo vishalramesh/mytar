@@ -121,10 +121,11 @@ int main(int argc, char *argv[]) {
             // printf("%d\n", start);
             
             if (iszero(header)) {
-                first_time = 1;
+                
                 FILE *p = file;
                 fseek(p, 512, SEEK_SET);
-                if (first_time) {
+                if (!first_time) {
+                    first_time = 1;
                     for (int i = 0; i < 512; ++i) {
                         if ((d = fgetc(p)) != '\0') {
                             printf("mytar: A lone zero block at %d\n", no_zero);
