@@ -126,7 +126,7 @@ int main(int argc, char *argv[]) {
             }
 
             // printf("%d\n", start);
-            if iszero(header) {
+            if (iszero(header)) {
                 FILE *p = file;
                 
                 for (int i = 0; i < 512; ++i) {
