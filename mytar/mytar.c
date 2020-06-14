@@ -131,7 +131,7 @@ int main(int argc, char *argv[]) {
             // Check zero block
             
             if (typeflag != '0' && typeflag != '\0') {
-                fprintf(stderr, "mytar: Unsupported header type: %c\n", typeflag);
+                fprintf(stderr, "mytar: Unsupported header type: %d\n", typeflag);
                 return (2);
             }
             if (!list_arg_present) {
