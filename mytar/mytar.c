@@ -147,16 +147,16 @@ int main(int argc, char *argv[]) {
                     printf("%s\n", argv[i]);
                 }
             }
+            int fail = 0;
             for (int i = list_argument; i <= final_list_argument; i++) {
-                int fail = 0;
                 if (!print_file[i - list_argument]) {
                     fprintf(stderr, "mytar: %s: Not found in archive\n", argv[i]);
                     fail = 1;
                 }
-                if (fail) {
-                    fprintf(stderr, "mytar: Exiting with faliure status due to previous errors\n");
-                    return (2);
-                }
+            }
+            if (fail) {
+                fprintf(stderr, "mytar: Exiting with faliure status due to previous errors\n");
+                return (2);
             }
         }
     }
