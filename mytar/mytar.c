@@ -192,7 +192,7 @@ int main(int argc, char *argv[]) {
             for (int i = list_argument; i <= final_list_argument; i++) {
                 if (!print_file[i - list_argument]) {
                     printf("list arg %d, final list arg $d\n", list_argument, final_list_argument);
-                    fprintf(stderr, "mytar: %s: Not found in archive\n", argv[i]);
+                    fprintf(stderr, "mytar: %s: **** Not found in archive ****\n", argv[i]);
                     fail = 1;
                 }
             }
