@@ -101,6 +101,8 @@ int main(int argc, char *argv[]) {
         int offset = 0;
 
         int no_zero = 0;
+        int start_zero = 0;
+        int finish_zero = 0;
 
 
         int d;
@@ -127,6 +129,9 @@ int main(int argc, char *argv[]) {
                 //     fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
                 //     return (2);
                 // }
+                if (no_zero == 1) {
+                    printf("mytar: A lone zero block at %d\n", no_zero);
+                }
                 if (entered) {
                     fflush(stdout);
                     fprintf(stderr, "mytar: Unexpected EOF in archive\n");
@@ -139,6 +144,12 @@ int main(int argc, char *argv[]) {
 
             if (iszero(header)) {
                 no_zero += 1;
+                // if (no_zero == 1) {
+                //     start_zero = offset;
+                // }
+                // if (no_zero == 2) {
+                //     finish_zero = offset;
+                // }
             }
 
             for (int i = 0; i < 100; ++i) {
@@ -210,9 +221,9 @@ int main(int argc, char *argv[]) {
             // fseek(file, roundup(todecimal(size)) + offset, SEEK_SET);
             // offset += roundup(todecimal(size));       
         }
-        // if (no_zero == 1) {
-        //     printf("mytar: A lone zero block at %d\n", no_zero);
-        // }
+        if (no_zero == 1) {
+            printf("mytar: A lone zero block at %d\n", no_zero);
+        }
         if (list_arg_present) {
             // for (int i = list_argument; i <= final_list_argument; i++) {
             //     if (print_file[i - list_argument]) {
