@@ -96,7 +96,9 @@ int main(int argc, char *argv[]) {
                 start += 1;
             }
 
-
+            if (d == EOF) {
+                break;
+            }
 
             for (int i = 0; i < 100; ++i) {
                 name[i] = header[i];
@@ -148,11 +150,7 @@ int main(int argc, char *argv[]) {
                 break;
             }
             // fseek(file, roundup(todecimal(size)) + offset, SEEK_SET);
-            // offset += roundup(todecimal(size));  
-
-            if (d == EOF) {
-                break;
-            }     
+            // offset += roundup(todecimal(size));       
         }
         if (list_arg_present) {
             for (int i = list_argument; i <= final_list_argument; i++) {
