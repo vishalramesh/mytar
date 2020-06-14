@@ -89,15 +89,6 @@ int main(int argc, char *argv[]) {
             print_file[i] = 0;
         }
 
-        // int list_arg_present;
-        // if (list_argument >= argc) {
-        //     list_arg_present = 0;
-        // } else if (strcmp(argv[list_argument], "-f") == 0) {
-        //     list_arg_present = 0;
-        // } else {
-        //     list_arg_present = 1;
-        // }
-
         int offset = 0;
 
         int no_zero = 0;
@@ -105,6 +96,8 @@ int main(int argc, char *argv[]) {
         // int finish_zero = 0;
 
         int char_count = 0;
+
+        int first_time = 0;
 
         int d;
         char header[512];
@@ -126,15 +119,18 @@ int main(int argc, char *argv[]) {
             }
 
             // printf("%d\n", start);
+            
             if (iszero(header)) {
+                first_time = 1;
                 FILE *p = file;
                 fseek(p, 512, SEEK_SET);
-                
-                for (int i = 0; i < 512; ++i) {
-                    if ((d = fgetc(p)) != '\0') {
-                        printf("mytar: A lone zero block at %d\n", no_zero);
-                        break;
-                        // return (0);
+                if (first_time) {
+                    for (int i = 0; i < 512; ++i) {
+                        if ((d = fgetc(p)) != '\0') {
+                            printf("mytar: A lone zero block at %d\n", no_zero);
+                            break;
+                            // return (0);
+                        }
                     }
                 }
             }
@@ -180,8 +176,6 @@ int main(int argc, char *argv[]) {
             }
             typeflag = header[156];
 
-            // printf("%d\n", comp(argv[list_argument], name));
-            // printf("%s\n", name);
 
             // Check zero block
             
@@ -216,12 +210,9 @@ int main(int argc, char *argv[]) {
                             i += 1;
                         }
                         if (printable) {
-                            // fprintf(stderr, "list argument %d, final arg %d, printable %d\n", list_argument, final_list_argument, printable);
                             printf("%s\n", name);
                             fflush(stdout);
-                            // printf("%s\n", name);
                         }
-                        // fflush(stdout);
                         print_file[q - list_argument] = 1; 
                     }
                 }
@@ -230,7 +221,7 @@ int main(int argc, char *argv[]) {
             // Checking truncated archive
             
 
-            // Moving pointer
+            
             
             offset += (512 + roundup(todecimal(size)));
             start = 0;
@@ -242,23 +233,15 @@ int main(int argc, char *argv[]) {
             //     fflush(stdout);
             //     fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
             //     return (2);
-            // }
-            // fseek(file, roundup(todecimal(size)) + offset, SEEK_SET);
-            // offset += roundup(todecimal(size));       
+            // }    
         }
         // if (no_zero == 1) {
         //     printf("mytar: A lone zero block at %d\n", no_zero);
         // }
         if (list_arg_present) {
-            // for (int i = list_argument; i <= final_list_argument; i++) {
-            //     if (print_file[i - list_argument]) {
-            //         printf("%s\n", argv[i]);
-            //     }
-            // }
             int fail = 0;
             for (int i = list_argument; i <= final_list_argument; i++) {
                 if (!print_file[i - list_argument]) {
-                    // fprintf(stderr, "list arg %d, final list arg %d\n", list_argument, final_list_argument);
                     fflush(stdout);
                     fprintf(stderr, "mytar: %s: Not found in archive\n", argv[i]);
                     fail = 1;
