@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <ctype.h>
 #include <string.h>
 
 int isprefix(char *argv, char name[]);
@@ -117,7 +118,17 @@ int main(int argc, char *argv[]) {
                 return (2);
             }
             if (!list_arg_present) {
-                printf("%s\n", name);
+                int i = 0;
+                int printable = 0;
+                while (name[i] != '\0') {
+                    if (isalnum(name[i])) {
+                        printable = 1;
+                    }
+                    i += 1;
+                }
+                if (printable) {
+                    printf("%s\n", name);
+                }
             }
             if (list_arg_present) {
                 for (int q = list_argument; q <= final_list_argument; q++) {
