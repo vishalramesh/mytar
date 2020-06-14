@@ -12,6 +12,7 @@ int iszero(char header[]);
 
 int main(int argc, char *argv[]) {
     if (!(argc >= 2)) {
+        fflush(stdout);
         fprintf(stderr, "mytar: need at least one option\n");
         return (2);
     }
@@ -24,10 +25,12 @@ int main(int argc, char *argv[]) {
             switch (argv[i][1]) {
             case 'f':
                 if (i == argc - 1) {
+                    fflush(stdout);
                     fprintf(stderr, "mytar: option requires an argument -- %s\n", argv[i]);
                     return (64);
                 }
                 if ((i + 1) < argc && (strcmp(argv[i + 1], "-t") == 0)) {
+                    fflush(stdout);
                     fprintf(stderr, "mytar: You must specify one of the options\n");
                     return (2);
                 }
@@ -38,6 +41,7 @@ int main(int argc, char *argv[]) {
                 list_argument = i + 1;
                 break;
             default:
+                fflush(stdout);
                 fprintf(stderr, "mytar: Unknown option: %s\n", argv[i]);
                 return (2);
                 break;
@@ -48,13 +52,17 @@ int main(int argc, char *argv[]) {
         }
     }
     if (f_arg_present == 0) {
+        fflush(stdout);
         fprintf(stderr, "mytar: Refusing to read archive contents from terminal (missing -f option?)\n");
+        fflush(stdout);
         fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
         return (2);
     }
     FILE *file = fopen(argv[tarfile_argument], "r");
     if (file == NULL) {
+        fflush(stdout);
         fprintf(stderr, "mytar: %s: Cannot open: No such file or directory\n", argv[tarfile_argument]);
+        fflush(stdout);
         fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
         return (2);
     } else {
@@ -137,6 +145,7 @@ int main(int argc, char *argv[]) {
             // Check zero block
             
             if (typeflag != '0' && typeflag != '\0') {
+                fflush(stdout);
                 fprintf(stderr, "mytar: Unsupported header type: %d\n", typeflag);
                 return (2);
             }
@@ -151,6 +160,7 @@ int main(int argc, char *argv[]) {
                 }
                 if (printable) {
                     printf("%s\n", name);
+                    fflush(stdout);
                 }
             }
             if (list_arg_present) {
@@ -167,6 +177,7 @@ int main(int argc, char *argv[]) {
                         if (printable) {
                             // fprintf(stderr, "list argument %d, final arg %d, printable %d\n", list_argument, final_list_argument, printable);
                             printf("%s\n", name);
+                            fflush(stdout);
                             // printf("%s\n", name);
                         }
                         // fflush(stdout);
@@ -202,11 +213,13 @@ int main(int argc, char *argv[]) {
             for (int i = list_argument; i <= final_list_argument; i++) {
                 if (!print_file[i - list_argument]) {
                     // fprintf(stderr, "list arg %d, final list arg %d\n", list_argument, final_list_argument);
+                    fflush(stdout);
                     fprintf(stdout, "mytar: %s: Not found in archive\n", argv[i]);
                     fail = 1;
                 }
             }
             if (fail) {
+                fflush(stdout);
                 fprintf(stdout, "mytar: Exiting with failure status due to previous errors\n");
                 return (2);
             }
