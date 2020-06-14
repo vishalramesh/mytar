@@ -105,7 +105,7 @@ int main(int argc, char *argv[]) {
         char size[12];
         char typeflag;
         int start = 0;
-        int block_no;
+        int block_no = 0;
         // int entered = 0;
         while (1) {
             if (file == NULL) {
