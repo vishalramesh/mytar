@@ -207,7 +207,7 @@ int main(int argc, char *argv[]) {
                 }
             }
             if (fail) {
-                fprintf(stdout, "mytar: Exiting with faliure status due to previous errors");
+                fprintf(stdout, "mytar: Exiting with failure status due to previous errors");
                 return (2);
             }
         }
