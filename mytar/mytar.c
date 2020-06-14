@@ -59,20 +59,20 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
         return (2);
     } else {
+        int list_arg_present;
+        if (list_argument >= argc) {
+            list_arg_present = 0;
+        } else if (strcmp(argv[list_argument], "-f") == 0 && tarfile_argument == argc) {
+            list_arg_present = 0;
+        } else {
+            list_arg_present = 1;
+        }
         int final_list_argument = list_argument;
         while (final_list_argument + 1 < argc) {
             if (strcmp(argv[final_list_argument + 1], "-f") == 0) {
                 break;
             }
             final_list_argument += 1;
-        }
-        int list_arg_present;
-        if (list_argument >= argc) {
-            list_arg_present = 0;
-        } else if (strcmp(argv[list_argument], "-f") == 0) {
-            list_arg_present = 0;
-        } else {
-            list_arg_present = 1;
         }
         int print_file[final_list_argument - list_argument + 1];
         for (int i = 0; i < final_list_argument - list_argument + 1; i++) {
