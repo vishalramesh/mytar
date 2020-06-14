@@ -62,7 +62,7 @@ int main(int argc, char *argv[]) {
         int list_arg_present;
         if (list_argument >= argc) {
             list_arg_present = 0;
-        } else if (strcmp(argv[list_argument], "-f") == 0 && tarfile_argument == argc) {
+        } else if (strcmp(argv[list_argument], "-f") == 0 && tarfile_argument == argc - 1) {
             list_arg_present = 0;
         } else {
             list_arg_present = 1;
@@ -78,6 +78,15 @@ int main(int argc, char *argv[]) {
         for (int i = 0; i < final_list_argument - list_argument + 1; i++) {
             print_file[i] = 0;
         }
+
+        // int list_arg_present;
+        // if (list_argument >= argc) {
+        //     list_arg_present = 0;
+        // } else if (strcmp(argv[list_argument], "-f") == 0) {
+        //     list_arg_present = 0;
+        // } else {
+        //     list_arg_present = 1;
+        // }
 
         int offset = 0;
 
