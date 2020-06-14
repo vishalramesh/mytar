@@ -94,6 +94,7 @@ int main(int argc, char *argv[]) {
 
         int no_zero = 0;
 
+
         int d;
         char header[512];
         char name[100];
@@ -188,9 +189,9 @@ int main(int argc, char *argv[]) {
             // fseek(file, roundup(todecimal(size)) + offset, SEEK_SET);
             // offset += roundup(todecimal(size));       
         }
-        if (no_zero == 1) {
-            printf("mytar: A lone zero block at %d\n", no_zero);
-        }
+        // if (no_zero == 1) {
+        //     printf("mytar: A lone zero block at %d\n", no_zero);
+        // }
         if (list_arg_present) {
             // for (int i = list_argument; i <= final_list_argument; i++) {
             //     if (print_file[i - list_argument]) {
@@ -201,12 +202,12 @@ int main(int argc, char *argv[]) {
             for (int i = list_argument; i <= final_list_argument; i++) {
                 if (!print_file[i - list_argument]) {
                     // fprintf(stderr, "list arg %d, final list arg %d\n", list_argument, final_list_argument);
-                    fprintf(stderr, "mytar: %s: Not found in archive\n", argv[i]);
+                    fprintf(stdout, "mytar: %s: Not found in archive\n", argv[i]);
                     fail = 1;
                 }
             }
             if (fail) {
-                fprintf(stderr, "mytar: Exiting with faliure status due to previous errors\n");
+                fprintf(stdout, "mytar: Exiting with faliure status due to previous errors\n");
                 return (2);
             }
         }
