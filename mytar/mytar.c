@@ -85,7 +85,6 @@ int main(int argc, char *argv[]) {
         char name[100];
         char size[12];
         char typeflag;
-        FILE *file_pointer = file;
         int start = 0;
         while (1) {
             if (file == NULL) {
