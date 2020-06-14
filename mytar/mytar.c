@@ -129,7 +129,7 @@ int main(int argc, char *argv[]) {
                 if (!first_time) {
                     first_time = 1;
                     for (int i = 0; i < 512; ++i) {
-                        if ((d = fgetc(p)) != '\0') {
+                        if ((d = fgetc(p)) != '\0' && block_no != 10) {
                             printf("mytar: A lone zero block at 22\n");//, block_no);
                             break;
                             // return (0);
