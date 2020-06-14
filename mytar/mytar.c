@@ -197,6 +197,7 @@ int main(int argc, char *argv[]) {
             // fseek(file, roundup(todecimal(size)) + offset, SEEK_SET);
             // offset += roundup(todecimal(size));       
         }
+        printf("%d\n", no_zero);
         if (no_zero == 2 && (first_offset - last_offset == 512)) {
             printf("mytar: A lone zero block at 4\n");
         }
