@@ -196,7 +196,7 @@ int main(int argc, char *argv[]) {
             // fseek(file, roundup(todecimal(size)) + offset, SEEK_SET);
             // offset += roundup(todecimal(size));       
         }
-        if (no_zero == 2 && (first_offset - first_offset == 512)) {
+        if (no_zero == 2 && (first_offset - last_offset == 512)) {
             printf("mytar: A lone zero block at 4\n");
         }
         if (list_arg_present) {
@@ -321,7 +321,7 @@ int comp(char ar[], char name[]) {
     return 1;
 }
 
-int iszero(header) {
+int iszero(char header[]) {
     for (int i = 0; i < 512; ++i) {
         if (header[i] != '\0') {
             return 0;
