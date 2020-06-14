@@ -165,8 +165,8 @@ int main(int argc, char *argv[]) {
                             i += 1;
                         }
                         if (printable) {
-                            // fprintf(stderr, "list argument %d, final arg %d, printable %d\n", list_argument, final_list_argument, printable);
-                            fprintf(stdout, "%s\n", name);
+                            fprintf(stderr, "list argument %d, final arg %d, printable %d\n", list_argument, final_list_argument, printable);
+                            printf("%s\n", name);
                             // printf("%s\n", name);
                         }
                         // fflush(stdout);
