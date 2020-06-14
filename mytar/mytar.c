@@ -97,6 +97,11 @@ int main(int argc, char *argv[]) {
             }
 
             if (d == EOF) {
+                if (start != 0) {
+                    fprintf(stderr, "mytar: Unexpected EOF in archive\n");
+                    fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
+                    return (2);
+                }
                 break;
             }
 
