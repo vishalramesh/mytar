@@ -108,7 +108,8 @@ int main(int argc, char *argv[]) {
             }
             typeflag = header[156];
 
-            
+            // printf("%d\n", comp(argv[list_argument], name));
+            // printf("%s\n", name);
 
             // Check zero block
             
@@ -147,7 +148,7 @@ int main(int argc, char *argv[]) {
                     printf("%s\n", argv[i]);
                 }
             }
-            for (int i = list_argument; i < final_list_argument; i++) {
+            for (int i = list_argument; i <= final_list_argument; i++) {
                 int fail = 0;
                 if (!print_file[i - list_argument]) {
                     fprintf(stderr, "mytar: %s: Not found in archive\n", argv[i]);
@@ -218,7 +219,7 @@ int roundup(int decimal) {
     // }
     // return 512 + roundup(decimal - 512);
     int roundup = 0;
-    while (decimal >= 0) {
+    while (decimal > 0) {
         roundup += 512;
         decimal -= 512;
     }
@@ -238,11 +239,26 @@ int power(int base, int exp) {
 
 int comp(char ar[], char name[]) {
     int i = 0;
-    while (name[i] != '\0') {
-        if (ar[i] != name[i]) {
-            return 0;
-        }
+    while (ar[i] != '\0') {
         i += 1;
     }
+    int j = 0;
+    while (name[j] != '\0') {
+        j += 1;
+    }
+    if (i != j) {
+        return 0;
+    }
+    for (int q = 0; q < i; q++) {
+        if (ar[q] != name[q]) {
+            return 0;
+        }
+    }
+    // while (ar[i] != '\0') {
+    //     if (ar[i] != name[i]) {
+    //         return 0;
+    //     }
+    //     i += 1;
+    // }
     return 1;
 }
