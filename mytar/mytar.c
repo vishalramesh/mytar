@@ -105,6 +105,7 @@ int main(int argc, char *argv[]) {
         char size[12];
         char typeflag;
         int start = 0;
+        int block_no;
         // int entered = 0;
         while (1) {
             if (file == NULL) {
@@ -117,6 +118,9 @@ int main(int argc, char *argv[]) {
                 char_count += 1;
                 // entered = 1;
             }
+            if (start != 0) {
+                block_no += 1;
+            }
 
             // printf("%d\n", start);
             
@@ -128,7 +132,7 @@ int main(int argc, char *argv[]) {
                     first_time = 1;
                     for (int i = 0; i < 512; ++i) {
                         if ((d = fgetc(p)) != '\0') {
-                            printf("mytar: A lone zero block at %d\n", no_zero);
+                            printf("mytar: A lone zero block at %d\n", block_no);
                             break;
                             // return (0);
                         }
