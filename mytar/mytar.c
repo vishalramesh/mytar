@@ -138,6 +138,17 @@ int main(int argc, char *argv[]) {
             if (list_arg_present) {
                 for (int q = list_argument; q <= final_list_argument; q++) {
                     if (comp(argv[q], name) || isprefix(argv[q], name) || issuffix(argv[q], name)) {
+                        int i = 0;
+                        int printable = 0;
+                        while (name[i] != '\0') {
+                            if (isalnum(name[i])) {
+                                printable = 1;
+                            }
+                            i += 1;
+                        }
+                        if (printable) {
+                            printf("%s\n", name);
+                        }
                         print_file[q - list_argument] = 1; 
                     }
                 }
@@ -158,11 +169,11 @@ int main(int argc, char *argv[]) {
             // offset += roundup(todecimal(size));       
         }
         if (list_arg_present) {
-            for (int i = list_argument; i <= final_list_argument; i++) {
-                if (print_file[i - list_argument]) {
-                    printf("%s\n", argv[i]);
-                }
-            }
+            // for (int i = list_argument; i <= final_list_argument; i++) {
+            //     if (print_file[i - list_argument]) {
+            //         printf("%s\n", argv[i]);
+            //     }
+            // }
             int fail = 0;
             for (int i = list_argument; i <= final_list_argument; i++) {
                 if (!print_file[i - list_argument]) {
