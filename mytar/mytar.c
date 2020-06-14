@@ -128,6 +128,7 @@ int main(int argc, char *argv[]) {
             // printf("%d\n", start);
             if (iszero(header)) {
                 FILE *p = file;
+                fseek(p, 512, SEEK_SET);
                 
                 for (int i = 0; i < 512; ++i) {
                     if ((d = fgetc(p)) != '\0') {
