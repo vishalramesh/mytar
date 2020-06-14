@@ -132,7 +132,7 @@ int main(int argc, char *argv[]) {
                     fprintf(stderr, "mytar: Unexpected EOF in archive\n");
                     fflush(stdout);
                     fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
-                    return (2);
+                    // return (2);
                 }
                 break;
             }
