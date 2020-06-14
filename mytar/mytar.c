@@ -101,9 +101,10 @@ int main(int argc, char *argv[]) {
         int offset = 0;
 
         int no_zero = 0;
-        int start_zero = 0;
-        int finish_zero = 0;
+        // int start_zero = 0;
+        // int finish_zero = 0;
 
+        int char_count = 0;
 
         int d;
         char header[512];
@@ -111,7 +112,7 @@ int main(int argc, char *argv[]) {
         char size[12];
         char typeflag;
         int start = 0;
-        int entered = 0;
+        // int entered = 0;
         while (1) {
             if (file == NULL) {
                 break;
@@ -120,7 +121,8 @@ int main(int argc, char *argv[]) {
             while ((d = fgetc(file)) != EOF && start < 512) {
                 header[start] = d;
                 start += 1;
-                entered = 1;
+                char_count += 1;
+                // entered = 1;
             }
 
             // printf("%d\n", start);
@@ -131,6 +133,13 @@ int main(int argc, char *argv[]) {
                 //     fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
                 //     return (2);
                 // }
+                if ((char_count % 512) != 0) {
+                    fflush(stdout);
+                    fprintf(stderr, "mytar: Unexpected EOF in archive\n");
+                    fflush(stdout);
+                    fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
+                    return (2);
+                }
                 if (start != 512 && start != 0) {
                     fflush(stdout);
                     fprintf(stderr, "mytar: Unexpected EOF in archive\n");
