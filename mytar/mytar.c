@@ -159,8 +159,7 @@ int main(int argc, char *argv[]) {
                             i += 1;
                         }
                         if (printable) {
-                            printf("shhs\n");
-                            printf("%s\n", name);
+                            fprintf(stdout, "%s\n", name);
                         }
                         print_file[q - list_argument] = 1; 
                     }
