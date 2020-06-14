@@ -127,6 +127,7 @@ int main(int argc, char *argv[]) {
                 }
                 if (no_zero == 2) {
                     last_offset = offset;
+                    break;
                 }
             }
 
