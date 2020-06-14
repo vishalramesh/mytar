@@ -117,7 +117,7 @@ int main(int argc, char *argv[]) {
             if (file == NULL) {
                 break;
             }
-            entered = 0;
+            // entered = 0;
             while ((d = fgetc(file)) != EOF && start < 512) {
                 header[start] = d;
                 start += 1;
