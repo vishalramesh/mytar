@@ -146,7 +146,7 @@ int main(int argc, char *argv[]) {
                     fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
                     return (2);
                 }
-                if ((ftell(file) % 512) != 0) {
+                if ((char_count % 512) != 0) {
                     fflush(stdout);
                     fprintf(stderr, "mytar: Unexpected EOF in archive\n");
                     fflush(stdout);
@@ -231,13 +231,13 @@ int main(int argc, char *argv[]) {
             offset += (512 + roundup(todecimal(size)));
             start = 0;
             fseek(file, offset, SEEK_SET);
-            if (ftell(file) == offset) {
-                fflush(stdout);
-                fprintf(stderr, "mytar: Unexpected EOF in archive\n");
-                fflush(stdout);
-                fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
-                return (2);
-            }
+            // if (ftell(file) == offset) {
+            //     fflush(stdout);
+            //     fprintf(stderr, "mytar: Unexpected EOF in archive\n");
+            //     fflush(stdout);
+            //     fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
+            //     return (2);
+            // }
             // if (file == NULL) {
             //     // break;
             //     fflush(stdout);
