@@ -5,6 +5,7 @@ int isprefix(char *argv, char name[]);
 int issuffix(char *argv, char name[]);
 int todecimal(char size[]);
 int roundup(int decimal);
+int power(int base, int exp);
 
 int main(int argc, char *argv[]) {
     if (argc < 2) {
@@ -73,6 +74,8 @@ int main(int argc, char *argv[]) {
         }
         int print_file[final_list_argument - list_argument + 1];
 
+        int offset = 0;
+
         char d;
         char header[512];
         char name[100];
@@ -84,15 +87,16 @@ int main(int argc, char *argv[]) {
         
             while ((d = fgetc(file)) != EOF && start < 512) {
                 header[start] = d;
-                if (start < 100) {
-                    name[start] = d;
-                } else if (start >= 116 && start < 124) {
-                    size[start - 116] = d;
-                } else if (start == 148) {
-                    size[start] = d;
-                }
                 start += 1;
             }
+
+            for (int i = 0; i < 100; ++i) {
+                name[i] = header[i];
+            }
+            for (int i = 124; i < 136; ++i) {
+                size[i - 124] = header[i];
+            }
+            typeflag = header[156];
 
             if (d == EOF) {
                 break;
@@ -114,10 +118,16 @@ int main(int argc, char *argv[]) {
                     }
                 }
             }
+
             // Checking truncated archive
+            
 
             // Moving pointer
-            fseek(file, roundup(todecimal(size)), SEEK_CUR);           
+
+            // printf("%d", todecimal(size));
+            // printf("%d", roundup(todecimal(size)));
+            fseek(file, roundup(todecimal(size)) + offset, SEEK_SET);
+            offset += roundup(todecimal(size));       
         }
         if (list_arg_present) {
             for (int i = list_argument; i <= final_list_argument; i++) {
@@ -126,10 +136,14 @@ int main(int argc, char *argv[]) {
                 }
             }
             for (int i = list_argument; i < final_list_argument; i++) {
+                int fail = 0;
                 if (!print_file[i - list_argument]) {
                     fprintf(stderr, "mytar: %s: Not found in archive\n", argv[i]);
+                    fail = 1;
                 }
-                fprintf(stderr, "mytar: Exiting with faliure status due to previous errors\n");
+                if (fail) {
+                    fprintf(stderr, "mytar: Exiting with faliure status due to previous errors\n");
+                }
                 return (2);
             }
         }
@@ -170,8 +184,8 @@ int issuffix(char *argv, char name[]) {
 
 int todecimal(char size[]) {
     int decimal = 0;
-    for (int i = 11; i >= 0; i--) {
-        decimal += (12 - i) * size[i];
+    for (int i = 10; i >= 0; i--) {
+        decimal += power(8, (12 - i - 2)) * (int)(size[i] - '0');
     }
     return decimal;
 }
@@ -181,4 +195,15 @@ int roundup(int decimal) {
         return 512;
     }
     return 512 + roundup(decimal - 512);
+}
+
+int power(int base, int exp) {
+    if (exp == 0) {
+        return 1;
+    }
+    int prod = 1;
+    for (int i = 1; i <= exp; ++i) {
+        prod *= base;
+    }
+    return prod;
 }
