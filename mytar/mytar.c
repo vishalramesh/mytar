@@ -126,10 +126,10 @@ int main(int argc, char *argv[]) {
             }
 
             // printf("%d\n", start);
-            if iszero(header) {
-                FILE *p = file;
+            // if iszero(header) {
+            //     FILE *p = file;
 
-            }
+            // }
 
             if (d == EOF) {
                 // if (start != 0) {
