@@ -162,7 +162,7 @@ int main(int argc, char *argv[]) {
                             printf("list argument %d, final arg %d, printable %d\n", list_argument, final_list_argument, printable);
                             printf("%s\n", name);
                         }
-                        fflush(stdout);
+                        // fflush(stdout);
                         print_file[q - list_argument] = 1; 
                     }
                 }
