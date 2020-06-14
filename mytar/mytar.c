@@ -94,6 +94,10 @@ int main(int argc, char *argv[]) {
                 start += 1;
             }
 
+            if (d == EOF) {
+                break;
+            }
+
             // Check zero block
             
             if (typeflag != '0' && typeflag != '\0') {
