@@ -118,9 +118,7 @@ int main(int argc, char *argv[]) {
                 char_count += 1;
                 // entered = 1;
             }
-            if (start != 0) {
-                block_no += 1;
-            }
+            block_no += 1;
 
             // printf("%d\n", start);
             
