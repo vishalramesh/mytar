@@ -160,8 +160,8 @@ int main(int argc, char *argv[]) {
                         }
                         if (printable) {
                             // fprintf(stderr, "list argument %d, final arg %d, printable %d\n", list_argument, final_list_argument, printable);
-                            // fprintf(stderr, "%s\n", name);
-                            printf("%s\n", name);
+                            fprintf(stdout, "%s\n", name);
+                            // printf("%s\n", name);
                         }
                         // fflush(stdout);
                         print_file[q - list_argument] = 1; 
