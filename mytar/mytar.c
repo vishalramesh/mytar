@@ -126,10 +126,15 @@ int main(int argc, char *argv[]) {
             }
 
             // printf("%d\n", start);
-            // if iszero(header) {
-            //     FILE *p = file;
-
-            // }
+            if iszero(header) {
+                FILE *p = file;
+                
+                for (int i = 0; i < 512; ++i) {
+                    if ((d = fgetc(p)) == '\0') {
+                        printf("mytar: A lone zero block at %d\n", no_zero);
+                    }
+                }
+            }
 
             if (d == EOF) {
                 // if (start != 0) {
