@@ -67,6 +67,9 @@ int main(int argc, char *argv[]) {
         } else {
             list_arg_present = 1;
         }
+        if (strcmp(argv[list_argument], "-f") == 0 && tarfile_argument < argc - 1) {
+            list_argument = tarfile_argument + 1;
+        }
         int final_list_argument = list_argument;
         while (final_list_argument + 1 < argc) {
             if (strcmp(argv[final_list_argument + 1], "-f") == 0) {
