@@ -123,6 +123,8 @@ int main(int argc, char *argv[]) {
                 entered = 1;
             }
 
+            printf("%d\n", start);
+
             if (d == EOF) {
                 // if (start != 0) {
                 //     fprintf(stderr, "mytar: Unexpected EOF in archive\n");
