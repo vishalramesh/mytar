@@ -1,0 +1,7 @@
+# This file is usually not commited to the test suite.  It is used to set user
+# environment specific variables, like a path to a development binary that is
+# expected to be tested.
+export MYCMD="/usr/bin/true"
+export PASSWD="/etc/passwd"
+export GNUTAR="/bin/tar"
+export MYTAR_C="/afs/ms.mff.cuni.cz/u/r/rameshv/mytar/mytar/mytar.c"
