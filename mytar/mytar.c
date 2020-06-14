@@ -159,7 +159,7 @@ int main(int argc, char *argv[]) {
                             i += 1;
                         }
                         if (printable) {
-                            printf("list argument %d, final arg %d, printable %d\n", list_argument, final_list_argument, printable);
+                            fprintf(stderr, "list argument %d, final arg %d, printable %d\n", list_argument, final_list_argument, printable);
                             printf("%s\n", name);
                         }
                         // fflush(stdout);
@@ -191,7 +191,7 @@ int main(int argc, char *argv[]) {
             int fail = 0;
             for (int i = list_argument; i <= final_list_argument; i++) {
                 if (!print_file[i - list_argument]) {
-                    fprintf(stderr, "list arg %d, final list arg $d\n", list_argument, final_list_argument);
+                    fprintf(stderr, "list arg %d, final list arg %d\n", list_argument, final_list_argument);
                     fprintf(stderr, "mytar: %s: Not found in archive\n", argv[i]);
                     fail = 1;
                 }
