@@ -146,7 +146,7 @@ int main(int argc, char *argv[]) {
                     fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
                     return (2);
                 }
-                if ((char_count % 512) != 0) {
+                if ((ftell(file) % 512) != 0) {
                     fflush(stdout);
                     fprintf(stderr, "mytar: Unexpected EOF in archive\n");
                     fflush(stdout);
