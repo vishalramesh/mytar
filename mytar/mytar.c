@@ -214,13 +214,13 @@ int main(int argc, char *argv[]) {
                 if (!print_file[i - list_argument]) {
                     // fprintf(stderr, "list arg %d, final list arg %d\n", list_argument, final_list_argument);
                     fflush(stdout);
-                    fprintf(stdout, "mytar: %s: Not found in archive\n", argv[i]);
+                    fprintf(stderr, "mytar: %s: Not found in archive\n", argv[i]);
                     fail = 1;
                 }
             }
             if (fail) {
                 fflush(stdout);
-                fprintf(stdout, "mytar: Exiting with failure status due to previous errors\n");
+                fprintf(stderr, "mytar: Exiting with failure status due to previous errors\n");
                 return (2);
             }
         }
