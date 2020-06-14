@@ -215,7 +215,12 @@ int main(int argc, char *argv[]) {
             start = 0;
             fseek(file, offset, SEEK_SET);
             if (file == NULL) {
-                break;
+                // break;
+                fflush(stdout);
+                fprintf(stderr, "mytar: Unexpected EOF in archive\n");
+                fflush(stdout);
+                fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
+                return (2);
             }
             // fseek(file, roundup(todecimal(size)) + offset, SEEK_SET);
             // offset += roundup(todecimal(size));       
