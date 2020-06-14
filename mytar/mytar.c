@@ -132,7 +132,7 @@ int main(int argc, char *argv[]) {
                 for (int i = 0; i < 512; ++i) {
                     if ((d = fgetc(p)) != '\0') {
                         printf("mytar: A lone zero block at %d\n", no_zero);
-                        // return (0);
+                        return (0);
                     }
                 }
             }
