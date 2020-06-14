@@ -109,13 +109,16 @@ int main(int argc, char *argv[]) {
         char size[12];
         char typeflag;
         int start = 0;
+        int entered = 0;
         while (1) {
             if (file == NULL) {
                 break;
             }
+            entered = 0;
             while ((d = fgetc(file)) != EOF && start < 512) {
                 header[start] = d;
                 start += 1;
+                entered = 1;
             }
 
             if (d == EOF) {
@@ -124,6 +127,13 @@ int main(int argc, char *argv[]) {
                 //     fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
                 //     return (2);
                 // }
+                if (entered) {
+                    fflush(stdout);
+                    fprintf(stderr, "mytar: Unexpected EOF in archive\n");
+                    fflush(stdout);
+                    fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
+                    return (2);
+                }
                 break;
             }
 
