@@ -129,10 +129,7 @@ int main(int argc, char *argv[]) {
                 //     fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
                 //     return (2);
                 // }
-                if (no_zero == 1) {
-                    printf("mytar: A lone zero block at %d\n", no_zero);
-                }
-                if (entered) {
+                if (start != 0 && start != 511) {
                     fflush(stdout);
                     fprintf(stderr, "mytar: Unexpected EOF in archive\n");
                     fflush(stdout);
