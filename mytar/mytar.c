@@ -6,6 +6,7 @@ int issuffix(char *argv, char name[]);
 int todecimal(char size[]);
 int roundup(int decimal);
 int power(int base, int exp);
+int comp(char ar[], char name[]);
 
 int main(int argc, char *argv[]) {
     if (argc < 2) {
@@ -73,10 +74,13 @@ int main(int argc, char *argv[]) {
             list_arg_present = 1;
         }
         int print_file[final_list_argument - list_argument + 1];
+        for (int i = 0; i < final_list_argument - list_argument + 1; i++) {
+            print_file[i] = 0;
+        }
 
         int offset = 0;
 
-        char d;
+        int d;
         char header[512];
         char name[100];
         char size[12];
@@ -84,10 +88,16 @@ int main(int argc, char *argv[]) {
         FILE *file_pointer = file;
         int start = 0;
         while (1) {
-        
+            if (file == NULL) {
+                break;
+            }
             while ((d = fgetc(file)) != EOF && start < 512) {
                 header[start] = d;
                 start += 1;
+            }
+
+            if (d == EOF) {
+                break;
             }
 
             for (int i = 0; i < 100; ++i) {
@@ -98,9 +108,7 @@ int main(int argc, char *argv[]) {
             }
             typeflag = header[156];
 
-            if (d == EOF) {
-                break;
-            }
+            
 
             // Check zero block
             
@@ -113,21 +121,25 @@ int main(int argc, char *argv[]) {
             }
             if (list_arg_present) {
                 for (int q = list_argument; q <= final_list_argument; q++) {
-                    if ((strcmp(argv[q], name) == 0) || isprefix(argv[q], name) || issuffix(argv[q], name)) {
+                    if (comp(argv[q], name) || isprefix(argv[q], name) || issuffix(argv[q], name)) {
                         print_file[q - list_argument] = 1; 
                     }
                 }
             }
-
+            
             // Checking truncated archive
             
 
             // Moving pointer
-
-            // printf("%d", todecimal(size));
-            // printf("%d", roundup(todecimal(size)));
-            fseek(file, roundup(todecimal(size)) + offset, SEEK_SET);
-            offset += roundup(todecimal(size));       
+            
+            offset += (512 + roundup(todecimal(size)));
+            start = 0;
+            fseek(file, offset, SEEK_SET);
+            if (file == NULL) {
+                break;
+            }
+            // fseek(file, roundup(todecimal(size)) + offset, SEEK_SET);
+            // offset += roundup(todecimal(size));       
         }
         if (list_arg_present) {
             for (int i = list_argument; i <= final_list_argument; i++) {
@@ -143,8 +155,8 @@ int main(int argc, char *argv[]) {
                 }
                 if (fail) {
                     fprintf(stderr, "mytar: Exiting with faliure status due to previous errors\n");
+                    return (2);
                 }
-                return (2);
             }
         }
     }
@@ -174,10 +186,19 @@ int issuffix(char *argv, char name[]) {
     if (argv[0] != '*') {
         return 0;
     }
+    int p = 0;
+    while (name[p] != '\0') {
+        p += 1;
+    }
+    p -= 1;
     for (int j = i - 1; i > 0; i--) {
-        if (argv[j] != name[j]) {
+        if (p < 0) {
             return 0;
         }
+        if (argv[j] != name[p]) {
+            return 0;
+        }
+        p -= 1;
     }
     return 1;
 }
@@ -191,10 +212,17 @@ int todecimal(char size[]) {
 }
 
 int roundup(int decimal) {
-    if (decimal <= 512) {
-        return 512;
+    // What about 0 size case?
+    // if (decimal <= 512) {
+    //     return 512;
+    // }
+    // return 512 + roundup(decimal - 512);
+    int roundup = 0;
+    while (decimal >= 0) {
+        roundup += 512;
+        decimal -= 512;
     }
-    return 512 + roundup(decimal - 512);
+    return roundup;
 }
 
 int power(int base, int exp) {
@@ -206,4 +234,15 @@ int power(int base, int exp) {
         prod *= base;
     }
     return prod;
+}
+
+int comp(char ar[], char name[]) {
+    int i = 0;
+    while (name[i] != '\0') {
+        if (ar[i] != name[i]) {
+            return 0;
+        }
+        i += 1;
+    }
+    return 1;
 }
