@@ -8,27 +8,26 @@ int todecimal(char size[]);
 int roundup(int decimal);
 int power(int base, int exp);
 int comp(char ar[], char name[]);
+int iszero(char header[]);
 
 int main(int argc, char *argv[]) {
-    if (argc < 2) {
+    if (!(argc >= 2)) {
         fprintf(stderr, "mytar: need at least one option\n");
         return (2);
     }
-    char ch;
     int list_argument;
     int tarfile_argument;
     int f_arg_present = 0;
     for (int i = 1; i < argc; i++) {
-        switch ((int)argv[i][0]) {
+        switch (argv[i][0]) {
         case '-':
-            ch = (int)argv[i][1];
-            switch (ch) {
+            switch (argv[i][1]) {
             case 'f':
                 if (i == argc - 1) {
                     fprintf(stderr, "mytar: option requires an argument -- %s\n", argv[i]);
                     return (64);
                 }
-                if (i + 1 < argc && (strcmp(argv[i + 1], "-t") == 0)) {
+                if ((i + 1) < argc && (strcmp(argv[i + 1], "-t") == 0)) {
                     fprintf(stderr, "mytar: You must specify one of the options\n");
                     return (2);
                 }
@@ -93,6 +92,10 @@ int main(int argc, char *argv[]) {
 
         int offset = 0;
 
+        int no_zero = 0;
+        int first_offset = 0;
+        int last_offset = 0;
+
         int d;
         char header[512];
         char name[100];
@@ -115,6 +118,16 @@ int main(int argc, char *argv[]) {
                     return (2);
                 }
                 break;
+            }
+
+            if (iszero(header)) {
+                no_zero += 1;
+                if ((no_zero) == 1) {
+                    first_offset = offset;
+                }
+                if (no_zero == 2) {
+                    last_offset = offset;
+                }
             }
 
             for (int i = 0; i < 100; ++i) {
@@ -182,6 +195,9 @@ int main(int argc, char *argv[]) {
             }
             // fseek(file, roundup(todecimal(size)) + offset, SEEK_SET);
             // offset += roundup(todecimal(size));       
+        }
+        if (no_zero == 2 && (first_offset - first_offset == 512)) {
+            printf("mytar: A lone zero block at 4\n");
         }
         if (list_arg_present) {
             // for (int i = list_argument; i <= final_list_argument; i++) {
@@ -302,5 +318,14 @@ int comp(char ar[], char name[]) {
     //     }
     //     i += 1;
     // }
+    return 1;
+}
+
+int iszero(header) {
+    for (int i = 0; i < 512; ++i) {
+        if (header[i] != '\0') {
+            return 0;
+        }
+    }
     return 1;
 }
