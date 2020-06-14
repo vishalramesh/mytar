@@ -189,7 +189,7 @@ int main(int argc, char *argv[]) {
             int fail = 0;
             for (int i = list_argument; i <= final_list_argument; i++) {
                 if (!print_file[i - list_argument]) {
-                    fflush();
+                    fflush(stdout);
                     fprintf(stderr, "mytar: %s: Not found in archive\n", argv[i]);
                     fail = 1;
                 }
