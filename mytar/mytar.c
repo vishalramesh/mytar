@@ -93,8 +93,6 @@ int main(int argc, char *argv[]) {
         int offset = 0;
 
         int no_zero = 0;
-        int first_offset = 0;
-        int last_offset = 0;
 
         int d;
         char header[512];
@@ -122,13 +120,6 @@ int main(int argc, char *argv[]) {
 
             if (iszero(header)) {
                 no_zero += 1;
-                if ((no_zero) == 1) {
-                    first_offset = offset;
-                }
-                if (no_zero == 2) {
-                    last_offset = offset;
-                    break;
-                }
             }
 
             for (int i = 0; i < 100; ++i) {
@@ -197,7 +188,7 @@ int main(int argc, char *argv[]) {
             // fseek(file, roundup(todecimal(size)) + offset, SEEK_SET);
             // offset += roundup(todecimal(size));       
         }
-        if (no_zero == 2 && (first_offset - last_offset == 512)) {
+        if (no_zero == 1) {
             printf("mytar: A lone zero block at %d\n", no_zero);
         }
         if (list_arg_present) {
