@@ -168,14 +168,16 @@ int main(int argc, char *argv[]) {
         int size_len = sizeof(size) / sizeof(size[0]);
         offset += 512;
         offset += roundup_to_multiple(ascii_to_decimal(size, size_len), 512);
-        block_no += roundup_to_multiple(ascii_to_decimal(size, size_len), 512);
+        // block_no += roundup_to_multiple(ascii_to_decimal(size, size_len), 512);
         fseek(file, offset, SEEK_SET);
 
     }
 
-    // if (list_arg_present) {
-    //     handle_list_arg_output(argv, print_file, list_arg_index, final_list_arg_index);
-    // }
+    if (list_arg_present) {
+        if ((int ret = handle_list_arg_output(argv, print_file, list_arg_index, final_list_arg_index) != 0) {
+            return ret;
+        }
+    }
 
     if (list_arg_present) {
         int fail = 0;
