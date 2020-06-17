@@ -4,7 +4,7 @@
 
 int isprefix(char *argv, char name[]);
 int issuffix(char *argv, char name[]);
-int todecimal(char size[]);
+int ascii_to_decimal(char size[]);
 int roundup(int decimal);
 int power(int base, int exp);
 int equal(char arg_file_name[], char file_name[]);
@@ -228,7 +228,7 @@ int main(int argc, char *argv[]) {
 
             
             
-            offset += (512 + roundup(todecimal(size)));
+            offset += (512 + roundup(ascii_to_decimal(size)));
             start = 0;
             fseek(file, offset, SEEK_SET);
             // if (ftell(file) == offset) {
@@ -309,11 +309,16 @@ int issuffix(char *argv, char name[]) {
     return 1;
 }
 
-int todecimal(char size[]) {
+int ascii_to_decimal(char size[]) {
     int decimal = 0;
-    for (int i = 10; i >= 0; i--) {
-        decimal += power(8, (12 - i - 2)) * (int)(size[i] - '0');
+    for (int i = 0; i <= 10; ++i) {
+        int digit = size[i] - '0';
+        decimal += digit * pow(8, 10 - i);
     }
+    // for (int i = 10; i >= 0; i--) {
+    //     int digit = (int)(size[i] - '0');
+    //     decimal += power(8, (12 - i - 2)) * digit;
+    // }
     return decimal;
 }
 
@@ -332,12 +337,9 @@ int roundup(int decimal) {
 }
 
 int power(int base, int exp) {
-    // if (exp == 0) {
-    //     return 1;
-    // }
     int prod = 1;
     for (int i = 1; i <= exp; ++i) {
-        prod *= base;
+        prod = prod * base;
     }
     return prod;
 }
@@ -354,8 +356,8 @@ int equal(char arg_file_name[], char file_name[]) {
     if (i != j) {
         return 0;
     }
-    for (int q = 0; q < i; q++) {
-        if (arg_file_name[q] != file_name[q]) {
+    for (int k = 0; k < i; ++k) {
+        if (arg_file_name[k] != file_name[k]) {
             return 0;
         }
     }
