@@ -313,9 +313,9 @@ int ascii_to_decimal(char size[], int len) {
     int decimal = 0;
     int digit_count = len - 1; // Not counting terminating '\0' 
 
-    for (int i = 0; i <= digit_count; ++i) {
+    for (int i = 0; i <= digit_count - 1; ++i) {
         int digit = size[i] - '0';
-        decimal += digit * power(8, digit_count - i);
+        decimal += digit * power(8, digit_count - 1 - i);
     }
 
     return decimal;
