@@ -81,7 +81,7 @@ int main(int argc, char *argv[]) {
             
             FILE *p = file;
             //fseek(p, 1, SEEK_SET);
-            p++;
+            // p++;
             // int lone = 0;
             // char temp_header[512];
             // for (int i = 0; i < 512; ++i) {
