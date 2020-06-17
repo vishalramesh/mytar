@@ -7,8 +7,8 @@ int issuffix(char *argv, char name[]);
 int todecimal(char size[]);
 int roundup(int decimal);
 int power(int base, int exp);
-int comp(char ar[], char name[]);
-int iszero(char header[]);
+int equal(char arg_file_name[], char file_name[]);
+int iszeroblock(char header[]);
 
 int main(int argc, char *argv[]) {
     if (!(argc >= 2)) {
@@ -122,7 +122,7 @@ int main(int argc, char *argv[]) {
 
             // printf("%d\n", start);
             
-            if (iszero(header)) {
+            if (iszeroblock(header)) {
                 
                 FILE *p = file;
                 fseek(p, 512, SEEK_SET);
@@ -163,7 +163,7 @@ int main(int argc, char *argv[]) {
                 break;
             }
 
-            if (iszero(header)) {
+            if (iszeroblock(header)) {
                 no_zero += 1;
                 // if (no_zero == 1) {
                 //     start_zero = offset;
@@ -205,7 +205,7 @@ int main(int argc, char *argv[]) {
             }
             if (list_arg_present) {
                 for (int q = list_argument; q <= final_list_argument; q++) {
-                    if (comp(argv[q], name) || isprefix(argv[q], name) || issuffix(argv[q], name)) {
+                    if (equal(argv[q], name) || isprefix(argv[q], name) || issuffix(argv[q], name)) {
                         int i = 0;
                         int printable = 0;
                         while (name[i] != '\0') {
@@ -342,33 +342,35 @@ int power(int base, int exp) {
     return prod;
 }
 
-int comp(char ar[], char name[]) {
-    int i = 0;
-    while (ar[i] != '\0') {
-        i += 1;
-    }
-    int j = 0;
-    while (name[j] != '\0') {
-        j += 1;
-    }
-    if (i != j) {
-        return 0;
-    }
-    for (int q = 0; q < i; q++) {
-        if (ar[q] != name[q]) {
-            return 0;
+int equal(char arg_file_name[], char file_name[]) {
+    int q = 0;
+    while (arg_file_name[q] != file_name[q]) {
+        if (arg_file_name[q] == '\0' && file_name[q] == '\0') {
+            return 1;
         }
+        q += 1;
     }
-    // while (ar[i] != '\0') {
-    //     if (ar[i] != name[i]) {
-    //         return 0;
-    //     }
+    // return 0;
+    // int i = 0;
+    // while (arg_file_name[i] != '\0') {
     //     i += 1;
     // }
-    return 1;
+    // int j = 0;
+    // while (file_name[j] != '\0') {
+    //     j += 1;
+    // }
+    // if (i != j) {
+    //     return 0;
+    // }
+    // for (int q = 0; q < i; q++) {
+    //     if (arg_file_name[q] != file_name[q]) {
+    //         return 0;
+    //     }
+    // }
+    // return 1;
 }
 
-int iszero(char header[]) {
+int iszeroblock(char header[]) {
     for (int i = 0; i < 512; ++i) {
         if (header[i] != '\0') {
             return 0;
