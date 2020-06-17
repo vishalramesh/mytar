@@ -175,7 +175,7 @@ int main(int argc, char *argv[]) {
 }
 
 void advance_offset_and_block(char size[], int *offset, int *block_no, FILE* file) {
-    int size_len = sizeof(size) / sizeof(size[0]);
+    int size_len = 12;
     *offset += 512;
     *offset += roundup_to_multiple(ascii_to_decimal(size, size_len), 512);
     *block_no += (roundup_to_multiple(ascii_to_decimal(size, size_len), 512) / 512);
