@@ -18,7 +18,7 @@ int is_suffix(char argv[], char name[]);
 
 int handle_list_arg_output(char *argv[], int print_file[], int list_arg_index, int final_list_arg_index);
 
-void get_block(char header[], FILE *file);
+char get_block(char header[], FILE *file);
 
 int main(int argc, char *argv[]) {
 
@@ -74,7 +74,7 @@ int main(int argc, char *argv[]) {
     int block_no = 0;
     while (file != NULL) {
 
-        get_block(header, file);
+        d = get_block(header, file);
 
         // start = 0;
         // while (start < 512 && (d = fgetc(file)) != EOF) {
@@ -202,13 +202,14 @@ int main(int argc, char *argv[]) {
     
 }
 
-void get_block(char header[], FILE *file) {
+char get_block(char header[], FILE *file) {
     char d;
     int start = 0;
     while (start < 512 && (d = fgetc(file)) != EOF) {
         header[start] = d;
         start += 1;
     }
+    return d;
 }
 
 int handle_list_arg_output(char *argv[], int print_file[], int list_arg_index, int final_list_arg_index) {
