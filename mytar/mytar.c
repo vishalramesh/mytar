@@ -227,8 +227,8 @@ int main(int argc, char *argv[]) {
             
 
             
-            
-            offset += (512 + roundup_to_multiple(ascii_to_decimal(size, 12), 512));
+            int size_len = sizeof(size) / sizeof(size[0]);
+            offset += (512 + roundup_to_multiple(ascii_to_decimal(size, size_len), 512));
             start = 0;
             fseek(file, offset, SEEK_SET);
             // if (ftell(file) == offset) {
