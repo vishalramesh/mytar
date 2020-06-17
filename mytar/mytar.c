@@ -320,45 +320,46 @@ int isequal(char arg_file_name[], char file_name[]) {
     return 1;
 }
 
-int isprefix(char argv[], char name[]) {
+int isprefix(char arg_file_name[], char file_name[]) {
     int i = 0;
-    while (argv[i] != '\0') {
+    while (arg_file_name[i] != '\0') {
         i += 1;
     }
-    if (argv[i - 1] != '*') {
+    if (arg_file_name[i - 1] != '*') {
         return 0;
     }
     for (int j = 0; j < i - 1; j++) {
-        if (argv[j] != name[j]) {
+        if (arg_file_name[j] != file_name[j]) {
             return 0;
         }
     }
     return 1;
 }
 
-int issuffix(char argv[], char name[]) {
-    int i = 0;
-    while (argv[i] != '\0') {
-        i += 1;
-    }
-    if (argv[0] != '*') {
+int issuffix(char arg_file_name[], char file_name[]) {
+    // int i = 0;
+    // while (arg_file_name[i] != '\0') {
+    //     i += 1;
+    // }
+    if (arg_file_name[0] != '*') {
         return 0;
     }
-    int p = 0;
-    while (name[p] != '\0') {
-        p += 1;
-    }
-    p -= 1;
-    for (int j = i - 1; i > 0; i--) {
-        if (p < 0) {
-            return 0;
-        }
-        if (argv[j] != name[p]) {
-            return 0;
-        }
-        p -= 1;
-    }
-    return 1;
+    return isequal(arg_file_name[1], file_name)
+    // int p = 0;
+    // while (file_name[p] != '\0') {
+    //     p += 1;
+    // }
+    // p -= 1;
+    // for (int j = i - 1; i > 0; i--) {
+    //     if (p < 0) {
+    //         return 0;
+    //     }
+    //     if (arg_file_name[j] != file_name[p]) {
+    //         return 0;
+    //     }
+    //     p -= 1;
+    // }
+    // return 1;
 }
 
 int iszeroblock(char header[]) {
