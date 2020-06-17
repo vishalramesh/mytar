@@ -83,12 +83,17 @@ int main(int argc, char *argv[]) {
             fseek(p, 512, SEEK_SET);
             int lone = 0;
         
-            for (int i = 0; i < 512; ++i) {
-                // Check partial block here
-                if ((d = fgetc(p)) != '\0') {
-                    printf("mytar: A lone zero block at 22\n");//, block_no);
-                    break;
-                }
+            // for (int i = 0; i < 512; ++i) {
+            //     // Check partial block here
+            //     if ((d = fgetc(p)) != '\0') {
+            //         // may have to print other stderr
+            //         printf("mytar: A lone zero block at 22\n");//, block_no);
+            //         break;
+            //     }
+            // }
+            // may have to print other stderr
+            if (!is_zero_block(p)) {
+                printf("mytar: A lone zero block at 22\n");
             }
             break;
         }
