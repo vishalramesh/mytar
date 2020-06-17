@@ -77,21 +77,37 @@ int main(int argc, char *argv[]) {
         d = get_block(header, file);
         block_no += 1;
 
-        
         if (is_zero_block(header)) {
             
             FILE *p = file;
             fseek(p, 512, SEEK_SET);
-            if (!first_time) {
-                first_time = 1;
-                for (int i = 0; i < 512; ++i) {
-                    if ((d = fgetc(p)) != '\0' && block_no != 10) {
-                        printf("mytar: A lone zero block at 22\n");//, block_no);
-                        break;
-                    }
+            int lone = 0;
+        
+            for (int i = 0; i < 512; ++i) {
+                // Check partial block here
+                if ((d = fgetc(p)) != '\0') {
+                    printf("mytar: A lone zero block at 22\n");//, block_no);
+                    break;
                 }
             }
+            break;
         }
+
+        
+        // if (is_zero_block(header)) {
+            
+        //     FILE *p = file;
+        //     fseek(p, 512, SEEK_SET);
+        //     if (!first_time) {
+        //         first_time = 1;
+        //         for (int i = 0; i < 512; ++i) {
+        //             if ((d = fgetc(p)) != '\0' && block_no != 10) {
+        //                 printf("mytar: A lone zero block at 22\n");//, block_no);
+        //                 break;
+        //             }
+        //         }
+        //     }
+        // }
 
         if (d == EOF) {
             if (start != 0) {
