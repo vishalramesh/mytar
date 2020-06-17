@@ -76,11 +76,12 @@ int main(int argc, char *argv[]) {
 
         d = get_block(header, file);
         block_no += 1;
-
+        
         if (is_zero_block(header)) {
             
             FILE *p = file;
-            fseek(p, 1, SEEK_SET);
+            //fseek(p, 1, SEEK_SET);
+            p++;
             int lone = 0;
         
             // for (int i = 0; i < 512; ++i) {
