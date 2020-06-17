@@ -350,6 +350,7 @@ int equal(char arg_file_name[], char file_name[]) {
         }
         q += 1;
     }
+    return 0;
     // return 0;
     // int i = 0;
     // while (arg_file_name[i] != '\0') {
