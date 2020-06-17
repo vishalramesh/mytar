@@ -4,7 +4,7 @@
 
 int isequal(char arg_file_name[], char file_name[]);
 int isprefix(char argv[], char name[]);
-int issuffix(char *argv, char name[]);
+int issuffix(char argv[], char name[]);
 
 int ascii_to_decimal(char size[], int len);
 int roundup_to_multiple(int decimal, int multiple);
@@ -336,7 +336,7 @@ int isprefix(char argv[], char name[]) {
     return 1;
 }
 
-int issuffix(char *argv, char name[]) {
+int issuffix(char argv[], char name[]) {
     int i = 0;
     while (argv[i] != '\0') {
         i += 1;
