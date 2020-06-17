@@ -343,14 +343,20 @@ int power(int base, int exp) {
 }
 
 int equal(char arg_file_name[], char file_name[]) {
-    int q = 0;
-    while (arg_file_name[q] != file_name[q] || (int) *arg_file_name[q] == NULL) {
-        if (arg_file_name[q] == '\0') {
-            return 1;
+    
+    for (int q = 0; arg_file_name[q] != '\0' && file_name[q] != '\0'; q++) {
+        if (arg_file_name[q] != file_name[q]) {
+            return 0;
         }
-        q += 1;
     }
-    return 0;
+    return 1;
+    // while (arg_file_name[q] != file_name[q] || (int) *arg_file_name[q] == NULL) {
+    //     if (arg_file_name[q] == '\0') {
+    //         return 1;
+    //     }
+    //     q += 1;
+    // }
+    // return 0;
     // int i = 0;
     // while (arg_file_name[i] != '\0') {
     //     i += 1;
