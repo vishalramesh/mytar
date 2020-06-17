@@ -16,6 +16,8 @@ int is_equal(char arg_file_name[], char file_name[]);
 int is_prefix(char argv[], char name[]);
 int is_suffix(char argv[], char name[]);
 
+int handle_list_arg_output(char *argv[], int print_file[], int list_arg_index, int final_list_arg_index);
+
 int main(int argc, char *argv[]) {
 
     int list_arg_index = 0;
@@ -47,6 +49,7 @@ int main(int argc, char *argv[]) {
         }
         final_list_arg_index += 1;
     }
+
     int print_file[final_list_arg_index - list_arg_index + 1];
     for (int i = 0; i < final_list_arg_index - list_arg_index + 1; i++) {
         print_file[i] = 0;
@@ -176,26 +179,31 @@ int main(int argc, char *argv[]) {
     }
 
     if (list_arg_present) {
-        int fail = 0;
-        for (int i = list_arg_index; i <= final_list_arg_index; i++) {
-            if (!print_file[i - list_arg_index]) {
-                fflush(stdout);
-                fprintf(stderr, "mytar: %s: Not found in archive\n", argv[i]);
-                fail = 1;
-            }
-        }
-        if (fail) {
-            fflush(stdout);
-            fprintf(stderr, "mytar: Exiting with failure status due to previous errors\n");
-            return 2;
-        }
+        handle_list_arg_output(argv, print_file, list_arg_index, final_list_arg_index);
     }
+
+    // if (list_arg_present) {
+    //     int fail = 0;
+    //     for (int i = list_arg_index; i <= final_list_arg_index; i++) {
+    //         if (!print_file[i - list_arg_index]) {
+    //             fflush(stdout);
+    //             fprintf(stderr, "mytar: %s: Not found in archive\n", argv[i]);
+    //             fail = 1;
+    //         }
+    //     }
+    //     if (fail) {
+    //         fflush(stdout);
+    //         fprintf(stderr, "mytar: Exiting with failure status due to previous errors\n");
+    //         return 2;
+    //     }
+    // }
     // }
 }
 
 int arg_parse(int argc, char *argv[],
               int *list_arg_index, int *file_arg_index, int *extract_arg_index, 
               int args_present[], FILE **file) {
+
     if (!(argc >= 2)) {
         fflush(stdout);
         fprintf(stderr, "mytar: need at least one option\n");
@@ -222,9 +230,17 @@ int arg_parse(int argc, char *argv[],
                 }
                 file_arg_present = 1;
                 *file_arg_index = i + 1;
+                args_present[0] += 1;
                 break;
             case 't':
                 *list_arg_index = i + 1;
+                args_present[1] += 1;
+                break;
+            case 'v':
+                args_present[2] += 1;
+                break;
+            case 'x':
+                args_present[3] += 1;
                 break;
             default:
                 fflush(stdout);
@@ -243,6 +259,12 @@ int arg_parse(int argc, char *argv[],
         fprintf(stderr, "mytar: Refusing to read archive contents from terminal (missing -f option?)\n");
         fflush(stdout);
         fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
+        return 2;
+    }
+
+    if (args_present[1] && args_present[2]) {
+        fflush(stdout);
+        fprintf(stderr, "mytar: You may not specify more than one option\n");
         return 2;
     }
 
@@ -338,4 +360,20 @@ int is_zero_block(char header[]) {
         }
     }
     return 1;
+}
+
+int handle_list_arg_output(char *argv[], int print_file[], int list_arg_index, int final_list_arg_index) {
+    int fail = 0;
+    for (int i = list_arg_index; i <= final_list_arg_index; ++i) {
+        if (!print_file[i - list_arg_index]) {
+            fflush(stdout);
+            fprintf(stderr, "mytar: %s: Not found in archive\n", argv[i]);
+            fail = 1;
+        }
+    }
+    if (fail) {
+        fflush(stdout);
+        fprintf(stderr, "mytar: Exiting with failure status due to previous errors\n");
+        return 2;
+    }
 }
