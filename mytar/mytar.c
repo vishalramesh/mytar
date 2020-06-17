@@ -75,13 +75,6 @@ int main(int argc, char *argv[]) {
     while (file != NULL) {
 
         d = get_block(header, file);
-
-        // start = 0;
-        // while (start < 512 && (d = fgetc(file)) != EOF) {
-        //     header[start] = d;
-        //     start += 1;
-        //     char_count += 1;
-        // }
         block_no += 1;
 
         
@@ -93,7 +86,7 @@ int main(int argc, char *argv[]) {
                 first_time = 1;
                 for (int i = 0; i < 512; ++i) {
                     if ((d = fgetc(p)) != '\0' && block_no != 10) {
-                        printf("mytar: A lone zero block at 22\n");//, block_no);
+                        printf("mytar: A lone zero block at %d\n", block_no);
                         break;
                     }
                 }
@@ -175,7 +168,7 @@ int main(int argc, char *argv[]) {
         int size_len = sizeof(size) / sizeof(size[0]);
         offset += 512;
         offset += roundup_to_multiple(ascii_to_decimal(size, size_len), 512);
-        
+        block_no += roundup_to_multiple(ascii_to_decimal(size, size_len), 512);
         fseek(file, offset, SEEK_SET);
 
     }
