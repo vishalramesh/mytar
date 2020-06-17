@@ -174,26 +174,27 @@ int main(int argc, char *argv[]) {
     }
 
     if (list_arg_present) {
-        if ((int ret = handle_list_arg_output(argv, print_file, list_arg_index, final_list_arg_index) != 0) {
+        int ret;
+        if ((ret = handle_list_arg_output(argv, print_file, list_arg_index, final_list_arg_index)) != 0) {
             return ret;
         }
     }
 
-    if (list_arg_present) {
-        int fail = 0;
-        for (int i = list_arg_index; i <= final_list_arg_index; i++) {
-            if (!print_file[i - list_arg_index]) {
-                fflush(stdout);
-                fprintf(stderr, "mytar: %s: Not found in archive\n", argv[i]);
-                fail = 1;
-            }
-        }
-        if (fail) {
-            fflush(stdout);
-            fprintf(stderr, "mytar: Exiting with failure status due to previous errors\n");
-            return 2;
-        }
-    }
+    // if (list_arg_present) {
+    //     int fail = 0;
+    //     for (int i = list_arg_index; i <= final_list_arg_index; i++) {
+    //         if (!print_file[i - list_arg_index]) {
+    //             fflush(stdout);
+    //             fprintf(stderr, "mytar: %s: Not found in archive\n", argv[i]);
+    //             fail = 1;
+    //         }
+    //     }
+    //     if (fail) {
+    //         fflush(stdout);
+    //         fprintf(stderr, "mytar: Exiting with failure status due to previous errors\n");
+    //         return 2;
+    //     }
+    // }
     
 }
 
