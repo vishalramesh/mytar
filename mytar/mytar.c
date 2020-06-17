@@ -5,7 +5,7 @@
 int isprefix(char *argv, char name[]);
 int issuffix(char *argv, char name[]);
 int ascii_to_decimal(char size[]);
-int roundup(int decimal);
+int roundup_to_multiple(int decimal, int multiple);
 int power(int base, int exp);
 int equal(char arg_file_name[], char file_name[]);
 int iszeroblock(char header[]);
@@ -228,7 +228,7 @@ int main(int argc, char *argv[]) {
 
             
             
-            offset += (512 + roundup(ascii_to_decimal(size)));
+            offset += (512 + roundup_to_multiple(ascii_to_decimal(size), 512));
             start = 0;
             fseek(file, offset, SEEK_SET);
             // if (ftell(file) == offset) {
@@ -311,27 +311,21 @@ int issuffix(char *argv, char name[]) {
 
 int ascii_to_decimal(char size[]) {
     int decimal = 0;
-    for (int i = 0; i <= 10; ++i) {
+    int digit_count = sizeof(size) / sizeof(size[0]) - 1; // Not counting terminating '\0' 
+
+    for (int i = 0; i <= digit_count; ++i) {
         int digit = size[i] - '0';
-        decimal += digit * power(8, 10 - i);
+        decimal += digit * power(8, digit_count - i);
     }
-    // for (int i = 10; i >= 0; i--) {
-    //     int digit = (int)(size[i] - '0');
-    //     decimal += power(8, (12 - i - 2)) * digit;
-    // }
+
     return decimal;
 }
 
-int roundup(int decimal) {
-    // What about 0 size case?
-    // if (decimal <= 512) {
-    //     return 512;
-    // }
-    // return 512 + roundup(decimal - 512);
+int roundup_to_multiple(int decimal, int multiple) {
     int roundup = 0;
     while (decimal > 0) {
-        roundup += 512;
-        decimal -= 512;
+        roundup += multiple;
+        decimal -= multiple;
     }
     return roundup;
 }
