@@ -2,9 +2,7 @@
 #include <ctype.h>
 #include <string.h>
 
-int is_equal(char arg_file_name[], char file_name[]);
-int is_prefix(char argv[], char name[]);
-int is_suffix(char argv[], char name[]);
+int arg_parse(int argc, char *argv[], int *list_argument, int *tarfile_argument, FILE* file);
 
 int ascii_to_decimal(char size[], int len);
 int roundup_to_multiple(int decimal, int multiple);
@@ -12,64 +10,73 @@ int power(int base, int exp);
 
 int is_zero_block(char header[]);
 
+int is_equal(char arg_file_name[], char file_name[]);
+int is_prefix(char argv[], char name[]);
+int is_suffix(char argv[], char name[]);
 
 int main(int argc, char *argv[]) {
 
-    if (!(argc >= 2)) {
-        fflush(stdout);
-        fprintf(stderr, "mytar: need at least one option\n");
-        return 2;
-    }
     int list_argument;
     int tarfile_argument;
-    int f_arg_present = 0;
-    for (int i = 1; i < argc; i++) {
-        switch (argv[i][0]) {
-        case '-':
-            switch (argv[i][1]) {
-            case 'f':
-                if (i == argc - 1) {
-                    fflush(stdout);
-                    fprintf(stderr, "mytar: option requires an argument -- %s\n", argv[i]);
-                    return 64;
-                }
-                if ((i + 1) < argc && (strcmp(argv[i + 1], "-t") == 0)) {
-                    fflush(stdout);
-                    fprintf(stderr, "mytar: You must specify one of the options\n");
-                    return 2;
-                }
-                tarfile_argument = i + 1;
-                f_arg_present = 1;
-                break;
-            case 't':
-                list_argument = i + 1;
-                break;
-            default:
-                fflush(stdout);
-                fprintf(stderr, "mytar: Unknown option: %s\n", argv[i]);
-                return 2;
-                break;
-            }
-            break;
-        default:
-            break;
-        }
-    }
-    if (f_arg_present == 0) {
-        fflush(stdout);
-        fprintf(stderr, "mytar: Refusing to read archive contents from terminal (missing -f option?)\n");
-        fflush(stdout);
-        fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
-        return (2);
-    }
-    FILE *file = fopen(argv[tarfile_argument], "r");
-    if (file == NULL) {
-        fflush(stdout);
-        fprintf(stderr, "mytar: %s: Cannot open: No such file or directory\n", argv[tarfile_argument]);
-        fflush(stdout);
-        fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
-        return 2;
-    } else {
+    FILE* file;
+
+    arg_parse(argc, argv, &list_argument, &tarfile_argument, file);
+
+    // if (!(argc >= 2)) {
+    //     fflush(stdout);
+    //     fprintf(stderr, "mytar: need at least one option\n");
+    //     return 2;
+    // }
+    // int list_argument;
+    // int tarfile_argument;
+    // int file_arg_present = 0;
+    // for (int i = 1; i < argc; i++) {
+    //     switch (argv[i][0]) {
+    //     case '-':
+    //         switch (argv[i][1]) {
+    //         case 'f':
+    //             if (i == argc - 1) {
+    //                 fflush(stdout);
+    //                 fprintf(stderr, "mytar: option requires an argument -- %s\n", argv[i]);
+    //                 return 64;
+    //             }
+    //             if ((i + 1) < argc && (strcmp(argv[i + 1], "-t") == 0)) {
+    //                 fflush(stdout);
+    //                 fprintf(stderr, "mytar: You must specify one of the options\n");
+    //                 return 2;
+    //             }
+    //             tarfile_argument = i + 1;
+    //             file_arg_present = 1;
+    //             break;
+    //         case 't':
+    //             list_argument = i + 1;
+    //             break;
+    //         default:
+    //             fflush(stdout);
+    //             fprintf(stderr, "mytar: Unknown option: %s\n", argv[i]);
+    //             return 2;
+    //             break;
+    //         }
+    //         break;
+    //     default:
+    //         break;
+    //     }
+    // }
+    // if (file_arg_present == 0) {
+    //     fflush(stdout);
+    //     fprintf(stderr, "mytar: Refusing to read archive contents from terminal (missing -f option?)\n");
+    //     fflush(stdout);
+    //     fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
+    //     return (2);
+    // }
+    // FILE *file = fopen(argv[tarfile_argument], "r");
+    // if (file == NULL) {
+    //     fflush(stdout);
+    //     fprintf(stderr, "mytar: %s: Cannot open: No such file or directory\n", argv[tarfile_argument]);
+    //     fflush(stdout);
+    //     fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
+    //     return 2;
+    // } else {
         int list_arg_present;
         if (list_argument >= argc) {
             list_arg_present = 0;
@@ -96,8 +103,6 @@ int main(int argc, char *argv[]) {
         int offset = 0;
 
         int no_zero = 0;
-        // int start_zero = 0;
-        // int finish_zero = 0;
 
         int char_count = 0;
 
@@ -110,22 +115,18 @@ int main(int argc, char *argv[]) {
         char typeflag;
         int start = 0;
         int block_no = 0;
-        // int entered = 0;
         while (1) {
             if (file == NULL) {
                 break;
             }
-            // entered = 0;
             start = 0;
             while (start < 512 && (d = fgetc(file)) != EOF) {
                 header[start] = d;
                 start += 1;
                 char_count += 1;
-                // entered = 1;
             }
             block_no += 1;
 
-            // printf("%d\n", start);
             
             if (is_zero_block(header)) {
                 
@@ -137,7 +138,6 @@ int main(int argc, char *argv[]) {
                         if ((d = fgetc(p)) != '\0' && block_no != 10) {
                             printf("mytar: A lone zero block at 22\n");//, block_no);
                             break;
-                            // return (0);
                         }
                     }
                 }
@@ -158,24 +158,13 @@ int main(int argc, char *argv[]) {
                     fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
                     return 2;
                 }
-                // if (start != 0) {
-                //     fflush(stdout);
-                //     fprintf(stderr, "mytar: Unexpected EOF in archive\n");
-                //     fflush(stdout);
-                //     fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
-                //     return (2);
-                // }
+                
                 break;
             }
 
             if (is_zero_block(header)) {
                 no_zero += 1;
-                // if (no_zero == 1) {
-                //     start_zero = offset;
-                // }
-                // if (no_zero == 2) {
-                //     finish_zero = offset;
-                // }
+               
             }
 
             for (int i = 0; i < 100; ++i) {
@@ -186,8 +175,6 @@ int main(int argc, char *argv[]) {
             }
             typeflag = header[156];
 
-
-            // Check zero block
             
             if (typeflag != '0' && typeflag != '\0') {
                 fflush(stdout);
@@ -228,34 +215,14 @@ int main(int argc, char *argv[]) {
                 }
             }
             
-            // Checking truncated archive
-            
-
-            
             int size_len = sizeof(size) / sizeof(size[0]);
             offset += 512;
             offset += roundup_to_multiple(ascii_to_decimal(size, size_len), 512);
             
             fseek(file, offset, SEEK_SET);
-            // if (ftell(file) == offset) {
-            //     fflush(stdout);
-            //     fprintf(stderr, "mytar: Unexpected EOF in archive\n");
-            //     fflush(stdout);
-            //     fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
-            //     return (2);
-            // }
-            // if (file == NULL) {
-            //     // break;
-            //     fflush(stdout);
-            //     fprintf(stderr, "mytar: Unexpected EOF in archive\n");
-            //     fflush(stdout);
-            //     fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
-            //     return (2);
-            // }    
+  
         }
-        // if (no_zero == 1) {
-        //     printf("mytar: A lone zero block at %d\n", no_zero);
-        // }
+
         if (list_arg_present) {
             int fail = 0;
             for (int i = list_argument; i <= final_list_argument; i++) {
@@ -271,7 +238,65 @@ int main(int argc, char *argv[]) {
                 return 2;
             }
         }
+    // }
+}
+
+int arg_parse(int argc, char *argv[], int *list_argument, int *tarfile_argument, FILE *file) {
+    if (!(argc >= 2)) {
+        fflush(stdout);
+        fprintf(stderr, "mytar: need at least one option\n");
+        return 2;
     }
+    int file_arg_present = 0;
+    for (int i = 1; i < argc; i++) {
+
+        int char_0 = argv[i][0];
+        int char_1 = argv[i][1];
+
+        if (char_0 == '-') {
+            switch (char_1) {
+            case 'f':
+                if (i == argc - 1) {
+                    fflush(stdout);
+                    fprintf(stderr, "mytar: option requires an argument -- -%c\n", char_1);
+                    return 64;
+                }
+                if ((i + 1) < argc && (strcmp(argv[i + 1], "-t") == 0)) {
+                    fflush(stdout);
+                    fprintf(stderr, "mytar: You must specify one of the options\n");
+                    return 2;
+                }
+                file_arg_present = 1;
+                *tarfile_argument = i + 1;
+                break;
+            case 't':
+                *list_argument = i + 1;
+                break;
+            default:
+                fflush(stdout);
+                fprintf(stderr, "mytar: Unknown option: %c\n", char_1);
+                return 2;
+            }
+        }   
+    }
+
+    if (!file_arg_present) {
+        fflush(stdout);
+        fprintf(stderr, "mytar: Refusing to read archive contents from terminal (missing -f option?)\n");
+        fflush(stdout);
+        fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
+        return 2;
+    }
+
+    file = fopen(argv[*tarfile_argument], "r");
+    if (file == NULL) {
+        fflush(stdout);
+        fprintf(stderr, "mytar: %s: Cannot open: No such file or directory\n", argv[*tarfile_argument]);
+        fflush(stdout);
+        fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
+        return 2;
+    }
+
 }
 
 int power(int base, int exp) {
