@@ -59,8 +59,6 @@ int main(int argc, char *argv[]) {
 
     int offset = 0;
 
-    int no_zero = 0;
-
     int char_count = 0;
 
     int first_time = 0;
@@ -80,45 +78,19 @@ int main(int argc, char *argv[]) {
         if (is_zero_block(header)) {
             
             FILE *p = file;
-            //fseek(p, 1, SEEK_SET);
-            // p++;
-            // int lone = 0;
-            // char temp_header[512];
-            // for (int i = 0; i < 512; ++i) {
-            //     // check partial
-            //     temp_header[i] = fgetc(p);
-            // }
-        
+                    
             for (int i = 0; i < 512; ++i) {
-                // Check partial block here
+                // Check partial block here?
                 if ((d = fgetc(p)) != '\0') {
                     // may have to print other stderr
-                    printf("mytar: A lone zero block at 22\n");//, block_no);
+                    printf("mytar: A lone zero block at %d\n", block_no);
                     break;
                 }
             }
             // may have to print other stderr
-            // if (!is_zero_block(temp_header)) {
-            //     printf("mytar: A lone zero block at 22\n");
-            // }
+    
             break;
         }
-
-        
-        // if (is_zero_block(header)) {
-            
-        //     FILE *p = file;
-        //     fseek(p, 512, SEEK_SET);
-        //     if (!first_time) {
-        //         first_time = 1;
-        //         for (int i = 0; i < 512; ++i) {
-        //             if ((d = fgetc(p)) != '\0' && block_no != 10) {
-        //                 printf("mytar: A lone zero block at 22\n");//, block_no);
-        //                 break;
-        //             }
-        //         }
-        //     }
-        // }
 
         if (d == EOF) {
             if (start != 0) {
@@ -137,11 +109,6 @@ int main(int argc, char *argv[]) {
             }
             
             break;
-        }
-
-        if (is_zero_block(header)) {
-            no_zero += 1;
-            
         }
 
         for (int i = 0; i < 100; ++i) {
@@ -195,9 +162,8 @@ int main(int argc, char *argv[]) {
         int size_len = sizeof(size) / sizeof(size[0]);
         offset += 512;
         offset += roundup_to_multiple(ascii_to_decimal(size, size_len), 512);
-        // block_no += roundup_to_multiple(ascii_to_decimal(size, size_len), 512);
+        block_no += (roundup_to_multiple(ascii_to_decimal(size, size_len), 512) / 512);
         fseek(file, offset, SEEK_SET);
-
     }
 
     // if (list_arg_present) {
