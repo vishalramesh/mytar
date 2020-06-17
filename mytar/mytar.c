@@ -2,7 +2,9 @@
 #include <ctype.h>
 #include <string.h>
 
-int arg_parse(int argc, char *argv[], int *list_arg_index, int *file_arg_index, FILE** file);
+int arg_parse(int argc, char *argv[],
+              int *list_arg_index, int *file_arg_index, int *extract_arg_index, 
+              int args_present[], FILE** file);
 
 int ascii_to_decimal(char size[], int len);
 int roundup_to_multiple(int decimal, int multiple);
@@ -18,12 +20,18 @@ int main(int argc, char *argv[]) {
 
     int list_arg_index = 0;
     int file_arg_index = 0;
+    int extract_arg_index = 0;
+
+    int args_present[4] = {0, 0, 0, 0}; // Alphabetical order f -> t -> v -> x
+    
     FILE* file = NULL;
 
-    arg_parse(argc, argv, &list_arg_index, &file_arg_index, &file);
+    arg_parse(argc, argv,
+              &list_arg_index, &file_arg_index, &extract_arg_index,
+              args_present, &file);
 
-
-    int list_arg_present;
+    
+    int list_arg_present = 0;
     if (list_arg_index >= argc) {
         list_arg_present = 0;
     } else if (strcmp(argv[list_arg_index], "-f") == 0 && file_arg_index == argc - 1) {
@@ -31,10 +39,6 @@ int main(int argc, char *argv[]) {
     } else {
         list_arg_present = 1;
     }
-
-    // if (strcmp(argv[list_arg_index], "-f") == 0 && file_arg_index < argc - 1) {
-    //     list_arg_index = file_arg_index + 1;
-    // }
     
     int final_list_arg_index = list_arg_index;
     while (final_list_arg_index + 1 < argc) {
@@ -189,7 +193,9 @@ int main(int argc, char *argv[]) {
     // }
 }
 
-int arg_parse(int argc, char *argv[], int *list_arg_index, int *file_arg_index, FILE **file) {
+int arg_parse(int argc, char *argv[],
+              int *list_arg_index, int *file_arg_index, int *extract_arg_index, 
+              int args_present[], FILE **file) {
     if (!(argc >= 2)) {
         fflush(stdout);
         fprintf(stderr, "mytar: need at least one option\n");
