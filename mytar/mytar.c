@@ -83,6 +83,11 @@ int main(int argc, char *argv[]) {
             //fseek(p, 1, SEEK_SET);
             p++;
             int lone = 0;
+            char temp_header[512];
+            for (int i = 0; i < 512; ++i) {
+                // check partial
+                temp_header[i] = fgetc(p);
+            }
         
             // for (int i = 0; i < 512; ++i) {
             //     // Check partial block here
@@ -93,7 +98,7 @@ int main(int argc, char *argv[]) {
             //     }
             // }
             // may have to print other stderr
-            if (!is_zero_block(p)) {
+            if (!is_zero_block(temp_header)) {
                 printf("mytar: A lone zero block at 22\n");
             }
             break;
