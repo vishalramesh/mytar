@@ -344,7 +344,7 @@ int issuffix(char arg_file_name[], char file_name[]) {
     if (arg_file_name[0] != '*') {
         return 0;
     }
-    return isequal(arg_file_name[1], file_name)
+    return isequal(++arg_file_name, file_name);
     // int p = 0;
     // while (file_name[p] != '\0') {
     //     p += 1;
