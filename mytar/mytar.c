@@ -344,7 +344,7 @@ int power(int base, int exp) {
 
 int equal(char arg_file_name[], char file_name[]) {
     int q = 0;
-    while (arg_file_name[q] != file_name[q] || (int) arg_file_name[q] == NULL) {
+    while (arg_file_name[q] != file_name[q] || (int) *arg_file_name[q] == NULL) {
         if (arg_file_name[q] == '\0') {
             return 1;
         }
