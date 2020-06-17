@@ -212,6 +212,7 @@ int handle_list_arg_output(char *argv[], int print_file[], int list_arg_index, i
         fprintf(stderr, "mytar: Exiting with failure status due to previous errors\n");
         return 2;
     }
+    return 0;
 }
 
 int arg_parse(int argc, char *argv[],
