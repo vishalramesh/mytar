@@ -16,8 +16,8 @@ int is_suffix(char argv[], char name[]);
 
 int main(int argc, char *argv[]) {
 
-    int list_argument = NULL;
-    int tarfile_argument = NULL;
+    int list_argument = 0;
+    int tarfile_argument = 0;
     FILE* file = NULL;
 
     arg_parse(argc, argv, &list_argument, &tarfile_argument, file);
