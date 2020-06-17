@@ -2,21 +2,23 @@
 #include <ctype.h>
 #include <string.h>
 
-int isequal(char arg_file_name[], char file_name[]);
-int isprefix(char argv[], char name[]);
-int issuffix(char argv[], char name[]);
+int is_equal(char arg_file_name[], char file_name[]);
+int is_prefix(char argv[], char name[]);
+int is_suffix(char argv[], char name[]);
 
 int ascii_to_decimal(char size[], int len);
 int roundup_to_multiple(int decimal, int multiple);
 int power(int base, int exp);
 
-int iszeroblock(char header[]);
+int is_zero_block(char header[]);
+
 
 int main(int argc, char *argv[]) {
+
     if (!(argc >= 2)) {
         fflush(stdout);
         fprintf(stderr, "mytar: need at least one option\n");
-        return (2);
+        return 2;
     }
     int list_argument;
     int tarfile_argument;
@@ -29,12 +31,12 @@ int main(int argc, char *argv[]) {
                 if (i == argc - 1) {
                     fflush(stdout);
                     fprintf(stderr, "mytar: option requires an argument -- %s\n", argv[i]);
-                    return (64);
+                    return 64;
                 }
                 if ((i + 1) < argc && (strcmp(argv[i + 1], "-t") == 0)) {
                     fflush(stdout);
                     fprintf(stderr, "mytar: You must specify one of the options\n");
-                    return (2);
+                    return 2;
                 }
                 tarfile_argument = i + 1;
                 f_arg_present = 1;
@@ -45,7 +47,7 @@ int main(int argc, char *argv[]) {
             default:
                 fflush(stdout);
                 fprintf(stderr, "mytar: Unknown option: %s\n", argv[i]);
-                return (2);
+                return 2;
                 break;
             }
             break;
@@ -66,7 +68,7 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "mytar: %s: Cannot open: No such file or directory\n", argv[tarfile_argument]);
         fflush(stdout);
         fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
-        return (2);
+        return 2;
     } else {
         int list_arg_present;
         if (list_argument >= argc) {
@@ -114,6 +116,7 @@ int main(int argc, char *argv[]) {
                 break;
             }
             // entered = 0;
+            start = 0;
             while (start < 512 && (d = fgetc(file)) != EOF) {
                 header[start] = d;
                 start += 1;
@@ -124,7 +127,7 @@ int main(int argc, char *argv[]) {
 
             // printf("%d\n", start);
             
-            if (iszeroblock(header)) {
+            if (is_zero_block(header)) {
                 
                 FILE *p = file;
                 fseek(p, 512, SEEK_SET);
@@ -146,14 +149,14 @@ int main(int argc, char *argv[]) {
                     fprintf(stderr, "mytar: Unexpected EOF in archive\n");
                     fflush(stdout);
                     fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
-                    return (2);
+                    return 2;
                 }
                 if ((char_count % 512) != 0) {
                     fflush(stdout);
                     fprintf(stderr, "mytar: Unexpected EOF in archive\n");
                     fflush(stdout);
                     fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
-                    return (2);
+                    return 2;
                 }
                 // if (start != 0) {
                 //     fflush(stdout);
@@ -165,7 +168,7 @@ int main(int argc, char *argv[]) {
                 break;
             }
 
-            if (iszeroblock(header)) {
+            if (is_zero_block(header)) {
                 no_zero += 1;
                 // if (no_zero == 1) {
                 //     start_zero = offset;
@@ -189,7 +192,7 @@ int main(int argc, char *argv[]) {
             if (typeflag != '0' && typeflag != '\0') {
                 fflush(stdout);
                 fprintf(stderr, "mytar: Unsupported header type: %d\n", typeflag);
-                return (2);
+                return 2;
             }
             if (!list_arg_present) {
                 int i = 0;
@@ -207,7 +210,7 @@ int main(int argc, char *argv[]) {
             }
             if (list_arg_present) {
                 for (int q = list_argument; q <= final_list_argument; q++) {
-                    if (isequal(argv[q], name) || isprefix(argv[q], name) || issuffix(argv[q], name)) {
+                    if (is_equal(argv[q], name) || is_prefix(argv[q], name) || is_suffix(argv[q], name)) {
                         int i = 0;
                         int printable = 0;
                         while (name[i] != '\0') {
@@ -232,7 +235,7 @@ int main(int argc, char *argv[]) {
             int size_len = sizeof(size) / sizeof(size[0]);
             offset += 512;
             offset += roundup_to_multiple(ascii_to_decimal(size, size_len), 512);
-            start = 0;
+            
             fseek(file, offset, SEEK_SET);
             // if (ftell(file) == offset) {
             //     fflush(stdout);
@@ -265,7 +268,7 @@ int main(int argc, char *argv[]) {
             if (fail) {
                 fflush(stdout);
                 fprintf(stderr, "mytar: Exiting with failure status due to previous errors\n");
-                return (2);
+                return 2;
             }
         }
     }
@@ -300,7 +303,7 @@ int roundup_to_multiple(int decimal, int multiple) {
     return roundup;
 }
 
-int isequal(char arg_file_name[], char file_name[]) {
+int is_equal(char arg_file_name[], char file_name[]) {
     int i = 0;
     while (arg_file_name[i] != '\0') {
         i += 1;
@@ -320,7 +323,7 @@ int isequal(char arg_file_name[], char file_name[]) {
     return 1;
 }
 
-int isprefix(char arg_file_name[], char file_name[]) {
+int is_prefix(char arg_file_name[], char file_name[]) {
     int i = 0;
     while (arg_file_name[i] != '\0') {
         i += 1;
@@ -336,33 +339,14 @@ int isprefix(char arg_file_name[], char file_name[]) {
     return 1;
 }
 
-int issuffix(char arg_file_name[], char file_name[]) {
-    // int i = 0;
-    // while (arg_file_name[i] != '\0') {
-    //     i += 1;
-    // }
+int is_suffix(char arg_file_name[], char file_name[]) {
     if (arg_file_name[0] != '*') {
         return 0;
     }
-    return isequal(++arg_file_name, file_name);
-    // int p = 0;
-    // while (file_name[p] != '\0') {
-    //     p += 1;
-    // }
-    // p -= 1;
-    // for (int j = i - 1; i > 0; i--) {
-    //     if (p < 0) {
-    //         return 0;
-    //     }
-    //     if (arg_file_name[j] != file_name[p]) {
-    //         return 0;
-    //     }
-    //     p -= 1;
-    // }
-    // return 1;
+    return is_equal(++arg_file_name, file_name);
 }
 
-int iszeroblock(char header[]) {
+int is_zero_block(char header[]) {
     for (int i = 0; i < 512; ++i) {
         if (header[i] != '\0') {
             return 0;
