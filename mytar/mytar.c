@@ -313,7 +313,7 @@ int ascii_to_decimal(char size[]) {
     int decimal = 0;
     for (int i = 0; i <= 10; ++i) {
         int digit = size[i] - '0';
-        decimal += digit * pow(8, 10 - i);
+        decimal += digit * power(8, 10 - i);
     }
     // for (int i = 10; i >= 0; i--) {
     //     int digit = (int)(size[i] - '0');
