@@ -2,12 +2,14 @@
 #include <ctype.h>
 #include <string.h>
 
-int isprefix(char *argv, char name[]);
+int isequal(char arg_file_name[], char file_name[]);
+int isprefix(char argv[], char name[]);
 int issuffix(char *argv, char name[]);
+
 int ascii_to_decimal(char size[], int len);
 int roundup_to_multiple(int decimal, int multiple);
 int power(int base, int exp);
-int equal(char arg_file_name[], char file_name[]);
+
 int iszeroblock(char header[]);
 
 int main(int argc, char *argv[]) {
@@ -205,7 +207,7 @@ int main(int argc, char *argv[]) {
             }
             if (list_arg_present) {
                 for (int q = list_argument; q <= final_list_argument; q++) {
-                    if (equal(argv[q], name) || isprefix(argv[q], name) || issuffix(argv[q], name)) {
+                    if (isequal(argv[q], name) || isprefix(argv[q], name) || issuffix(argv[q], name)) {
                         int i = 0;
                         int printable = 0;
                         while (name[i] != '\0') {
@@ -228,7 +230,8 @@ int main(int argc, char *argv[]) {
 
             
             int size_len = sizeof(size) / sizeof(size[0]);
-            offset += (512 + roundup_to_multiple(ascii_to_decimal(size, size_len), 512));
+            offset += 512;
+            offset += roundup_to_multiple(ascii_to_decimal(size, size_len), 512);
             start = 0;
             fseek(file, offset, SEEK_SET);
             // if (ftell(file) == offset) {
@@ -268,7 +271,56 @@ int main(int argc, char *argv[]) {
     }
 }
 
-int isprefix(char *argv, char name[]) {
+int power(int base, int exp) {
+    int prod = 1;
+    for (int i = 1; i <= exp; ++i) {
+        prod = prod * base;
+    }
+    return prod;
+}
+
+int ascii_to_decimal(char size[], int len) {
+    int decimal = 0;
+    int digit_count = len - 1; // Not counting terminating '\0' 
+
+    for (int i = 0; i <= digit_count - 1; ++i) {
+        int digit = size[i] - '0';
+        decimal += digit * power(8, digit_count - 1 - i);
+    }
+
+    return decimal;
+}
+
+int roundup_to_multiple(int decimal, int multiple) {
+    int roundup = 0;
+    while (decimal > 0) {
+        roundup += multiple;
+        decimal -= multiple;
+    }
+    return roundup;
+}
+
+int isequal(char arg_file_name[], char file_name[]) {
+    int i = 0;
+    while (arg_file_name[i] != '\0') {
+        i += 1;
+    }
+    int j = 0;
+    while (file_name[j] != '\0') {
+        j += 1;
+    }
+    if (i != j) {
+        return 0;
+    }
+    for (int k = 0; k < i; ++k) {
+        if (arg_file_name[k] != file_name[k]) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+int isprefix(char argv[], char name[]) {
     int i = 0;
     while (argv[i] != '\0') {
         i += 1;
@@ -305,55 +357,6 @@ int issuffix(char *argv, char name[]) {
             return 0;
         }
         p -= 1;
-    }
-    return 1;
-}
-
-int ascii_to_decimal(char size[], int len) {
-    int decimal = 0;
-    int digit_count = len - 1; // Not counting terminating '\0' 
-
-    for (int i = 0; i <= digit_count - 1; ++i) {
-        int digit = size[i] - '0';
-        decimal += digit * power(8, digit_count - 1 - i);
-    }
-
-    return decimal;
-}
-
-int roundup_to_multiple(int decimal, int multiple) {
-    int roundup = 0;
-    while (decimal > 0) {
-        roundup += multiple;
-        decimal -= multiple;
-    }
-    return roundup;
-}
-
-int power(int base, int exp) {
-    int prod = 1;
-    for (int i = 1; i <= exp; ++i) {
-        prod = prod * base;
-    }
-    return prod;
-}
-
-int equal(char arg_file_name[], char file_name[]) {
-    int i = 0;
-    while (arg_file_name[i] != '\0') {
-        i += 1;
-    }
-    int j = 0;
-    while (file_name[j] != '\0') {
-        j += 1;
-    }
-    if (i != j) {
-        return 0;
-    }
-    for (int k = 0; k < i; ++k) {
-        if (arg_file_name[k] != file_name[k]) {
-            return 0;
-        }
     }
     return 1;
 }
