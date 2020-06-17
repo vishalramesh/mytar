@@ -16,9 +16,9 @@ int is_suffix(char argv[], char name[]);
 
 int main(int argc, char *argv[]) {
 
-    int list_argument;
-    int tarfile_argument;
-    FILE* file;
+    int list_argument = NULL;
+    int tarfile_argument = NULL;
+    FILE* file = NULL;
 
     arg_parse(argc, argv, &list_argument, &tarfile_argument, file);
 
@@ -296,6 +296,8 @@ int arg_parse(int argc, char *argv[], int *list_argument, int *tarfile_argument,
         fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
         return 2;
     }
+
+    return 0;
 
 }
 
