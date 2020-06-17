@@ -332,9 +332,9 @@ int roundup(int decimal) {
 }
 
 int power(int base, int exp) {
-    if (exp == 0) {
-        return 1;
-    }
+    // if (exp == 0) {
+    //     return 1;
+    // }
     int prod = 1;
     for (int i = 1; i <= exp; ++i) {
         prod *= base;
