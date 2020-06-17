@@ -82,25 +82,25 @@ int main(int argc, char *argv[]) {
             FILE *p = file;
             //fseek(p, 1, SEEK_SET);
             p++;
-            int lone = 0;
-            char temp_header[512];
-            for (int i = 0; i < 512; ++i) {
-                // check partial
-                temp_header[i] = fgetc(p);
-            }
-        
+            // int lone = 0;
+            // char temp_header[512];
             // for (int i = 0; i < 512; ++i) {
-            //     // Check partial block here
-            //     if ((d = fgetc(p)) != '\0') {
-            //         // may have to print other stderr
-            //         printf("mytar: A lone zero block at 22\n");//, block_no);
-            //         break;
-            //     }
+            //     // check partial
+            //     temp_header[i] = fgetc(p);
             // }
-            // may have to print other stderr
-            if (!is_zero_block(temp_header)) {
-                printf("mytar: A lone zero block at 22\n");
+        
+            for (int i = 0; i < 512; ++i) {
+                // Check partial block here
+                if ((d = fgetc(p)) != '\0') {
+                    // may have to print other stderr
+                    printf("mytar: A lone zero block at 22\n");//, block_no);
+                    break;
+                }
             }
+            // may have to print other stderr
+            // if (!is_zero_block(temp_header)) {
+            //     printf("mytar: A lone zero block at 22\n");
+            // }
             break;
         }
 
