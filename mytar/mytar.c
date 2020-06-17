@@ -2,7 +2,7 @@
 #include <ctype.h>
 #include <string.h>
 
-int arg_parse(int argc, char *argv[], int *list_argument, int *tarfile_argument, FILE* file);
+int arg_parse(int argc, char *argv[], int *list_argument, int *tarfile_argument, FILE** file);
 
 int ascii_to_decimal(char size[], int len);
 int roundup_to_multiple(int decimal, int multiple);
@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
     int tarfile_argument = 0;
     FILE* file = NULL;
 
-    arg_parse(argc, argv, &list_argument, &tarfile_argument, file);
+    arg_parse(argc, argv, &list_argument, &tarfile_argument, &file);
 
     // if (!(argc >= 2)) {
     //     fflush(stdout);
@@ -241,7 +241,7 @@ int main(int argc, char *argv[]) {
     // }
 }
 
-int arg_parse(int argc, char *argv[], int *list_argument, int *tarfile_argument, FILE *file) {
+int arg_parse(int argc, char *argv[], int *list_argument, int *tarfile_argument, FILE **file) {
     if (!(argc >= 2)) {
         fflush(stdout);
         fprintf(stderr, "mytar: need at least one option\n");
@@ -288,8 +288,8 @@ int arg_parse(int argc, char *argv[], int *list_argument, int *tarfile_argument,
         return 2;
     }
 
-    file = fopen(argv[*tarfile_argument], "r");
-    if (file == NULL) {
+    *file = fopen(argv[*tarfile_argument], "r");
+    if (*file == NULL) {
         fflush(stdout);
         fprintf(stderr, "mytar: %s: Cannot open: No such file or directory\n", argv[*tarfile_argument]);
         fflush(stdout);
