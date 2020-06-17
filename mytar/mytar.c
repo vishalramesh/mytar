@@ -80,7 +80,7 @@ int main(int argc, char *argv[]) {
         if (is_zero_block(header)) {
             
             FILE *p = file;
-            fseek(p, 512, SEEK_SET);
+            fseek(p, 1, SEEK_SET);
             int lone = 0;
         
             // for (int i = 0; i < 512; ++i) {
