@@ -4,7 +4,7 @@
 
 int isprefix(char *argv, char name[]);
 int issuffix(char *argv, char name[]);
-int ascii_to_decimal(char size[]);
+int ascii_to_decimal(char size[], int len);
 int roundup_to_multiple(int decimal, int multiple);
 int power(int base, int exp);
 int equal(char arg_file_name[], char file_name[]);
@@ -228,7 +228,7 @@ int main(int argc, char *argv[]) {
 
             
             
-            offset += (512 + roundup_to_multiple(ascii_to_decimal(size), 512));
+            offset += (512 + roundup_to_multiple(ascii_to_decimal(size, 12), 512));
             start = 0;
             fseek(file, offset, SEEK_SET);
             // if (ftell(file) == offset) {
@@ -309,9 +309,9 @@ int issuffix(char *argv, char name[]) {
     return 1;
 }
 
-int ascii_to_decimal(char size[]) {
+int ascii_to_decimal(char size[], int len) {
     int decimal = 0;
-    int digit_count = sizeof(size) / sizeof(size[0]) - 1; // Not counting terminating '\0' 
+    int digit_count = len - 1; // Not counting terminating '\0' 
 
     for (int i = 0; i <= digit_count; ++i) {
         int digit = size[i] - '0';
