@@ -121,7 +121,7 @@ int main(int argc, char *argv[]) {
         }
         typeflag = header[156];
 
-        if (strcmp(magic, "ustar") == 0) {
+        if (strcmp(magic, "ustar") != 0) {
             fflush(stdout);
             fprintf(stderr, "mytar: This does not look like a tar archive\n");
             fflush(stdout);
