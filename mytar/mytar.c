@@ -50,10 +50,15 @@ int main(int argc, char *argv[]) {
     int extract_arg_present = check_list_arg_present(argc, argv, extract_arg_index, file_arg_index) && args_present[3];
    
     int final_list_arg_index = get_final_arg_index(argc, argv, list_arg_index);
+    int final_extract_arg_index = get_final_arg_index(argc, argv, extract_arg_index);
 
     int pf_size = final_list_arg_index - list_arg_index + 1;
     int print_file[pf_size];
     initialise_with_zeros(print_file, pf_size);
+
+    int cr_size = final_extract_arg_index - extract_arg_index + 1;
+    int create_file[cr_size];
+    initialise_with_zeros(create_file, cr_size);
 
     int offset = 0;
     int block_no = 0;
@@ -166,6 +171,24 @@ int main(int argc, char *argv[]) {
         }
 
         if (extract_arg_present && args_present[3] && !args_present[2]) { // Without -v
+
+            // for (int q = extract_arg_index; q <= final_extract_arg_index; q++) {
+            //     if (is_equal(argv[q], file_name) || is_prefix(argv[q], file_name) || is_suffix(argv[q], file_name)) {
+            //         int i = 0;
+            //         int printable = 0;
+            //         while (file_name[i] != '\0') {
+            //             if (isalnum(file_name[i])) {
+            //                 printable = 1;
+            //             }
+            //             i += 1;
+            //         }
+            //         if (printable) {
+            //             printf("%s\n", file_name);
+            //             fflush(stdout);
+            //         }
+            //         print_file[q - list_arg_index] = 1; 
+            //     }
+            // }
             
         }
 
@@ -251,10 +274,10 @@ void print_list_arg_output(char *argv[], int print_file[], char file_name[], int
                 }
                 i += 1;
             }
-            if (printable) {
+            // if (printable) {
                 printf("%s\n", file_name);
                 fflush(stdout);
-            }
+            // }
             print_file[q - list_arg_index] = 1; 
         }
     }
