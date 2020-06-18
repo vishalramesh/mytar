@@ -86,12 +86,20 @@ int main(int argc, char *argv[]) {
                     // may have to print other stderr
                     printf("mytar: A lone zero block at %d\n", block_no);
                     return 0;
+
+                    if (list_arg_present) {
+                        return print_list_arg_error(argv, print_file, list_arg_index, final_list_arg_index);
+                    }
+
                     break;
                 }
             }
             // may have to print other stderr
 
-            break;
+            if (list_arg_present) {
+                return print_list_arg_error(argv, print_file, list_arg_index, final_list_arg_index);
+            }
+
         }
 
         if (d == EOF) {
