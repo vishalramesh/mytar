@@ -19,6 +19,8 @@ bigfile="$tmp2_path/$big_name"
 dd if=/dev/urandom of=$bigfile bs=1024 count=$count >/dev/null 2>&1
 ((ret == 0)) || { echo "Cannot create big file." >&2 && exit 1; }
 
+cat $outfile
+
 # create
 outfile=$tmp_path/big.tar
 output=$($GNUTAR -c -v -f $outfile . 2>&1)

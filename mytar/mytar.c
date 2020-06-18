@@ -134,7 +134,7 @@ int main(int argc, char *argv[]) {
             fprintf(stderr, "mytar: Exiting with failure status due to previous errors\n");
             return 2;
         }
-
+        
         if (typeflag != '0' && typeflag != '\0') {
             fflush(stdout);
             fprintf(stderr, "mytar: Unsupported header type: %d\n", typeflag);
