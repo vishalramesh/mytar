@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
 
     while (file != NULL) {
 
-        int pos;
+        int pos = 0;
         d = get_block(header, file, &pos);
         block_no += 1;
         
