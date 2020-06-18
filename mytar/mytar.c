@@ -110,6 +110,9 @@ int main(int argc, char *argv[]) {
                 fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
                 return 2;
             }
+            if (pos == 0) {
+                return 0;
+            }
         }
         
         for (int i = 0; i < 100; ++i) {
