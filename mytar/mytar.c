@@ -29,7 +29,7 @@ void print_list_arg_output(char *argv[], int print_file[], char file_name[], int
 char get_block(char header[], FILE *file, int *pos);
 int advance_offset_and_block(char size[], int *offset, int *block_no, FILE* file);
 
-
+int write_to_file(FILE* file, FILE* create_file, char size[]);
 
 int main(int argc, char *argv[]) {
 
@@ -146,8 +146,11 @@ int main(int argc, char *argv[]) {
 
         if (!extract_arg_present && args_present[3] && !args_present[2]) { // Without -v
             FILE* create_file = fopen(file_name, "w");
-            
+            int write_ret = write_to_file(file, create_file, size);
             fclose(create_file);
+            if (write_ret != 0) {
+                return write_ret;
+            }
         }
 
         if (!extract_arg_present && args_present[3] && args_present[2]) {
@@ -170,6 +173,23 @@ int main(int argc, char *argv[]) {
 
     if (list_arg_present) {
         return print_list_arg_error(argv, print_file, list_arg_index, final_list_arg_index);
+    }
+}
+
+int write_to_file(FILE* file, FILE* create_file, char size[]) {
+    int size_len = 12;
+    FILE *p = file;
+
+    for (int i = 0; i < ascii_to_decimal(size, size_len); ++i) {
+        int d;
+        if ((d == fgetc(p)) == EOF) {
+            fflush(stdout);
+            fprintf(stderr, "mytar: Unexpected EOF in archive\n");
+            fflush(stdout);
+            fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
+            return 2;
+        }
+        fputc(d, create_file);
     }
 }
 
