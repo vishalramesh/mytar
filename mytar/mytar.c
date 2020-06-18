@@ -100,24 +100,6 @@ int main(int argc, char *argv[]) {
                 fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
                 return 2;
             }
-            // if (start != 0) {
-            //     fflush(stdout);
-            //     fprintf(stderr, "mytar: Unexpected EOF in archive\n");
-            //     fflush(stdout);
-            //     fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
-            //     return 2;
-            // }
-            // if ((char_count % 512) != 0) {
-            //     fflush(stdout);
-            //     fprintf(stderr, "mytar: Unexpected EOF in archive\n");
-            //     fflush(stdout);
-            //     fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
-            //     return 2;
-            // }
-
-            
-            
-            break;
         }
 
         for (int i = 0; i < 100; ++i) {
@@ -165,9 +147,13 @@ int main(int argc, char *argv[]) {
 void advance_offset_and_block(char size[], int *offset, int *block_no, FILE* file) {
     int size_len = 12;
     *offset += 512;
+    int temp = *offset;
     *offset += roundup_to_multiple(ascii_to_decimal(size, size_len), 512);
     *block_no += (roundup_to_multiple(ascii_to_decimal(size, size_len), 512) / 512);
-    fseek(file, *offset, SEEK_SET);
+    for (int i = temp; i <= offset; ++i) {
+        fseek(file, *i, SEEK_SET);
+    }
+    // fseek(file, *offset, SEEK_SET);
 }
 
 char get_block(char header[], FILE *file, int *pos) {
