@@ -17,7 +17,7 @@ int is_prefix(char argv[], char name[]);
 int is_suffix(char argv[], char name[]);
 
 int handle_list_arg_error(char *argv[], int print_file[], int list_arg_index, int final_list_arg_index);
-void handle_list_arg_output(char *argv[], int print_file[], int list_arg_index, int final_list_arg_index);
+void handle_list_arg_output(char *argv[], int print_file[], char name[], int list_arg_index, int final_list_arg_index);
 
 char get_block(char header[], FILE *file);
 void advance_offset_and_block(char size[], int *offset, int *block_no, FILE* file);
@@ -143,7 +143,7 @@ int main(int argc, char *argv[]) {
         }
         if (list_arg_present) {
 
-            handle_list_arg_output(argv, print_file, list_arg_index, final_list_arg_index);
+            handle_list_arg_output(argv, print_file, name, list_arg_index, final_list_arg_index);
             // for (int q = list_arg_index; q <= final_list_arg_index; q++) {
             //     if (is_equal(argv[q], name) || is_prefix(argv[q], name) || is_suffix(argv[q], name)) {
             //         int i = 0;
@@ -190,7 +190,7 @@ char get_block(char header[], FILE *file) {
     return d;
 }
 
-void handle_list_arg_output(char *argv[], int print_file, int list_arg_index, int final_list_arg_index) {
+void handle_list_arg_output(char *argv[], int print_file, char name[], int list_arg_index, int final_list_arg_index) {
 
     for (int q = list_arg_index; q <= final_list_arg_index; q++) {
         if (is_equal(argv[q], name) || is_prefix(argv[q], name) || is_suffix(argv[q], name)) {
