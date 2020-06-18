@@ -29,7 +29,7 @@ void print_list_arg_output(char *argv[], int print_file[], char file_name[], int
 char get_block(char header[], FILE *file, int *pos);
 int advance_offset_and_block(char size[], int *offset, int *block_no, FILE* file);
 
-int write_to_file(FILE* file, FILE* create_file, char size[]);
+int write_to_file(FILE* file, FILE* create_file, int *offset, char size[]);
 
 int main(int argc, char *argv[]) {
 
@@ -146,11 +146,12 @@ int main(int argc, char *argv[]) {
 
         if (!extract_arg_present && args_present[3] && !args_present[2]) { // Without -v
             FILE* create_file = fopen(file_name, "w");
-            int write_ret = write_to_file(file, create_file, size);
+            int write_ret = write_to_file(file, create_file, &offset, size);
             fclose(create_file);
             if (write_ret != 0) {
                 return write_ret;
             }
+            continue;
         }
 
         if (!extract_arg_present && args_present[3] && args_present[2]) {
@@ -176,9 +177,12 @@ int main(int argc, char *argv[]) {
     }
 }
 
-int write_to_file(FILE* file, FILE* create_file, char size[]) {
+int write_to_file(FILE* file, FILE* create_file, int *offset, char size[]) {
     int size_len = 12;
     FILE *p = file;
+
+    *offset += 512;
+    *offset += roundup_to_multiple(ascii_to_decimal(size, size_len), 512);
 
     for (int i = 0; i < ascii_to_decimal(size, size_len); ++i) {
         int d = '\0'; // Arbitrary
@@ -191,6 +195,7 @@ int write_to_file(FILE* file, FILE* create_file, char size[]) {
         }
         fputc(d, create_file);
     }
+    fseek(file, *offset, SEEK_SET);
     return 0;
 }
 
