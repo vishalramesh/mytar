@@ -147,16 +147,8 @@ int main(int argc, char *argv[]) {
 void advance_offset_and_block(char size[], int *offset, int *block_no, FILE* file) {
     int size_len = 12;
     *offset += 512;
-    int temp = *offset;
     *offset += roundup_to_multiple(ascii_to_decimal(size, size_len), 512);
     *block_no += (roundup_to_multiple(ascii_to_decimal(size, size_len), 512) / 512);
-    // for (int i = temp; i <= *offset; ++i) {
-    //     fseek(file, i, SEEK_SET);
-    //     FILE *p = file;
-    //     if (fgetc(p) == EOF) {
-    //         break;
-    //     }
-    // }
     fseek(file, *offset, SEEK_SET);
 }
 
