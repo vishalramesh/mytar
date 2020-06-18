@@ -135,7 +135,7 @@ int main(int argc, char *argv[]) {
             fflush(stdout);
             fprintf(stderr, "mytar: This does not look like a tar archive\n");
             fflush(stdout);
-            printf(stderr, "mytar: Exiting with faliure status due to previous errors\n");
+            fprintf(stderr, "mytar: Exiting with faliure status due to previous errors\n");
             return 2;
         }
 
