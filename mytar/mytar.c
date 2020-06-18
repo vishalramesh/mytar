@@ -136,12 +136,16 @@ int main(int argc, char *argv[]) {
             return 2;
         }
 
-        if (!list_arg_present) {
+        if (!list_arg_present && args_present[1]) {
             print_default_list_output(file_name);
         }
 
         if (list_arg_present) {
             print_list_arg_output(argv, print_file, file_name, list_arg_index, final_list_arg_index);
+        }
+
+        if (!extract_arg_present) {
+            printf("");
         }
 
         int advance_ret = advance_offset_and_block(size, &offset, &block_no, file);
