@@ -160,7 +160,7 @@ int advance_offset_and_block(char size[], int *offset, int *block_no, FILE* file
     FILE *p = file;
     fseek(p, 512, SEEK_CUR);
     
-    for (int i = temp; i < *offset; ++i) {
+    for (int i = 0; i < ascii_to_decimal(size, size_len); ++i) {
         int d;
         if ((d = fgetc(p)) == EOF) {
             fflush(stdout);
