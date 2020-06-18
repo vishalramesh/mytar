@@ -172,24 +172,18 @@ int main(int argc, char *argv[]) {
 
         if (extract_arg_present && args_present[3] && !args_present[2]) { // Without -v
 
-            // for (int q = extract_arg_index; q <= final_extract_arg_index; q++) {
-            //     if (is_equal(argv[q], file_name) || is_prefix(argv[q], file_name) || is_suffix(argv[q], file_name)) {
-            //         int i = 0;
-            //         int printable = 0;
-            //         while (file_name[i] != '\0') {
-            //             if (isalnum(file_name[i])) {
-            //                 printable = 1;
-            //             }
-            //             i += 1;
-            //         }
-            //         if (printable) {
-            //             printf("%s\n", file_name);
-            //             fflush(stdout);
-            //         }
-            //         print_file[q - list_arg_index] = 1; 
-            //     }
-            // }
-            
+            for (int q = extract_arg_index; q <= final_extract_arg_index; q++) {
+                if (is_equal(argv[q], file_name) || is_prefix(argv[q], file_name) || is_suffix(argv[q], file_name)) {
+                    FILE* create_file = fopen(file_name, "w");
+                    int write_ret = write_to_file(file, create_file, &offset, &block_no, size);
+                    fclose(create_file);
+                    if (write_ret != 0) {
+                        return write_ret;
+                    }
+                    print_file[q - list_arg_index] = 1; 
+                    continue;
+                }
+            }
         }
 
         if (extract_arg_present && args_present[3] && args_present[2]) {
@@ -266,14 +260,6 @@ void print_list_arg_output(char *argv[], int print_file[], char file_name[], int
 
     for (int q = list_arg_index; q <= final_list_arg_index; q++) {
         if (is_equal(argv[q], file_name) || is_prefix(argv[q], file_name) || is_suffix(argv[q], file_name)) {
-            // int i = 0;
-            // int printable = 0;
-            // while (file_name[i] != '\0') {
-            //     if (isalnum(file_name[i])) {
-            //         printable = 1;
-            //     }
-            //     i += 1;
-            // }
             printf("%s\n", file_name);
             fflush(stdout);
             print_file[q - list_arg_index] = 1; 
