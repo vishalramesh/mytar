@@ -140,6 +140,7 @@ int main(int argc, char *argv[]) {
         if (advance_ret == 2) {
             exit(advance_ret);
         }
+        return advance_ret;
 
     }
 
