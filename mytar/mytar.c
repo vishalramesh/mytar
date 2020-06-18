@@ -136,7 +136,7 @@ int main(int argc, char *argv[]) {
         }
 
         int advance_ret;
-        if ((advance_ret = advance_offset_and_block(size, &offset, &block_no, file)) != 2) {
+        if ((advance_ret = advance_offset_and_block(size, &offset, &block_no, file)) != 0) {
             return advance_ret;
         }
 
