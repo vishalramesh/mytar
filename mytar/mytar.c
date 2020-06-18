@@ -144,8 +144,22 @@ int main(int argc, char *argv[]) {
             print_list_arg_output(argv, print_file, file_name, list_arg_index, final_list_arg_index);
         }
 
-        if (!extract_arg_present && args_present[3]) {
-            printf("temp");
+        if (!extract_arg_present && args_present[3] && !args_present[2]) { // Without -v
+            FILE* create_file = fopen(file_name, "w");
+            
+            fclose(create_file);
+        }
+
+        if (!extract_arg_present && args_present[3] && args_present[2]) {
+            
+        }
+
+        if (extract_arg_present && args_present[3] && !args_present[2]) {
+            
+        }
+
+        if (extract_arg_present && args_present[3] && args_present[2]) {
+            
         }
 
         int advance_ret = advance_offset_and_block(size, &offset, &block_no, file);
