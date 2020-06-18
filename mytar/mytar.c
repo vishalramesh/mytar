@@ -20,7 +20,7 @@ int is_suffix(char arg_file_name[], char file_name[]);
 int print_list_arg_error(char *argv[], int print_file[], int list_arg_index, int final_list_arg_index);
 void print_list_arg_output(char *argv[], int print_file[], char file_name[], int list_arg_index, int final_list_arg_index);
 
-char get_block(char header[], FILE *file);
+char get_block(char header[], FILE *file, int *pos);
 void advance_offset_and_block(char size[], int *offset, int *block_no, FILE* file);
 
 int main(int argc, char *argv[]) {
@@ -71,7 +71,8 @@ int main(int argc, char *argv[]) {
 
     while (file != NULL) {
 
-        d = get_block(header, file);
+        int pos;
+        d = get_block(header, file, &pos);
         block_no += 1;
         
         if (is_zero_block(header)) {
@@ -83,15 +84,22 @@ int main(int argc, char *argv[]) {
                 if ((d = fgetc(p)) != '\0') {
                     // may have to print other stderr
                     printf("mytar: A lone zero block at %d\n", block_no);
-                    return 0;
+                    break;
                 }
             }
             // may have to print other stderr
 
-            return 0;
+            break;
         }
 
         if (d == EOF) {
+            if (pos != 0) {
+                fflush(stdout);
+                fprintf(stderr, "mytar: Unexpected EOF in archive\n");
+                fflush(stdout);
+                fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
+                return 2;
+            }
             // if (start != 0) {
             //     fflush(stdout);
             //     fprintf(stderr, "mytar: Unexpected EOF in archive\n");
@@ -106,6 +114,8 @@ int main(int argc, char *argv[]) {
             //     fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
             //     return 2;
             // }
+
+            
             
             break;
         }
@@ -160,13 +170,14 @@ void advance_offset_and_block(char size[], int *offset, int *block_no, FILE* fil
     fseek(file, *offset, SEEK_SET);
 }
 
-char get_block(char header[], FILE *file) {
+char get_block(char header[], FILE *file, int *pos) {
     char d;
     int start = 0;
     while (start < 512 && (d = fgetc(file)) != EOF) {
         header[start] = d;
         start += 1;
     }
+    pos = start;
     return d;
 }
 
