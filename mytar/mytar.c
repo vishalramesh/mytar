@@ -95,7 +95,7 @@ int main(int argc, char *argv[]) {
         if (d == EOF) {
             if (pos != 0) {
                 fflush(stdout);
-                fprintf(stderr, "mytar: Unexpected EOF in archive %d\n", pos);
+                fprintf(stderr, "mytar: Unexpected EOF in archive\n");
                 fflush(stdout);
                 fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
                 return 2;
