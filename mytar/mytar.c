@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) {
                 int e;
                 if ((e = fgetc(p)) != '\0') {
                     
-                    int this_ret;
+                    int this_ret = 0;
                     if (list_arg_present) {
                         this_ret = print_list_arg_error(argv, print_file, list_arg_index, final_list_arg_index);
                     }
