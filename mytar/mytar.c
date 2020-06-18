@@ -275,7 +275,8 @@ int arg_parse(int argc, char *argv[],
         fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
         return 2;
     }
-
+    
+    // t and x
     if (args_present[1] && args_present[3]) {
         fflush(stdout);
         fprintf(stderr, "mytar: You may not specify more than one option\n");
