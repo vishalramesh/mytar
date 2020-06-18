@@ -91,7 +91,6 @@ int main(int argc, char *argv[]) {
                     }
 
                     printf("mytar: A lone zero block at %d\n", block_no);
-                    printf("%d\n", this_ret);
                     return this_ret;
                 }
             }
@@ -138,6 +137,7 @@ int main(int argc, char *argv[]) {
 
         int advance_ret = advance_offset_and_block(size, &offset, &block_no, file);
         if (advance_ret == 2) {
+            printf("%d\n", advance_ret);
             exit(advance_ret);
         }
 
