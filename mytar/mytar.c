@@ -188,19 +188,19 @@ int main(int argc, char *argv[]) {
 
         if (extract_arg_present && args_present[3] && args_present[2]) {
 
-            for (int q = extract_arg_index; q <= final_extract_arg_index; q++) {
-                if (is_equal(argv[q], file_name) || is_prefix(argv[q], file_name) || is_suffix(argv[q], file_name)) {
-                    // printf("%s\n", file_name);
-                    FILE* create_file = fopen(file_name, "w");
-                    int write_ret = write_to_file(file, create_file, &offset, &block_no, size);
-                    fclose(create_file);
-                    if (write_ret != 0) {
-                        return write_ret;
-                    }
-                    print_file[q - list_arg_index] = 1; 
-                    continue;
-                }
-            }   
+            // for (int q = extract_arg_index; q <= final_extract_arg_index; q++) {
+            //     if (is_equal(argv[q], file_name) || is_prefix(argv[q], file_name) || is_suffix(argv[q], file_name)) {
+            //         printf("%s\n", file_name);
+            //         FILE* create_file = fopen(file_name, "w");
+            //         int write_ret = write_to_file(file, create_file, &offset, &block_no, size);
+            //         fclose(create_file);
+            //         if (write_ret != 0) {
+            //             return write_ret;
+            //         }
+            //         print_file[q - list_arg_index] = 1; 
+            //         continue;
+            //     }
+            // }   
         }
 
         int advance_ret = advance_offset_and_block(size, &offset, &block_no, file);
