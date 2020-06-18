@@ -86,7 +86,7 @@ int main(int argc, char *argv[]) {
                     
             for (int i = 0; i < 512; ++i) {
                 // Check partial block here?
-                char e;
+                int e;
                 if ((e = fgetc(p)) != '\0') {
                     
                     int this_ret;
