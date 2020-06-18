@@ -158,7 +158,7 @@ int advance_offset_and_block(char size[], int *offset, int *block_no, FILE* file
     *offset += roundup_to_multiple(ascii_to_decimal(size, size_len), 512);
     *block_no += (roundup_to_multiple(ascii_to_decimal(size, size_len), 512) / 512);
     FILE *p = file;
-    fseek(p, 512, SEEK_CUR);
+    fseek(p, 0, SEEK_CUR);
     
     for (int i = 0; i < ascii_to_decimal(size, size_len); ++i) {
         int d;
