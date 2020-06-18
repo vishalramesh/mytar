@@ -49,13 +49,6 @@ int main(int argc, char *argv[]) {
     int list_arg_present = check_list_arg_present(argc, argv, list_arg_index, file_arg_index);
    
     int final_list_arg_index = get_final_arg_index(argc, argv, list_arg_index);
-    // int final_list_arg_index = list_arg_index;
-    // while (final_list_arg_index < argc - 1) {
-    //     if (strcmp(argv[final_list_arg_index + 1], "-f") == 0) {
-    //         break;
-    //     }
-    //     final_list_arg_index += 1;
-    // }
 
     int pf_size = final_list_arg_index - list_arg_index + 1;
     int print_file[pf_size];
@@ -283,7 +276,7 @@ int arg_parse(int argc, char *argv[],
         return 2;
     }
 
-    if (args_present[1] && args_present[2]) {
+    if (args_present[1] && args_present[3]) {
         fflush(stdout);
         fprintf(stderr, "mytar: You may not specify more than one option\n");
         return 2;
