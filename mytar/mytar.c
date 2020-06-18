@@ -157,7 +157,7 @@ void advance_offset_and_block(char size[], int *offset, int *block_no, FILE* fil
             break;
         }
     }
-    // fseek(file, *offset, SEEK_SET);
+    fseek(file, *offset, SEEK_SET);
 }
 
 char get_block(char header[], FILE *file, int *pos) {
