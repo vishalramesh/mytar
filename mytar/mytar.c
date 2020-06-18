@@ -11,6 +11,7 @@ int roundup_to_multiple(int decimal, int multiple);
 int power(int base, int exp);
 
 int is_zero_block(char header[]);
+void initialise_array_with_zeros(int print_file[], int len);
 
 int is_equal(char arg_file_name[], char file_name[]);
 int is_prefix(char arg_file_name[], char file_name[]);
@@ -55,9 +56,8 @@ int main(int argc, char *argv[]) {
     }
 
     int print_file[final_list_arg_index - list_arg_index + 1];
-    for (int i = 0; i < final_list_arg_index - list_arg_index + 1; i++) {
-        print_file[i] = 0;
-    }
+    initialise_array_with_zeros(print_file, final_list_arg_index - list_arg_index + 1);
+    
 
     int offset = 0;
     int block_no = 0;
@@ -368,4 +368,10 @@ int is_zero_block(char header[]) {
         }
     }
     return 1;
+}
+
+void initialise_array_with_zeros(int print_file[], int len) {
+    for (int i = 0; i < len; ++i) {
+        print_file[i] = 0;
+    }
 }
