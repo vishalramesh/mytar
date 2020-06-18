@@ -63,8 +63,6 @@ int main(int argc, char *argv[]) {
 
     int char_count = 0;
 
-    int first_time = 0;
-
     int d;
     char header[512];
     char name[100];
@@ -190,7 +188,7 @@ char get_block(char header[], FILE *file) {
     return d;
 }
 
-void handle_list_arg_output(char *argv[], int print_file, char name[], int list_arg_index, int final_list_arg_index) {
+void handle_list_arg_output(char *argv[], int print_file[], char name[], int list_arg_index, int final_list_arg_index) {
 
     for (int q = list_arg_index; q <= final_list_arg_index; q++) {
         if (is_equal(argv[q], name) || is_prefix(argv[q], name) || is_suffix(argv[q], name)) {
