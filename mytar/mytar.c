@@ -263,10 +263,6 @@ int arg_parse(int argc, char *argv[],
             }
         }   
     }
-    
-    if (strcmp(argv[*list_arg_index], "-f") == 0 && *file_arg_index < argc - 1) {
-        *list_arg_index = *file_arg_index + 1;
-    }
 
     if (!file_arg_present) {
         fflush(stdout);
@@ -275,12 +271,20 @@ int arg_parse(int argc, char *argv[],
         fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
         return 2;
     }
-    
+
     // t and x
     if (args_present[1] && args_present[3]) {
         fflush(stdout);
         fprintf(stderr, "mytar: You may not specify more than one option\n");
         return 2;
+    }
+
+    if (strcmp(argv[*list_arg_index], "-v") == 0) {
+        *list_arg_index += 1;
+    }
+    
+    if (strcmp(argv[*list_arg_index], "-f") == 0 && *file_arg_index < argc - 1) {
+        *list_arg_index = *file_arg_index + 1;
     }
 
     *file = fopen(argv[*file_arg_index], "r");
