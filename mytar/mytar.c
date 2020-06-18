@@ -107,7 +107,7 @@ int main(int argc, char *argv[]) {
         }
 
         if (d == EOF) {
-            if (pos != 0 && zero_block_found) {
+            if (pos != 0 && pos != 511) { // zero_block_found = 1;
                 fflush(stdout);
                 fprintf(stderr, "mytar: Unexpected EOF in archive\n");
                 fflush(stdout);
