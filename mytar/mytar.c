@@ -154,8 +154,15 @@ int main(int argc, char *argv[]) {
             continue;
         }
 
-        if (!extract_arg_present && args_present[3] && args_present[2]) {
-            
+        if (!extract_arg_present && args_present[3] && args_present[2]) { // With -v
+            printf("%d\n", file_name);
+            FILE* create_file = fopen(file_name, "w");
+            int write_ret = write_to_file(file, create_file, &offset, size);
+            fclose(create_file);
+            if (write_ret != 0) {
+                return write_ret;
+            }
+            continue;
         }
 
         if (extract_arg_present && args_present[3] && !args_present[2]) {
