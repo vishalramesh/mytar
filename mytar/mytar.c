@@ -43,15 +43,7 @@ int main(int argc, char *argv[]) {
     }
     
     int list_arg_present = check_list_arg_present(argc, argv, list_arg_index, file_arg_index);
-    // int list_arg_present = 0;
-    // if (list_arg_index >= argc) {
-    //     list_arg_present = 0;
-    // } else if (strcmp(argv[list_arg_index], "-f") == 0 && file_arg_index == argc - 1) {
-    //     list_arg_present = 0;
-    // } else {
-    //     list_arg_present = 1;
-    // }
-    
+   
     int final_list_arg_index = list_arg_index;
     while (final_list_arg_index < argc - 1) {
         if (strcmp(argv[final_list_arg_index + 1], "-f") == 0) {
@@ -99,6 +91,7 @@ int main(int argc, char *argv[]) {
                     }
 
                     printf("mytar: A lone zero block at %d\n", block_no);
+                    printf("%d\n", this_ret);
                     return this_ret;
                 }
             }
