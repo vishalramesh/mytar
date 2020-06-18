@@ -181,8 +181,8 @@ int write_to_file(FILE* file, FILE* create_file, char size[]) {
     FILE *p = file;
 
     for (int i = 0; i < ascii_to_decimal(size, size_len); ++i) {
-        int d;
-        if ((d == fgetc(p)) == EOF) {
+        int d = '\0'; // Arbitrary
+        if ((d = fgetc(p)) == EOF) {
             fflush(stdout);
             fprintf(stderr, "mytar: Unexpected EOF in archive\n");
             fflush(stdout);
@@ -191,6 +191,7 @@ int write_to_file(FILE* file, FILE* create_file, char size[]) {
         }
         fputc(d, create_file);
     }
+    return 0;
 }
 
 int advance_offset_and_block(char size[], int *offset, int *block_no, FILE* file) {
