@@ -85,6 +85,7 @@ int main(int argc, char *argv[]) {
                 if ((d = fgetc(p)) != '\0') {
                     // may have to print other stderr
                     printf("mytar: A lone zero block at %d\n", block_no);
+                    return 0;
                     break;
                 }
             }
@@ -140,7 +141,6 @@ int main(int argc, char *argv[]) {
         if (advance_ret == 2) {
             exit(advance_ret);
         }
-        return advance_ret;
 
     }
 
