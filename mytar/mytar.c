@@ -266,18 +266,16 @@ void print_list_arg_output(char *argv[], int print_file[], char file_name[], int
 
     for (int q = list_arg_index; q <= final_list_arg_index; q++) {
         if (is_equal(argv[q], file_name) || is_prefix(argv[q], file_name) || is_suffix(argv[q], file_name)) {
-            int i = 0;
-            int printable = 0;
-            while (file_name[i] != '\0') {
-                if (isalnum(file_name[i])) {
-                    printable = 1;
-                }
-                i += 1;
-            }
-            // if (printable) {
-                printf("%s\n", file_name);
-                fflush(stdout);
+            // int i = 0;
+            // int printable = 0;
+            // while (file_name[i] != '\0') {
+            //     if (isalnum(file_name[i])) {
+            //         printable = 1;
+            //     }
+            //     i += 1;
             // }
+            printf("%s\n", file_name);
+            fflush(stdout);
             print_file[q - list_arg_index] = 1; 
         }
     }
