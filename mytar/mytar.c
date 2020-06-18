@@ -46,7 +46,8 @@ int main(int argc, char *argv[]) {
         return arg_parse_ret;
     }
     
-    int list_arg_present = check_list_arg_present(argc, argv, list_arg_index, file_arg_index);
+    int list_arg_present = check_list_arg_present(argc, argv, list_arg_index, file_arg_index) && args_present[1];
+    int extract_arg_present = check_list_arg_present(argc, argv, extract_arg_index, file_arg_index) && args_present[3];
    
     int final_list_arg_index = get_final_arg_index(argc, argv, list_arg_index);
 
@@ -293,8 +294,16 @@ int arg_parse(int argc, char *argv[],
     if (strcmp(argv[*list_arg_index], "-v") == 0) {
         *list_arg_index += 1;
     }
+
+    if (strcmp(argv[*extract_arg_index], "-v") == 0) {
+        *extract_arg_index += 1;
+    }
     
     if (strcmp(argv[*list_arg_index], "-f") == 0 && *file_arg_index < argc - 1) {
+        *list_arg_index = *file_arg_index + 1;
+    }
+
+    if (strcmp(argv[*extract_arg_index], "-f") == 0 && *file_arg_index < argc - 1) {
         *list_arg_index = *file_arg_index + 1;
     }
 
