@@ -66,8 +66,6 @@ int main(int argc, char *argv[]) {
     char size[12];
     char typeflag;
 
-    int zero_block_found = 0;
-
     while (file != NULL) {
 
         int pos = 0;
@@ -77,8 +75,6 @@ int main(int argc, char *argv[]) {
         if (is_zero_block(header)) {
             
             FILE *p = file;
-
-            zero_block_found = 1;
                     
             for (int i = 0; i < 512; ++i) {
                 // Check partial block here?
@@ -103,7 +99,7 @@ int main(int argc, char *argv[]) {
         }
 
         if (d == EOF) {
-            if (pos != 0) { // zero_block_found = 1;
+            if (pos != 0) {
                 fflush(stdout);
                 fprintf(stderr, "mytar: Unexpected EOF in archive\n");
                 fflush(stdout);
@@ -152,7 +148,6 @@ int main(int argc, char *argv[]) {
 int advance_offset_and_block(char size[], int *offset, int *block_no, FILE* file) {
     int size_len = 12;
     *offset += 512;
-    int temp = *offset;
     *offset += roundup_to_multiple(ascii_to_decimal(size, size_len), 512);
     *block_no += (roundup_to_multiple(ascii_to_decimal(size, size_len), 512) / 512);
     FILE *p = file;
@@ -260,6 +255,7 @@ int arg_parse(int argc, char *argv[],
                 args_present[2] += 1;
                 break;
             case 'x':
+                *extract_arg_index = i + 1;
                 args_present[3] += 1;
                 break;
             default:
