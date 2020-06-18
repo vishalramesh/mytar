@@ -94,8 +94,9 @@ int main(int argc, char *argv[]) {
                 // Check partial block here?
                 if ((d = fgetc(p)) != '\0') {
                     
+                    int this_ret;
                     if (list_arg_present) {
-                        int this_ret = print_list_arg_error(argv, print_file, list_arg_index, final_list_arg_index);
+                        this_ret = print_list_arg_error(argv, print_file, list_arg_index, final_list_arg_index);
                     }
 
                     printf("mytar: A lone zero block at %d\n", block_no);
