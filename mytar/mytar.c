@@ -135,8 +135,8 @@ int main(int argc, char *argv[]) {
             print_list_arg_output(argv, print_file, file_name, list_arg_index, final_list_arg_index);
         }
 
-        int advance_ret;
-        if ((advance_ret = advance_offset_and_block(size, &offset, &block_no, file)) != 0) {
+        int advance_ret = advance_offset_and_block(size, &offset, &block_no, file);
+        if (advance_ret != 0) {
             return advance_ret;
         }
 
