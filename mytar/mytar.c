@@ -76,15 +76,7 @@ int main(int argc, char *argv[]) {
         d = get_block(header, file, &pos);
         block_no += 1;
 
-        if (d == EOF) {
-            if (pos != 0) {
-                fflush(stdout);
-                fprintf(stderr, "mytar: Unexpected EOF in archive\n");
-                fflush(stdout);
-                fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
-                return 2;
-            }
-        }
+        
         
         if (is_zero_block(header)) {
             
@@ -111,6 +103,15 @@ int main(int argc, char *argv[]) {
             return 0;
         }
 
+        if (d == EOF) {
+            if (pos != 0) {
+                fflush(stdout);
+                fprintf(stderr, "mytar: Unexpected EOF in archive\n");
+                fflush(stdout);
+                fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
+                return 2;
+            }
+        }
 
         for (int i = 0; i < 100; ++i) {
             file_name[i] = header[i];
@@ -146,9 +147,9 @@ int main(int argc, char *argv[]) {
         }
 
         int advance_ret = advance_offset_and_block(size, &offset, &block_no, file);
-        // if (advance_ret == 2) {
-        //     exit(advance_ret);
-        // }
+        if (advance_ret == 2) {
+            exit(advance_ret);
+        }
 
     }
 
