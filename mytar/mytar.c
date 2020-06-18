@@ -182,13 +182,13 @@ int write_to_file(FILE* file, FILE* create_file, char size[]) {
 
     for (int i = 0; i < ascii_to_decimal(size, size_len); ++i) {
         int d = '\0'; // Arbitrary
-        // if ((d = fgetc(p)) == EOF) {
-        //     fflush(stdout);
-        //     fprintf(stderr, "mytar: Unexpected EOF in archive\n");
-        //     fflush(stdout);
-        //     fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
-        //     return 2;
-        // }
+        if ((d = fgetc(p)) == EOF) {
+            fflush(stdout);
+            // fprintf(stderr, "mytar: Unexpected EOF in archive\n");
+            // fflush(stdout);
+            // fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
+            // return 2;
+        }
         fputc(d, create_file);
     }
     return 0;
