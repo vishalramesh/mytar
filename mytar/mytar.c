@@ -24,6 +24,8 @@ void print_list_arg_output(char *argv[], int print_file[], char file_name[], int
 char get_block(char header[], FILE *file, int *pos);
 int advance_offset_and_block(char size[], int *offset, int *block_no, FILE* file);
 
+void print_default_list_output(char file_name[]);
+
 int main(int argc, char *argv[]) {
 
     int list_arg_index = 0;
@@ -132,18 +134,21 @@ int main(int argc, char *argv[]) {
         }
 
         if (!list_arg_present) {
-            int i = 0;
-            int printable = 0;
-            while (file_name[i] != '\0') {
-                if (isalnum(file_name[i])) {
-                    printable = 1;
-                }
-                i += 1;
-            }
-            if (printable) {
-                printf("%s\n", file_name);
-                fflush(stdout);
-            }
+
+            print_default_list_output(file_name);
+
+            // int i = 0;
+            // int printable = 0;
+            // while (file_name[i] != '\0') {
+            //     if (isalnum(file_name[i])) {
+            //         printable = 1;
+            //     }
+            //     i += 1;
+            // }
+            // if (printable) {
+            //     printf("%s\n", file_name);
+            //     fflush(stdout);
+            // }
         }
 
         if (list_arg_present) {
@@ -399,5 +404,20 @@ int is_zero_block(char header[]) {
 void initialise_with_zeros(int print_file[], int len) {
     for (int i = 0; i < len; ++i) {
         print_file[i] = 0;
+    }
+}
+
+void print_default_list_output(char file_name[]) {
+    int i = 0;
+    int printable = 0;
+    while (file_name[i] != '\0') {
+        if (isalnum(file_name[i])) {
+            printable = 1;
+        }
+        i += 1;
+    }
+    if (printable) {
+        printf("%s\n", file_name);
+        fflush(stdout);
     }
 }
