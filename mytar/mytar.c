@@ -121,21 +121,11 @@ int main(int argc, char *argv[]) {
         }
         typeflag = header[156];
 
-        // if (strcmp(magic, "USTAR") != 0) {
-        //     fflush(stdout);
-        //     fprintf(stderr, "mytar: This does not look like a tar archive\n");
-        //     fflush(stdout);
-        //     fprintf(stderr, "mytar: Exiting with faliure status due to previous errors\n");
-        //     return 2;
-        // }
-        // printf("%c\n", magic[3]);
-        // printf("%c\n", magic[4]);
-        // printf("%c\n", magic[5]);
         if (magic[0] != 'u' || magic[1] != 's' || magic[2] != 't' || magic[3] != 'a' || magic[4] != 'r') {
             fflush(stdout);
             fprintf(stderr, "mytar: This does not look like a tar archive\n");
             fflush(stdout);
-            fprintf(stderr, "mytar: Exiting with faliure status due to previous errors\n");
+            fprintf(stderr, "mytar: Exiting with failure status due to previous errors\n");
             return 2;
         }
 
@@ -244,7 +234,7 @@ int arg_parse(int argc, char *argv[],
         return 2;
     }
     int file_arg_present = 0;
-    for (int i = 1; i < argc; i++) {
+    for (int i = 1; i < argc; ++i) {
 
         int char_0 = argv[i][0];
         int char_1 = argv[i][1];
