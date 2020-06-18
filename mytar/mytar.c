@@ -25,6 +25,7 @@ char get_block(char header[], FILE *file, int *pos);
 int advance_offset_and_block(char size[], int *offset, int *block_no, FILE* file);
 
 void print_default_list_output(char file_name[]);
+int check_list_arg_present(int argc, char *argv[], int list_arg_index, int file_arg_index);
 
 int main(int argc, char *argv[]) {
 
@@ -41,14 +42,15 @@ int main(int argc, char *argv[]) {
         return arg_parse_ret;
     }
     
-    int list_arg_present = 0;
-    if (list_arg_index >= argc) {
-        list_arg_present = 0;
-    } else if (strcmp(argv[list_arg_index], "-f") == 0 && file_arg_index == argc - 1) {
-        list_arg_present = 0;
-    } else {
-        list_arg_present = 1;
-    }
+    int list_arg_present = check_list_arg_present(argc, argv, list_arg_index, file_arg_index);
+    // int list_arg_present = 0;
+    // if (list_arg_index >= argc) {
+    //     list_arg_present = 0;
+    // } else if (strcmp(argv[list_arg_index], "-f") == 0 && file_arg_index == argc - 1) {
+    //     list_arg_present = 0;
+    // } else {
+    //     list_arg_present = 1;
+    // }
     
     int final_list_arg_index = list_arg_index;
     while (final_list_arg_index < argc - 1) {
@@ -58,9 +60,9 @@ int main(int argc, char *argv[]) {
         final_list_arg_index += 1;
     }
 
-    int print_file_size = final_list_arg_index - list_arg_index + 1;
-    int print_file[print_file_size];
-    initialise_with_zeros(print_file, print_file_size);
+    int pf_size = final_list_arg_index - list_arg_index + 1;
+    int print_file[pf_size];
+    initialise_with_zeros(print_file, pf_size);
 
     int offset = 0;
     int block_no = 0;
@@ -134,21 +136,7 @@ int main(int argc, char *argv[]) {
         }
 
         if (!list_arg_present) {
-
             print_default_list_output(file_name);
-
-            // int i = 0;
-            // int printable = 0;
-            // while (file_name[i] != '\0') {
-            //     if (isalnum(file_name[i])) {
-            //         printable = 1;
-            //     }
-            //     i += 1;
-            // }
-            // if (printable) {
-            //     printf("%s\n", file_name);
-            //     fflush(stdout);
-            // }
         }
 
         if (list_arg_present) {
@@ -420,4 +408,14 @@ void print_default_list_output(char file_name[]) {
         printf("%s\n", file_name);
         fflush(stdout);
     }
+}
+
+int check_list_arg_present(int argc, char *argv[], int list_arg_index, int file_arg_index) {
+
+    if (list_arg_index >= argc) {
+        return 0;
+    } else if (strcmp(argv[list_arg_index], "-f") == 0 && file_arg_index == argc - 1) {
+        return 0;
+    }
+    return 1;
 }
