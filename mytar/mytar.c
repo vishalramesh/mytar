@@ -17,6 +17,7 @@ int is_prefix(char argv[], char name[]);
 int is_suffix(char argv[], char name[]);
 
 int handle_list_arg_error(char *argv[], int print_file[], int list_arg_index, int final_list_arg_index);
+void handle_list_arg_output(char *argv[], int print_file[], int list_arg_index, int final_list_arg_index);
 
 char get_block(char header[], FILE *file);
 void advance_offset_and_block(char size[], int *offset, int *block_no, FILE* file);
@@ -141,32 +142,29 @@ int main(int argc, char *argv[]) {
             }
         }
         if (list_arg_present) {
-            for (int q = list_arg_index; q <= final_list_arg_index; q++) {
-                if (is_equal(argv[q], name) || is_prefix(argv[q], name) || is_suffix(argv[q], name)) {
-                    int i = 0;
-                    int printable = 0;
-                    while (name[i] != '\0') {
-                        if (isalnum(name[i])) {
-                            printable = 1;
-                        }
-                        i += 1;
-                    }
-                    if (printable) {
-                        printf("%s\n", name);
-                        fflush(stdout);
-                    }
-                    print_file[q - list_arg_index] = 1; 
-                }
-            }
+
+            handle_list_arg_output(argv, print_file, list_arg_index, final_list_arg_index);
+            // for (int q = list_arg_index; q <= final_list_arg_index; q++) {
+            //     if (is_equal(argv[q], name) || is_prefix(argv[q], name) || is_suffix(argv[q], name)) {
+            //         int i = 0;
+            //         int printable = 0;
+            //         while (name[i] != '\0') {
+            //             if (isalnum(name[i])) {
+            //                 printable = 1;
+            //             }
+            //             i += 1;
+            //         }
+            //         if (printable) {
+            //             printf("%s\n", name);
+            //             fflush(stdout);
+            //         }
+            //         print_file[q - list_arg_index] = 1; 
+            //     }
+            // }
         }
 
         advance_offset_and_block(size, &offset, &block_no, file);
-        
-        // int size_len = sizeof(size) / sizeof(size[0]);
-        // offset += 512;
-        // offset += roundup_to_multiple(ascii_to_decimal(size, size_len), 512);
-        // block_no += (roundup_to_multiple(ascii_to_decimal(size, size_len), 512) / 512);
-        // fseek(file, offset, SEEK_SET);
+
     }
 
     if (list_arg_present) {
@@ -190,6 +188,27 @@ char get_block(char header[], FILE *file) {
         start += 1;
     }
     return d;
+}
+
+void handle_list_arg_output(char *argv[], int print_file, int list_arg_index, int final_list_arg_index) {
+
+    for (int q = list_arg_index; q <= final_list_arg_index; q++) {
+        if (is_equal(argv[q], name) || is_prefix(argv[q], name) || is_suffix(argv[q], name)) {
+            int i = 0;
+            int printable = 0;
+            while (name[i] != '\0') {
+                if (isalnum(name[i])) {
+                    printable = 1;
+                }
+                i += 1;
+            }
+            if (printable) {
+                printf("%s\n", name);
+                fflush(stdout);
+            }
+            print_file[q - list_arg_index] = 1; 
+        }
+    }
 }
 
 int handle_list_arg_error(char *argv[], int print_file[], int list_arg_index, int final_list_arg_index) {
