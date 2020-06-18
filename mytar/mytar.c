@@ -144,7 +144,7 @@ int main(int argc, char *argv[]) {
             print_list_arg_output(argv, print_file, file_name, list_arg_index, final_list_arg_index);
         }
 
-        if (!extract_arg_present) {
+        if (!extract_arg_present && args_present[3]) {
             printf("temp");
         }
 
