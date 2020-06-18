@@ -75,32 +75,6 @@ int main(int argc, char *argv[]) {
         int pos = 0;
         d = get_block(header, file, &pos);
         block_no += 1;
-        
-        if (is_zero_block(header)) {
-            
-            FILE *p = file;
-                    
-            for (int i = 0; i < 512; ++i) {
-                // Check partial block here?
-                if ((d = fgetc(p)) != '\0') {
-                    // may have to print other stderr
-                    printf("mytar: A lone zero block at %d\n", block_no);
-                    return 0;
-
-                    if (list_arg_present) {
-                        return print_list_arg_error(argv, print_file, list_arg_index, final_list_arg_index);
-                    }
-
-                    break;
-                }
-            }
-            // may have to print other stderr
-
-            if (list_arg_present) {
-                return print_list_arg_error(argv, print_file, list_arg_index, final_list_arg_index);
-            }
-
-        }
 
         if (d == EOF) {
             if (pos != 0) {
@@ -111,6 +85,31 @@ int main(int argc, char *argv[]) {
                 return 2;
             }
         }
+        
+        if (is_zero_block(header)) {
+            
+            FILE *p = file;
+                    
+            for (int i = 0; i < 512; ++i) {
+                // Check partial block here?
+                if ((d = fgetc(p)) != '\0') {
+                    
+                    if (list_arg_present) {
+                        int this_ret = print_list_arg_error(argv, print_file, list_arg_index, final_list_arg_index);
+                    }
+
+                    printf("mytar: A lone zero block at %d\n", block_no);
+                    return this_ret;
+                }
+            }
+
+            if (list_arg_present) {
+                return print_list_arg_error(argv, print_file, list_arg_index, final_list_arg_index);
+            }
+
+            return 0;
+        }
+
 
         for (int i = 0; i < 100; ++i) {
             file_name[i] = header[i];
