@@ -165,7 +165,7 @@ int main(int argc, char *argv[]) {
             continue;
         }
 
-        if (extract_arg_present && args_present[3] && !args_present[2]) {
+        if (extract_arg_present && args_present[3] && !args_present[2]) { // Without -v
             
         }
 
@@ -195,10 +195,10 @@ int write_to_file(FILE* file, FILE* create_file, int *offset, char size[]) {
         int d = '\0'; // Arbitrary
         if ((d = fgetc(p)) == EOF) {
             fflush(stdout);
-            // fprintf(stderr, "mytar: Unexpected EOF in archive\n");
-            // fflush(stdout);
-            // fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
-            // return 2;
+            fprintf(stderr, "mytar: Unexpected EOF in archive\n");
+            fflush(stdout);
+            fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
+            return 2;
         }
         fputc(d, create_file);
     }
