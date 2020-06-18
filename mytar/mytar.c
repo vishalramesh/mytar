@@ -154,17 +154,18 @@ int advance_offset_and_block(char size[], int *offset, int *block_no, FILE* file
     *offset += roundup_to_multiple(ascii_to_decimal(size, size_len), 512);
     *block_no += (roundup_to_multiple(ascii_to_decimal(size, size_len), 512) / 512);
     FILE *p = file;
-    fseek(file, *offset, SEEK_SET);
+    
     for (int i = temp; i < *offset; ++i) {
         int d;
         if ((d = fgetc(p)) == EOF) {
             fflush(stdout);
-            fprintf(stderr, "mytar: Unexpected EOF in archive shhs\n");
+            fprintf(stderr, "mytar: Unexpected EOF in archive\n");
             fflush(stdout);
             fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
             return 2;
         }
     }
+    fseek(file, *offset, SEEK_SET);
     return 0;
 }
 
