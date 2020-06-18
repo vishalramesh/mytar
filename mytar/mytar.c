@@ -145,7 +145,7 @@ int main(int argc, char *argv[]) {
         }
 
         if (!extract_arg_present) {
-            printf("");
+            printf("temp");
         }
 
         int advance_ret = advance_offset_and_block(size, &offset, &block_no, file);
