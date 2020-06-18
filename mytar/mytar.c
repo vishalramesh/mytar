@@ -11,7 +11,7 @@ int roundup_to_multiple(int decimal, int multiple);
 int power(int base, int exp);
 
 int is_zero_block(char header[]);
-void initialise_array_with_zeros(int print_file[], int len);
+void initialise_with_zeros(int print_file[], int len);
 
 int is_equal(char arg_file_name[], char file_name[]);
 int is_prefix(char arg_file_name[], char file_name[]);
@@ -55,9 +55,9 @@ int main(int argc, char *argv[]) {
         final_list_arg_index += 1;
     }
 
-    int print_file[final_list_arg_index - list_arg_index + 1];
-    initialise_array_with_zeros(print_file, final_list_arg_index - list_arg_index + 1);
-    
+    int print_file_size = final_list_arg_index - list_arg_index + 1;
+    int print_file[print_file_size];
+    initialise_with_zeros(print_file, print_file_size);
 
     int offset = 0;
     int block_no = 0;
@@ -83,12 +83,12 @@ int main(int argc, char *argv[]) {
                 if ((d = fgetc(p)) != '\0') {
                     // may have to print other stderr
                     printf("mytar: A lone zero block at %d\n", block_no);
-                    break;
+                    return 0;
                 }
             }
             // may have to print other stderr
 
-            break;
+            return 0;
         }
 
         if (d == EOF) {
@@ -370,7 +370,7 @@ int is_zero_block(char header[]) {
     return 1;
 }
 
-void initialise_array_with_zeros(int print_file[], int len) {
+void initialise_with_zeros(int print_file[], int len) {
     for (int i = 0; i < len; ++i) {
         print_file[i] = 0;
     }
