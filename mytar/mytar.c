@@ -103,7 +103,7 @@ int main(int argc, char *argv[]) {
         }
 
         if (d == EOF) {
-            if (pos != 0 && pos != 511) { // zero_block_found = 1;
+            if (pos != 0) { // zero_block_found = 1;
                 fflush(stdout);
                 fprintf(stderr, "mytar: Unexpected EOF in archive\n");
                 fflush(stdout);
@@ -172,7 +172,7 @@ int advance_offset_and_block(char size[], int *offset, int *block_no, FILE* file
 }
 
 char get_block(char header[], FILE *file, int *pos) {
-    char d;
+    int d;
     int start = 0;
     while (start < 512 && (d = fgetc(file)) != EOF) {
         header[start] = d;
