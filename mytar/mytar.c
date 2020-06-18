@@ -105,7 +105,7 @@ int main(int argc, char *argv[]) {
         if (d == EOF) {
             if (pos != 0) { // zero_block_found = 1;
                 fflush(stdout);
-                fprintf(stderr, "mytar: Unexpected EOF in archive shss\n");
+                fprintf(stderr, "mytar: Unexpected EOF in archive\n");
                 fflush(stdout);
                 fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
                 return 2;
@@ -140,10 +140,8 @@ int main(int argc, char *argv[]) {
 
         int advance_ret = advance_offset_and_block(size, &offset, &block_no, file);
         if (advance_ret == 2) {
-            printf("%d\n", advance_ret);
-            exit(advance_ret);
+            return advance_ret;
         }
-
     }
 
     if (list_arg_present) {
