@@ -121,13 +121,14 @@ int main(int argc, char *argv[]) {
         }
         typeflag = header[156];
 
-        if (strcmp(magic, "ustar") != 0) {
+        if (strcmp(magic, "ustar\0") != 0) {
             fflush(stdout);
             fprintf(stderr, "mytar: This does not look like a tar archive\n");
             fflush(stdout);
             fprintf(stderr, "mytar: Exiting with faliure status due to previous errors\n");
             return 2;
         }
+
 
         if (typeflag != '0' && typeflag != '\0') {
             fflush(stdout);
