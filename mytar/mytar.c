@@ -62,6 +62,7 @@ int main(int argc, char *argv[]) {
     char header[512];
     char file_name[100];
     char size[12];
+    char magic[6];
     char typeflag;
 
     while (file != NULL) {
@@ -115,9 +116,19 @@ int main(int argc, char *argv[]) {
         for (int i = 124; i < 136; ++i) {
             size[i - 124] = header[i];
         }
+        for (int i = 257; i < 263; ++i) {
+            magic[i - 257] = header[i];
+        }
         typeflag = header[156];
 
-        
+        if (strcmp(magic, "ustar") == 0) {
+            fflush(stdout);
+            fprintf(stderr, "mytar: This does not look like a tar archive\n");
+            fflush(stdout);
+            fprintf(stderr, "mytar: Exiting with faliure status due to previous errors\n");
+            return 2;
+        }
+
         if (typeflag != '0' && typeflag != '\0') {
             fflush(stdout);
             fprintf(stderr, "mytar: Unsupported header type: %d\n", typeflag);
