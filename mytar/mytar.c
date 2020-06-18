@@ -18,14 +18,18 @@ int is_equal(char arg_file_name[], char file_name[]);
 int is_prefix(char arg_file_name[], char file_name[]);
 int is_suffix(char arg_file_name[], char file_name[]);
 
+int get_final_arg_index(int argc, char *argv[], int list_arg_index);
+int check_list_arg_present(int argc, char *argv[], int list_arg_index, int file_arg_index);
+
+void print_default_list_output(char file_name[]);
+
 int print_list_arg_error(char *argv[], int print_file[], int list_arg_index, int final_list_arg_index);
 void print_list_arg_output(char *argv[], int print_file[], char file_name[], int list_arg_index, int final_list_arg_index);
 
 char get_block(char header[], FILE *file, int *pos);
 int advance_offset_and_block(char size[], int *offset, int *block_no, FILE* file);
 
-void print_default_list_output(char file_name[]);
-int check_list_arg_present(int argc, char *argv[], int list_arg_index, int file_arg_index);
+
 
 int main(int argc, char *argv[]) {
 
@@ -44,13 +48,14 @@ int main(int argc, char *argv[]) {
     
     int list_arg_present = check_list_arg_present(argc, argv, list_arg_index, file_arg_index);
    
-    int final_list_arg_index = list_arg_index;
-    while (final_list_arg_index < argc - 1) {
-        if (strcmp(argv[final_list_arg_index + 1], "-f") == 0) {
-            break;
-        }
-        final_list_arg_index += 1;
-    }
+    int final_list_arg_index = get_final_arg_index(argc, argv, list_arg_index);
+    // int final_list_arg_index = list_arg_index;
+    // while (final_list_arg_index < argc - 1) {
+    //     if (strcmp(argv[final_list_arg_index + 1], "-f") == 0) {
+    //         break;
+    //     }
+    //     final_list_arg_index += 1;
+    // }
 
     int pf_size = final_list_arg_index - list_arg_index + 1;
     int print_file[pf_size];
@@ -407,4 +412,15 @@ int check_list_arg_present(int argc, char *argv[], int list_arg_index, int file_
         return 0;
     }
     return 1;
+}
+
+int get_final_arg_index(int argc, char *argv[], int list_arg_index) {
+    int final_list_arg_index = list_arg_index;
+    while (final_list_arg_index < argc - 1) {
+        if (strcmp(argv[final_list_arg_index + 1], "-f") == 0) {
+            break;
+        }
+        final_list_arg_index += 1;
+    }
+    return final_list_arg_index;
 }
