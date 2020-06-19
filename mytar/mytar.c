@@ -73,6 +73,8 @@ int main(int argc, char *argv[]) {
 
     while (file != NULL) {
 
+        printf("shhs");
+
         int pos = 0;
         d = get_block(header, file, &pos);
         block_no += 1;
@@ -149,9 +151,9 @@ int main(int argc, char *argv[]) {
             print_list_arg_output(argv, print_file, file_name, list_arg_index, final_list_arg_index);
         }
 
-        printf("%d\n", extract_arg_present);
-        printf("%d\n", args_present[3]);
-        printf("%d\n", args_present[2]);
+        // printf("%d\n", extract_arg_present);
+        // printf("%d\n", args_present[3]);
+        // printf("%d\n", args_present[2]);
 
         if (!extract_arg_present && args_present[3] && !args_present[2]) { // Without -v
             FILE* create_file = fopen(file_name, "w");
