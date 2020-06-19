@@ -342,7 +342,7 @@ int arg_parse(int argc, char *argv[],
               int *list_arg_index, int *file_arg_index, int *extract_arg_index, 
               int args_present[], FILE **file) {
     
-    printf("shhjs\n");
+    // printf("shhjs\n");
 
     if (!(argc >= 2)) {
         fflush(stdout);
