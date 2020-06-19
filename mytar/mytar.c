@@ -143,6 +143,8 @@ int main(int argc, char *argv[]) {
             return 2;
         }
 
+        printf("shhs\n");
+
         if (!list_arg_present && args_present[1]) {
             print_default_list_output(file_name);
         }
