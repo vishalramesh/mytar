@@ -73,7 +73,7 @@ int main(int argc, char *argv[]) {
 
     while (file != NULL) {
 
-        printf("shhs");
+        // printf("shhs");
 
         int pos = 0;
         d = get_block(header, file, &pos);
@@ -341,6 +341,8 @@ int print_list_arg_error(char *argv[], int print_file[], int list_arg_index, int
 int arg_parse(int argc, char *argv[],
               int *list_arg_index, int *file_arg_index, int *extract_arg_index, 
               int args_present[], FILE **file) {
+    
+    printf("shhjs\n");
 
     if (!(argc >= 2)) {
         fflush(stdout);
