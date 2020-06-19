@@ -78,6 +78,8 @@ int main(int argc, char *argv[]) {
         int pos = 0;
         d = get_block(header, file, &pos);
         block_no += 1;
+	// printf("%s\n", header);
+	// fflush(stdout);
         
         if (is_zero_block(header)) {
             
@@ -94,6 +96,7 @@ int main(int argc, char *argv[]) {
                     }
 
                     printf("mytar: A lone zero block at %d\n", block_no); // ???
+		    fflush(stdout);
                     return this_ret;
                 }
             }
@@ -143,8 +146,6 @@ int main(int argc, char *argv[]) {
             return 2;
         }
 
-        printf("shhs\n");
-
         if (!list_arg_present && args_present[1]) {
             print_default_list_output(file_name);
         }
@@ -153,9 +154,9 @@ int main(int argc, char *argv[]) {
             print_list_arg_output(argv, print_file, file_name, list_arg_index, final_list_arg_index);
         }
 
-        // printf("%d\n", extract_arg_present);
-        // printf("%d\n", args_present[3]);
-        // printf("%d\n", args_present[2]);
+        //fprintf(stderr, "%d\n", extract_arg_present);
+        //fprintf(stderr, "%d\n", args_present[3]);
+        //fprintf(stderr, "%d\n", args_present[2]);
 
         if (!extract_arg_present && args_present[3] && !args_present[2]) { // Without -v
             FILE* create_file = fopen(file_name, "w");
@@ -171,13 +172,24 @@ int main(int argc, char *argv[]) {
         // printf("%d\n", args_present[2]);
         if (!extract_arg_present && args_present[3] && args_present[2]) { // With -v
             printf("%s\n", file_name);
+	    fflush(stdout);
             //printf("shjhs\n");
             FILE* create_file = fopen(file_name, "w");
             int write_ret = write_to_file(file, create_file, &offset, &block_no, size);
-            fclose(create_file);
+	    // printf("shhs\n");
+	    //fflush(stdout);
+            // fclose(create_file);
+	    // printf("%d\n", write_ret);
+	    // fflush(stdout);
             if (write_ret != 0) {
+	    	// fflush(stdout);
+	    	// fprintf(stderr, "shhs\n");
+		//fflush(stdout);
                 return write_ret;
             }
+	    //fflush(stdout);
+	    //fprintf(stderr, "shhs\n");
+	    
             //printf("shs\n");
             continue;
         }
@@ -263,6 +275,8 @@ int write_to_file(FILE* file, FILE* create_file, int *offset, int *block_no, cha
 
     *offset += 512;
     *offset += roundup_to_multiple(ascii_to_decimal(size, size_len), 512);
+    // printf("%d\n", *offset);
+    // fflush(stdout);
     *block_no += (roundup_to_multiple(ascii_to_decimal(size, size_len), 512) / 512);
 
     for (int i = 0; i < ascii_to_decimal(size, size_len); ++i) {
@@ -277,6 +291,8 @@ int write_to_file(FILE* file, FILE* create_file, int *offset, int *block_no, cha
         fputc(d, create_file);
     }
     fseek(file, *offset, SEEK_SET);
+    //printf("shhs\n");
+    //fflush(stdout);
     return 0;
 }
 
