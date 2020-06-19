@@ -80,7 +80,7 @@ int main(int argc, char *argv[]) {
         if (is_zero_block(header)) {
             
             FILE *p = file;
-                    
+            
             for (int i = 0; i < 512; ++i) {
                 // Check partial block here?
                 int e;
@@ -91,7 +91,7 @@ int main(int argc, char *argv[]) {
                         this_ret = print_list_arg_error(argv, print_file, list_arg_index, final_list_arg_index);
                     }
 
-                    printf("mytar: A lone zero block at %d\n", block_no);
+                    printf("mytar: A lone zero block at %d\n", block_no); // ???
                     return this_ret;
                 }
             }
