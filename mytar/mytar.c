@@ -158,7 +158,9 @@ int main(int argc, char *argv[]) {
             }
             continue;
         }
-
+        printf("%d\n", extract_arg_present);
+        printf("%d\n", args_present[3]);
+        printf("%d\n", args_present[2]);
         if (!extract_arg_present && args_present[3] && args_present[2]) { // With -v
             printf("%s\n", file_name);
             printf("shjhs\n");
