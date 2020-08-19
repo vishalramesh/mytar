@@ -4,6 +4,94 @@
 #include <string.h>
 
 
+int power(int base, int exp) {
+    int prod = 1;
+    for (int i = 1; i <= exp; ++i) {
+        prod = prod * base;
+    }
+    return prod;
+}
+
+int ascii_to_decimal(char size[], int len) {
+    int decimal = 0;
+    int digit_count = len - 1; // Not counting terminating '\0' 
+
+    for (int i = 0; i <= digit_count - 1; ++i) {
+        int digit = size[i] - '0';
+        decimal += digit * power(8, digit_count - 1 - i);
+    }
+
+    return decimal;
+}
+
+int roundup_to_multiple(int decimal, int multiple) {
+    int roundup = 0;
+    while (decimal > 0) {
+        roundup += multiple;
+        decimal -= multiple;
+    }
+    return roundup;
+}
+
+int is_equal(char arg_file_name[], char file_name[]) {
+    int i = 0;
+    while (arg_file_name[i] != '\0') {
+        i += 1;
+    }
+    int j = 0;
+    while (file_name[j] != '\0') {
+        j += 1;
+    }
+    if (i != j) {
+        return 0;
+    }
+    for (int k = 0; k < i; ++k) {
+        if (arg_file_name[k] != file_name[k]) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+int is_prefix(char arg_file_name[], char file_name[]) {
+    int i = 0;
+    while (arg_file_name[i] != '\0') {
+        i += 1;
+    }
+    if (arg_file_name[i - 1] != '*') {
+        return 0;
+    }
+    for (int j = 0; j < i - 1; j++) {
+        if (arg_file_name[j] != file_name[j]) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+int is_suffix(char arg_file_name[], char file_name[]) {
+    if (arg_file_name[0] != '*') {
+        return 0;
+    }
+    return is_equal(++arg_file_name, file_name);
+}
+
+int is_zero_block(char header[]) {
+    for (int i = 0; i < 512; ++i) {
+        if (header[i] != '\0') {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+void initialise_with_zeros(int print_file[], int len) {
+    for (int i = 0; i < len; ++i) {
+        print_file[i] = 0;
+    }
+}
+
+
 int advance_offset_and_block(char size[], int *offset, int *block_no, FILE* file) {
     int size_len = 12;
     *offset += 512;
@@ -159,93 +247,6 @@ int arg_parse(int argc, char *argv[],
 
     return 0;
 
-}
-
-int power(int base, int exp) {
-    int prod = 1;
-    for (int i = 1; i <= exp; ++i) {
-        prod = prod * base;
-    }
-    return prod;
-}
-
-int ascii_to_decimal(char size[], int len) {
-    int decimal = 0;
-    int digit_count = len - 1; // Not counting terminating '\0' 
-
-    for (int i = 0; i <= digit_count - 1; ++i) {
-        int digit = size[i] - '0';
-        decimal += digit * power(8, digit_count - 1 - i);
-    }
-
-    return decimal;
-}
-
-int roundup_to_multiple(int decimal, int multiple) {
-    int roundup = 0;
-    while (decimal > 0) {
-        roundup += multiple;
-        decimal -= multiple;
-    }
-    return roundup;
-}
-
-int is_equal(char arg_file_name[], char file_name[]) {
-    int i = 0;
-    while (arg_file_name[i] != '\0') {
-        i += 1;
-    }
-    int j = 0;
-    while (file_name[j] != '\0') {
-        j += 1;
-    }
-    if (i != j) {
-        return 0;
-    }
-    for (int k = 0; k < i; ++k) {
-        if (arg_file_name[k] != file_name[k]) {
-            return 0;
-        }
-    }
-    return 1;
-}
-
-int is_prefix(char arg_file_name[], char file_name[]) {
-    int i = 0;
-    while (arg_file_name[i] != '\0') {
-        i += 1;
-    }
-    if (arg_file_name[i - 1] != '*') {
-        return 0;
-    }
-    for (int j = 0; j < i - 1; j++) {
-        if (arg_file_name[j] != file_name[j]) {
-            return 0;
-        }
-    }
-    return 1;
-}
-
-int is_suffix(char arg_file_name[], char file_name[]) {
-    if (arg_file_name[0] != '*') {
-        return 0;
-    }
-    return is_equal(++arg_file_name, file_name);
-}
-
-int is_zero_block(char header[]) {
-    for (int i = 0; i < 512; ++i) {
-        if (header[i] != '\0') {
-            return 0;
-        }
-    }
-    return 1;
-}
-
-void initialise_with_zeros(int print_file[], int len) {
-    for (int i = 0; i < len; ++i) {
-        print_file[i] = 0;
-    }
 }
 
 void print_default_list_output(char file_name[]) {
