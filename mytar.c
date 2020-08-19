@@ -306,7 +306,7 @@ int main(int argc, char *argv[]) {
 
     //int pf_size = final_list_arg_index - list_arg_index + 1;
     int print_file[final_list_arg_index - list_arg_index + 1];
-    for (int i = 0; i < file_list_arg_index - list_arg_index + 1; ++i) {
+    for (int i = 0; i < final_list_arg_index - list_arg_index + 1; ++i) {
         print_file[i] = 0;
     }
     // initialise_with_zeros(print_file, pf_size);
