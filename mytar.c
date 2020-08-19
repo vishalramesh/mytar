@@ -127,7 +127,7 @@ char get_block(char header[], FILE *file, int *pos) {
 void print_list_arg_output(char *argv[], int print_file[], char file_name[], int list_arg_index, int final_list_arg_index) {
 
     for (int q = list_arg_index; q <= final_list_arg_index; q++) {
-        if (is_equal(argv[q], file_name) || is_prefix(argv[q], file_name)){// || is_suffix(argv[q], file_name)) {
+        if (is_equal(argv[q], file_name) || is_prefix(argv[q], file_name) || is_suffix(argv[q], file_name)) {
             printf("%s\n", file_name);
             fflush(stdout);
             print_file[q - list_arg_index] = 1; 
@@ -356,18 +356,18 @@ int main(int argc, char *argv[]) {
             return 0;
         }
 
-        if (d == EOF) {
-            if (pos != 0) {
-                fflush(stdout);
-                fprintf(stderr, "mytar: Unexpected EOF in archive\n");
-                fflush(stdout);
-                fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
-                return 2;
-            }
-            if (pos == 0) {
-                return 0;
-            }
-        }
+        // if (d == EOF) {
+        //     if (pos != 0) {
+        //         fflush(stdout);
+        //         fprintf(stderr, "mytar: Unexpected EOF in archive\n");
+        //         fflush(stdout);
+        //         fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
+        //         return 2;
+        //     }
+        //     if (pos == 0) {
+        //         return 0;
+        //     }
+        // }
         
         for (int i = 0; i < 100; ++i) {
             file_name[i] = header[i];
@@ -439,7 +439,7 @@ int main(int argc, char *argv[]) {
 
             int c = 0;
             for (int q = extract_arg_index; q <= final_extract_arg_index; q++) {
-                if (is_equal(argv[q], file_name) || is_prefix(argv[q], file_name)){// || is_suffix(argv[q], file_name)) {
+                if (is_equal(argv[q], file_name) || is_prefix(argv[q], file_name) || is_suffix(argv[q], file_name)) {
                     FILE* create_file = fopen(file_name, "w");
                     if (create_file == NULL) {
                         fflush(stdout);
