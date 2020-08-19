@@ -344,7 +344,7 @@ int main(int argc, char *argv[]) {
                 fprintf(stderr, "mytar: option requires an argument -- -%c\n", ch);
                 return 64;
             }
-            if (i < argc - 1 && (strcmp(argv[i + 1][0], '-') == 0)) {
+            if (i < argc - 1 && (strcmp(argv[i + 1], "-t") == 0)) {
                 fflush(stdout);
                 fprintf(stderr, "mytar: You must specify one of the options\n");
                 return 2;
@@ -392,7 +392,7 @@ int main(int argc, char *argv[]) {
     }
 
     if (strcmp(argv[extract_arg_index], "-f") == 0 && file_arg_index < argc - 1) {
-        extract_arg_index = file_arg_index + 1;
+        list_arg_index = file_arg_index + 1;
     }
 
     FILE *file = fopen(argv[file_arg_index], "r");
