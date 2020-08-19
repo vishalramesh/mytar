@@ -13,7 +13,7 @@ int power(int base, int exp) {
 
 int ascii_to_decimal(char size[], int len) {
     int decimal = 0;
-    int digit_count = len - 1; // Not counting terminating '\0' 
+    int digit_count = len - 1; // Not counting terminating '\0'
 
     for (int i = 0; i <= digit_count - 1; ++i) {
         int digit = size[i] - '0';
@@ -411,35 +411,7 @@ int main(int argc, char *argv[]) {
             continue;
         }
 
-        // if (extract_arg_present && args_present[3] && !args_present[2]) { // Without -v
-
-        //     int c = 0;
-        //     for (int q = extract_arg_index; q <= final_extract_arg_index; q++) {
-        //         if (is_equal(argv[q], file_name) || is_prefix(argv[q], file_name) || is_suffix(argv[q], file_name)) {
-        //             FILE* create_file = fopen(file_name, "w");
-        //             if (create_file == NULL) {
-        //                 fflush(stdout);
-        //                 fprintf(stderr, "mytar: %s: Cannot extract: Error creating file\n", argv[file_arg_index]);
-        //                 fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
-        //                 return 2;
-        //             }
-        //             int write_ret = write_to_file(file, create_file, &offset, &block_no, size);
-        //             fclose(create_file);
-        //             print_file[q - list_arg_index] = 1; 
-        //             if (write_ret != 0) {
-        //                 return write_ret;
-        //             }
-        //             c = 1;
-        //             break;
-        //         }
-        //     }
-        //     if (c) {
-        //         continue;
-        //     }
-            
-        // }
-
-        if (extract_arg_present && args_present[3]) {
+        if (extract_arg_present) {
 
             int c = 0;
             for (int q = extract_arg_index; q <= final_extract_arg_index; q++) {
