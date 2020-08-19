@@ -410,12 +410,11 @@ int main(int argc, char *argv[]) {
         }
 
         if (!extract_arg_present && args_present[3] && args_present[2]) { // With -v
-            printf("sjjs\n");
             printf("%s\n", file_name);
 	        fflush(stdout);
             FILE* create_file = fopen(file_name, "w");
             int write_ret = write_to_file(file, create_file, &offset, &block_no, size);
-
+            fclose(create_file);
             if (write_ret != 0) {
                 return write_ret;
             }
