@@ -395,8 +395,8 @@ int main(int argc, char *argv[]) {
         extract_arg_index = file_arg_index + 1;
     }
 
-    FILE *tar_file = fopen(argv[file_arg_index], "r");
-    if (tar_file == NULL) {
+    FILE *file = fopen(argv[file_arg_index], "r");
+    if (file == NULL) {
         fflush(stdout);
         fprintf(stderr, "mytar: %s: Cannot open: No such file or directory\n", argv[file_arg_index]);
         fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
@@ -430,15 +430,15 @@ int main(int argc, char *argv[]) {
     char magic[6];
     char typeflag;
 
-    while (tar_file != NULL) {
+    while (file != NULL) {
 
         int pos = 0;
-        d = get_block(header, tar_file, &pos);
+        d = get_block(header, file, &pos);
         block_no += 1;
 
         if (is_zero_block(header)) {
             
-            FILE *p = tar_file;
+            FILE *p = file;
             
             for (int i = 0; i < 512; ++i) {
                 // Check partial block here?
@@ -511,7 +511,7 @@ int main(int argc, char *argv[]) {
 
         if (!extract_arg_present && args_present[3] && !args_present[2]) { // Without -v
             FILE* create_file = fopen(file_name, "w");
-            int write_ret = write_to_file(tar_file, create_file, &offset, &block_no, size);
+            int write_ret = write_to_file(file, create_file, &offset, &block_no, size);
             fclose(create_file);
             if (write_ret != 0) {
                 return write_ret;
@@ -523,7 +523,7 @@ int main(int argc, char *argv[]) {
             printf("%s\n", file_name);
 	        fflush(stdout);
             FILE* create_file = fopen(file_name, "w");
-            int write_ret = write_to_file(tar_file, create_file, &offset, &block_no, size);
+            int write_ret = write_to_file(file, create_file, &offset, &block_no, size);
 
             if (write_ret != 0) {
                 return write_ret;
@@ -537,7 +537,7 @@ int main(int argc, char *argv[]) {
             for (int q = extract_arg_index; q <= final_extract_arg_index; q++) {
                 if (is_equal(argv[q], file_name) || is_prefix(argv[q], file_name) || is_suffix(argv[q], file_name)) {
                     FILE* create_file = fopen(file_name, "w");
-                    int write_ret = write_to_file(tar_file, create_file, &offset, &block_no, size);
+                    int write_ret = write_to_file(file, create_file, &offset, &block_no, size);
                     fclose(create_file);
                     print_file[q - list_arg_index] = 1; 
                     if (write_ret != 0) {
@@ -560,7 +560,7 @@ int main(int argc, char *argv[]) {
                 if (is_equal(argv[q], file_name) || is_prefix(argv[q], file_name) || is_suffix(argv[q], file_name)) {
                     printf("%s\n", file_name);
                     FILE* create_file = fopen(file_name, "w");
-                    int write_ret = write_to_file(tar_file, create_file, &offset, &block_no, size);
+                    int write_ret = write_to_file(file, create_file, &offset, &block_no, size);
                     fclose(create_file);
                     print_file[q - list_arg_index] = 1; 
                     if (write_ret != 0) {
@@ -576,7 +576,7 @@ int main(int argc, char *argv[]) {
 
         }
 
-        int advance_ret = advance_offset_and_block(size, &offset, &block_no, tar_file);
+        int advance_ret = advance_offset_and_block(size, &offset, &block_no, file);
         if (advance_ret == 2) {
             return advance_ret;
         }
