@@ -401,6 +401,12 @@ int main(int argc, char *argv[]) {
 
         if (!extract_arg_present && args_present[3] && !args_present[2]) { // Without -v
             FILE* create_file = fopen(file_name, "w");
+            if (create_file == null) {
+                fflush(stdout);
+                fprintf(stderr, "mytar: %s: Cannot extract: Error creating file\n", argv[file_arg_index]);
+                fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
+                return 2;
+            }
             int write_ret = write_to_file(file, create_file, &offset, &block_no, size);
             fclose(create_file);
             if (write_ret != 0) {
@@ -413,6 +419,12 @@ int main(int argc, char *argv[]) {
             printf("%s\n", file_name);
 	        fflush(stdout);
             FILE* create_file = fopen(file_name, "w");
+            if (create_file == null) {
+                fflush(stdout);
+                fprintf(stderr, "mytar: %s: Cannot extract: Error creating file\n", argv[file_arg_index]);
+                fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
+                return 2;
+            }
             int write_ret = write_to_file(file, create_file, &offset, &block_no, size);
             fclose(create_file);
             if (write_ret != 0) {
@@ -427,6 +439,12 @@ int main(int argc, char *argv[]) {
             for (int q = extract_arg_index; q <= final_extract_arg_index; q++) {
                 if (is_equal(argv[q], file_name) || is_prefix(argv[q], file_name) || is_suffix(argv[q], file_name)) {
                     FILE* create_file = fopen(file_name, "w");
+                    if (create_file == null) {
+                        fflush(stdout);
+                        fprintf(stderr, "mytar: %s: Cannot extract: Error creating file\n", argv[file_arg_index]);
+                        fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
+                        return 2;
+                    }
                     int write_ret = write_to_file(file, create_file, &offset, &block_no, size);
                     fclose(create_file);
                     print_file[q - list_arg_index] = 1; 
@@ -450,6 +468,12 @@ int main(int argc, char *argv[]) {
                 if (is_equal(argv[q], file_name) || is_prefix(argv[q], file_name) || is_suffix(argv[q], file_name)) {
                     printf("%s\n", file_name);
                     FILE* create_file = fopen(file_name, "w");
+                    if (create_file == null) {
+                        fflush(stdout);
+                        fprintf(stderr, "mytar: %s: Cannot extract: Error creating file\n", argv[file_arg_index]);
+                        fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
+                        return 2;
+                    }
                     int write_ret = write_to_file(file, create_file, &offset, &block_no, size);
                     fclose(create_file);
                     print_file[q - list_arg_index] = 1; 
