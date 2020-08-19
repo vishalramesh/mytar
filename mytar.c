@@ -151,6 +151,65 @@ int print_list_arg_error(char *argv[], int print_file[], int list_arg_index, int
     return 0;
 }
 
+void print_default_list_output(char file_name[]) {
+    int i = 0;
+    int printable = 0;
+    while (file_name[i] != '\0') {
+        if (isalnum(file_name[i])) {
+            printable = 1;
+        }
+        i += 1;
+    }
+    if (printable) {
+        printf("%s\n", file_name);
+        fflush(stdout);
+    }
+}
+
+int check_list_arg_present(int argc, char *argv[], int list_arg_index, int file_arg_index) {
+
+    if (list_arg_index >= argc) {
+        return 0;
+    } else if (strcmp(argv[list_arg_index], "-f") == 0 && file_arg_index == argc - 1) {
+        return 0;
+    }
+    return 1;
+}
+
+int get_final_arg_index(int argc, char *argv[], int list_arg_index) {
+    int final_list_arg_index = list_arg_index;
+    while (final_list_arg_index < argc - 1) {
+        if (strcmp(argv[final_list_arg_index + 1], "-f") == 0) {
+            break;
+        }
+        final_list_arg_index += 1;
+    }
+    return final_list_arg_index;
+}
+
+int write_to_file(FILE* file, FILE* create_file, int *offset, int *block_no, char size[]) {
+    int size_len = 12;
+    FILE *p = file;
+
+    *offset += 512;
+    *offset += roundup_to_multiple(ascii_to_decimal(size, size_len), 512);
+   
+    *block_no += (roundup_to_multiple(ascii_to_decimal(size, size_len), 512) / 512);
+
+    for (int i = 0; i < ascii_to_decimal(size, size_len); ++i) {
+        int d = '\0'; // Arbitrary
+        if ((d = fgetc(p)) == EOF) {
+            fflush(stdout);
+            fprintf(stderr, "mytar: Unexpected EOF in archive\n");
+            fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
+            return 2;
+        }
+        fputc(d, create_file);
+    }
+    fseek(file, *offset, SEEK_SET);
+    return 0;
+}
+
 int arg_parse(int argc, char *argv[],
               int *list_arg_index, int *file_arg_index, int *extract_arg_index, 
               int args_present[], FILE **file) {
@@ -245,65 +304,6 @@ int arg_parse(int argc, char *argv[],
 
 }
 
-void print_default_list_output(char file_name[]) {
-    int i = 0;
-    int printable = 0;
-    while (file_name[i] != '\0') {
-        if (isalnum(file_name[i])) {
-            printable = 1;
-        }
-        i += 1;
-    }
-    if (printable) {
-        printf("%s\n", file_name);
-        fflush(stdout);
-    }
-}
-
-int check_list_arg_present(int argc, char *argv[], int list_arg_index, int file_arg_index) {
-
-    if (list_arg_index >= argc) {
-        return 0;
-    } else if (strcmp(argv[list_arg_index], "-f") == 0 && file_arg_index == argc - 1) {
-        return 0;
-    }
-    return 1;
-}
-
-int get_final_arg_index(int argc, char *argv[], int list_arg_index) {
-    int final_list_arg_index = list_arg_index;
-    while (final_list_arg_index < argc - 1) {
-        if (strcmp(argv[final_list_arg_index + 1], "-f") == 0) {
-            break;
-        }
-        final_list_arg_index += 1;
-    }
-    return final_list_arg_index;
-}
-
-int write_to_file(FILE* file, FILE* create_file, int *offset, int *block_no, char size[]) {
-    int size_len = 12;
-    FILE *p = file;
-
-    *offset += 512;
-    *offset += roundup_to_multiple(ascii_to_decimal(size, size_len), 512);
-   
-    *block_no += (roundup_to_multiple(ascii_to_decimal(size, size_len), 512) / 512);
-
-    for (int i = 0; i < ascii_to_decimal(size, size_len); ++i) {
-        int d = '\0'; // Arbitrary
-        if ((d = fgetc(p)) == EOF) {
-            fflush(stdout);
-            fprintf(stderr, "mytar: Unexpected EOF in archive\n");
-            fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
-            return 2;
-        }
-        fputc(d, create_file);
-    }
-    fseek(file, *offset, SEEK_SET);
-    return 0;
-}
-
 
 int main(int argc, char *argv[]) {
 
@@ -320,7 +320,7 @@ int main(int argc, char *argv[]) {
     //     return arg_parse_ret;
     // }
 
-        int args_present[4] = {0, 0, 0, 0};
+    int args_present[4] = {0, 0, 0, 0};
 
     int file_arg_index = 0;
     int list_arg_index = 0;
@@ -392,9 +392,8 @@ int main(int argc, char *argv[]) {
     }
 
     if (strcmp(argv[extract_arg_index], "-f") == 0 && file_arg_index < argc - 1) {
-        list_arg_index = file_arg_index + 1;
+        extract_arg_index = file_arg_index + 1;
     }
-
 
     FILE *tar_file = fopen(argv[file_arg_index], "r");
     if (tar_file == NULL) {
