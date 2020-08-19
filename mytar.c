@@ -326,8 +326,6 @@ int main(int argc, char *argv[]) {
     int list_arg_index = 0;
     int extract_arg_index = 0;
 
-    int list_arg_present = 0;
-
     if (!(argc >= 2)) {
         fflush(stdout); 
         fprintf(stderr, "mytar: need at least one option\n");
@@ -416,10 +414,10 @@ int main(int argc, char *argv[]) {
     char magic[6];
     char typeflag;
 
-    while (file != NULL) {
+    while (tar_file != NULL) {
 
         int pos = 0;
-        d = get_block(header, file, &pos);
+        d = get_block(header, tar_file, &pos);
         block_no += 1;
 
         if (is_zero_block(header)) {
