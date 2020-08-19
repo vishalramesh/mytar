@@ -3,34 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-int arg_parse(int argc, char *argv[],
-              int *list_arg_index, int *file_arg_index, int *extract_arg_index, 
-              int args_present[], FILE** file);
-
-int ascii_to_decimal(char size[], int len);
-int roundup_to_multiple(int decimal, int multiple);
-int power(int base, int exp);
-
-int is_zero_block(char header[]);
-void initialise_with_zeros(int print_file[], int len);
-
-int is_equal(char arg_file_name[], char file_name[]);
-int is_prefix(char arg_file_name[], char file_name[]);
-int is_suffix(char arg_file_name[], char file_name[]);
-
-int get_final_arg_index(int argc, char *argv[], int list_arg_index);
-int check_list_arg_present(int argc, char *argv[], int list_arg_index, int file_arg_index);
-
-void print_default_list_output(char file_name[]);
-
-int print_list_arg_error(char *argv[], int print_file[], int list_arg_index, int final_list_arg_index);
-void print_list_arg_output(char *argv[], int print_file[], char file_name[], int list_arg_index, int final_list_arg_index);
-
-char get_block(char header[], FILE *file, int *pos);
-int advance_offset_and_block(char size[], int *offset, int *block_no, FILE* file);
-
-int write_to_file(FILE* file, FILE* create_file, int *offset, int *block_no, char size[]);
-
 int main(int argc, char *argv[]) {
 
     int list_arg_index = 0;
