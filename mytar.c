@@ -306,11 +306,11 @@ int main(int argc, char *argv[]) {
 
     int pf_size = final_list_arg_index - list_arg_index + 1;
     int print_file[pf_size];
-    initialise_with_zeros(print_file, pf_size);
+    // initialise_with_zeros(print_file, pf_size);
 
     int cr_size = final_extract_arg_index - extract_arg_index + 1;
     int create_file[cr_size];
-    initialise_with_zeros(create_file, cr_size);
+    // initialise_with_zeros(create_file, cr_size);
 
     int offset = 0;
     int block_no = 0;
