@@ -378,7 +378,7 @@ int main(int argc, char *argv[]) {
         typeflag = header[156];
 
         //if (magic[0] != 'u' || magic[1] != 's' || magic[2] != 't' || magic[3] != 'a' || magic[4] != 'r') {
-        if (strcmp(magic, "ustar") != 0)
+        if (strcmp(magic, "ustar") != 0) {
             fflush(stdout);
             fprintf(stderr, "mytar: This does not look like a tar archive\n");
             fprintf(stderr, "mytar: Exiting with failure status due to previous errors\n");
