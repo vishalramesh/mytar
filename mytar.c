@@ -356,18 +356,18 @@ int main(int argc, char *argv[]) {
             return 0;
         }
 
-        // if (d == EOF) {
-        //     if (pos != 0) {
-        //         fflush(stdout);
-        //         fprintf(stderr, "mytar: Unexpected EOF in archive\n");
-        //         fflush(stdout);
-        //         fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
-        //         return 2;
-        //     }
-        //     if (pos == 0) {
-        //         return 0;
-        //     }
-        // }
+        if (d == EOF) {
+            if (pos != 0) {
+                fflush(stdout);
+                fprintf(stderr, "mytar: Unexpected EOF in archive\n");
+                fflush(stdout);
+                fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
+                return 2;
+            }
+            if (pos == 0) {
+                return 0;
+            }
+        }
         
         for (int i = 0; i < 100; ++i) {
             file_name[i] = header[i];
