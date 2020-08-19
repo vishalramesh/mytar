@@ -40,6 +40,8 @@ ulimit -n 16
 nfiles=$(ulimit -n)
 ((nfiles == 16)) || { echo "Unexpected nfiles: $nfiles" >&2 && exit 1; }
 
+echo "shsh"
+
 # Extract the archive.
 mkdir "$name"
 cd "$name"
