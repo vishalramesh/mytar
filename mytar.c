@@ -147,13 +147,13 @@ int print_list_arg_error(char *argv[], int print_file[], int list_arg_index, int
 
 void print_default_list_output(char file_name[]) {
     int i = 0;
-    int printable = 0;
-    while (file_name[i] != '\0') {
-        if (isalnum(file_name[i])) {
-            printable = 1;
-        }
-        i += 1;
-    }
+    int printable = 1;
+    // while (file_name[i] != '\0') {
+    //     if (isalnum(file_name[i])) {
+    //         printable = 1;
+    //     }
+    //     i += 1;
+    // }
     if (printable) {
         printf("%s\n", file_name);
         fflush(stdout);
