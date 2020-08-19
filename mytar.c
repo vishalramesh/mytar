@@ -95,7 +95,6 @@ int advance_offset_and_block(char size[], int *offset, int *block_no, FILE* file
     for (int i = 0; i < dec; ++i) {
         int d;
         if ((d = fgetc(p)) == EOF) {
-            // fflush(stdout);
             fprintf(stderr, "mytar: Unexpected EOF in archive\n");
             fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
             return 2;
@@ -131,13 +130,11 @@ int print_list_arg_error(char *argv[], int print_file[], int list_arg_index, int
     int fail = 0;
     for (int i = list_arg_index; i <= final_list_arg_index; ++i) {
         if (!print_file[i - list_arg_index]) {
-            //fflush(stdout);
             fprintf(stderr, "mytar: %s: Not found in archive\n", argv[i]);
             fail = 1;
         }
     }
     if (fail) {
-        //fflush(stdout);
         fprintf(stderr, "mytar: Exiting with failure status due to previous errors\n");
         return 2;
     }
@@ -179,7 +176,6 @@ int write_to_file(FILE* file, FILE* create_file, int *offset, int *block_no, cha
     for (int i = 0; i < dec; ++i) {
         int d = '\0'; // Arbitrary
         if ((d = fgetc(p)) == EOF) {
-            //fflush(stdout);
             fprintf(stderr, "mytar: Unexpected EOF in archive\n");
             fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
             return 2;
@@ -199,7 +195,6 @@ int main(int argc, char *argv[]) {
     int extract_arg_index = 0;
 
     if (!(argc >= 2)) {
-        //fflush(stdout); 
         fprintf(stderr, "mytar: need at least one option\n");
         return 2;
     }
@@ -212,12 +207,10 @@ int main(int argc, char *argv[]) {
             continue;
         } else if (ch == 'f') {
             if (i >= argc - 1) {
-                //fflush(stdout);
                 fprintf(stderr, "mytar: option requires an argument -- -%c\n", ch);
                 return 64;
             }
             if (i < argc - 1 && (strcmp(argv[i + 1], "-t") == 0)) {
-                //fflush(stdout);
                 fprintf(stderr, "mytar: You must specify one of the options\n");
                 return 2;
             }
@@ -232,21 +225,18 @@ int main(int argc, char *argv[]) {
             extract_arg_index = i + 1;
             args_present[3] = 1;
         } else {
-            fflush(stdout);
             fprintf(stderr, "mytar: Unknown option: %c\n", ch);
             return 2;
         }
     }
 
     if (!args_present[0]) {
-        //fflush(stdout);
         fprintf(stderr, "mytar: Refusing to read archive contents from terminal (missing-f option?)\n");
         fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
         return 2;
     }
 
     if (args_present[1] && args_present[3]) {
-        //fflush(stdout);
         fprintf(stderr, "mytar: You may not specify more than one option\n");
         return 2;
     }
@@ -269,7 +259,6 @@ int main(int argc, char *argv[]) {
 
     FILE *file = fopen(argv[file_arg_index], "r");
     if (file == NULL) {
-        //fflush(stdout);
         fprintf(stderr, "mytar: %s: Cannot open: No such file or directory\n", argv[file_arg_index]);
         fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
         return 2;
@@ -332,9 +321,7 @@ int main(int argc, char *argv[]) {
 
         if (d == EOF) {
             if (pos != 0) {
-                //fflush(stdout);
                 fprintf(stderr, "mytar: Unexpected EOF in archive\n");
-                //fflush(stdout);
                 fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
                 return 2;
             }
@@ -355,14 +342,12 @@ int main(int argc, char *argv[]) {
         typeflag = header[156];
 
         if (magic[0] != 'u' || magic[1] != 's' || magic[2] != 't' || magic[3] != 'a' || magic[4] != 'r') {
-            //fflush(stdout);
             fprintf(stderr, "mytar: This does not look like a tar archive\n");
             fprintf(stderr, "mytar: Exiting with failure status due to previous errors\n");
             return 2;
         }
 
         if (typeflag != '0' && typeflag != '\0') {
-            //fflush(stdout);
             fprintf(stderr, "mytar: Unsupported header type: %d\n", typeflag);
             return 2;
         }
@@ -383,7 +368,6 @@ int main(int argc, char *argv[]) {
             }
             FILE* create_file = fopen(file_name, "w");
             if (create_file == NULL) {
-                //fflush(stdout);
                 fprintf(stderr, "mytar: %s: Cannot extract: Error creating file\n", argv[file_arg_index]);
                 fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
                 return 2;
@@ -406,7 +390,6 @@ int main(int argc, char *argv[]) {
                     }
                     FILE* create_file = fopen(file_name, "w");
                     if (create_file == NULL) {
-                        //fflush(stdout);
                         fprintf(stderr, "mytar: %s: Cannot extract: Error creating file\n", argv[file_arg_index]);
                         fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
                         return 2;
@@ -442,13 +425,11 @@ int main(int argc, char *argv[]) {
         int fail = 0;
         for (int i = extract_arg_index; i <= final_extract_arg_index; ++i) {
             if (!print_file[i - extract_arg_index]) {
-                //fflush(stdout);
                 fprintf(stderr, "mytar: %s: Not found in archive\n", argv[i]);
                 fail = 1;
             }
         }
         if (fail) {
-            //fflush(stdout);
             fprintf(stderr, "mytar: Exiting with failure status due to previous errors\n");
             return 2;
         }
