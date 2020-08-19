@@ -422,7 +422,7 @@ int main(int argc, char *argv[]) {
 
         if (is_zero_block(header)) {
             
-            FILE *p = file;
+            FILE *p = tar_file;
             
             for (int i = 0; i < 512; ++i) {
                 // Check partial block here?
