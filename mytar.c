@@ -93,12 +93,13 @@ void initialise_with_zeros(int print_file[], int len) {
 
 int advance_offset_and_block(char size[], int *offset, int *block_no, FILE* file) {
     int size_len = 12;
+    int dec = ascii_to_decimal(size, size_len);
     *offset += 512;
-    *offset += roundup_to_multiple(ascii_to_decimal(size, size_len), 512);
-    *block_no += (roundup_to_multiple(ascii_to_decimal(size, size_len), 512) / 512);
+    *offset += roundup_to_multiple(dec, 512);
+    *block_no += (roundup_to_multiple(dec, 512) / 512);
     FILE *p = file;
     
-    for (int i = 0; i < ascii_to_decimal(size, size_len); ++i) {
+    for (int i = 0; i < dec; ++i) {
         int d;
         if ((d = fgetc(p)) == EOF) {
             fflush(stdout);
@@ -191,12 +192,14 @@ int write_to_file(FILE* file, FILE* create_file, int *offset, int *block_no, cha
     int size_len = 12;
     FILE *p = file;
 
-    *offset += 512;
-    *offset += roundup_to_multiple(ascii_to_decimal(size, size_len), 512);
-   
-    *block_no += (roundup_to_multiple(ascii_to_decimal(size, size_len), 512) / 512);
+    int dec = ascii_to_decimal(size, size_len);
 
-    for (int i = 0; i < ascii_to_decimal(size, size_len); ++i) {
+    *offset += 512;
+    *offset += roundup_to_multiple(dec, 512);
+   
+    *block_no += (roundup_to_multiple(dec, 512) / 512);
+
+    for (int i = 0; i < dec; ++i) {
         int d = '\0'; // Arbitrary
         if ((d = fgetc(p)) == EOF) {
             fflush(stdout);
