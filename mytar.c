@@ -304,8 +304,11 @@ int main(int argc, char *argv[]) {
     int final_list_arg_index = get_final_arg_index(argc, argv, list_arg_index);
     int final_extract_arg_index = get_final_arg_index(argc, argv, extract_arg_index);
 
-    int pf_size = final_list_arg_index - list_arg_index + 1;
-    int print_file[pf_size];
+    //int pf_size = final_list_arg_index - list_arg_index + 1;
+    int print_file[final_list_arg_index - list_arg_index + 1];
+    for (int i = 0; i < file_list_arg_index - list_arg_index + 1; ++i) {
+        print_file[i] = 0;
+    }
     // initialise_with_zeros(print_file, pf_size);
 
     int offset = 0;
