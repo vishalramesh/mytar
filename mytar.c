@@ -379,6 +379,23 @@ int main(int argc, char *argv[]) {
         return 2;
     }
 
+    if (strcmp(argv[*list_arg_index], "-v") == 0) {
+        *list_arg_index += 1;
+    }
+
+    if (strcmp(argv[*extract_arg_index], "-v") == 0) {
+        *extract_arg_index += 1;
+    }
+    
+    if (strcmp(argv[*list_arg_index], "-f") == 0 && *file_arg_index < argc - 1) {
+        *list_arg_index = *file_arg_index + 1;
+    }
+
+    if (strcmp(argv[*extract_arg_index], "-f") == 0 && *file_arg_index < argc - 1) {
+        *list_arg_index = *file_arg_index + 1;
+    }
+
+
     FILE *tar_file = fopen(argv[file_arg_index], "r");
     if (tar_file == NULL) {
         fflush(stdout);
