@@ -507,7 +507,7 @@ int main(int argc, char *argv[]) {
             printf("%s\n", file_name);
 	        fflush(stdout);
             FILE* create_file = fopen(file_name, "w");
-            int write_ret = write_to_file(file, create_file, &offset, &block_no, size);
+            int write_ret = write_to_file(tarfile, create_file, &offset, &block_no, size);
 
             if (write_ret != 0) {
                 return write_ret;
