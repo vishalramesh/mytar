@@ -3,32 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-int write_to_file(FILE* file, FILE* create_file, int *offset, int *block_no, char size[]) {
-    int size_len = 12;
-    FILE *p = file;
-
-    *offset += 512;
-    *offset += roundup_to_multiple(ascii_to_decimal(size, size_len), 512);
-    // printf("%d\n", *offset);
-    // fflush(stdout);
-    *block_no += (roundup_to_multiple(ascii_to_decimal(size, size_len), 512) / 512);
-
-    for (int i = 0; i < ascii_to_decimal(size, size_len); ++i) {
-        int d = '\0'; // Arbitrary
-        if ((d = fgetc(p)) == EOF) {
-            fflush(stdout);
-            fprintf(stderr, "mytar: Unexpected EOF in archive\n");
-            fflush(stdout);
-            fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
-            return 2;
-        }
-        fputc(d, create_file);
-    }
-    fseek(file, *offset, SEEK_SET);
-    //printf("shhs\n");
-    //fflush(stdout);
-    return 0;
-}
 
 int advance_offset_and_block(char size[], int *offset, int *block_no, FILE* file) {
     int size_len = 12;
@@ -310,6 +284,32 @@ int get_final_arg_index(int argc, char *argv[], int list_arg_index) {
     return final_list_arg_index;
 }
 
+int write_to_file(FILE* file, FILE* create_file, int *offset, int *block_no, char size[]) {
+    int size_len = 12;
+    FILE *p = file;
+
+    *offset += 512;
+    *offset += roundup_to_multiple(ascii_to_decimal(size, size_len), 512);
+    // printf("%d\n", *offset);
+    // fflush(stdout);
+    *block_no += (roundup_to_multiple(ascii_to_decimal(size, size_len), 512) / 512);
+
+    for (int i = 0; i < ascii_to_decimal(size, size_len); ++i) {
+        int d = '\0'; // Arbitrary
+        if ((d = fgetc(p)) == EOF) {
+            fflush(stdout);
+            fprintf(stderr, "mytar: Unexpected EOF in archive\n");
+            fflush(stdout);
+            fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
+            return 2;
+        }
+        fputc(d, create_file);
+    }
+    fseek(file, *offset, SEEK_SET);
+    //printf("shhs\n");
+    //fflush(stdout);
+    return 0;
+}
 
 
 int main(int argc, char *argv[]) {
