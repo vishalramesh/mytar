@@ -316,6 +316,7 @@ int main(int argc, char *argv[]) {
         d = get_block(header, file, &pos);
         fseek(file, offset + 512, SEEK_SET);
         block_no += 1;
+        fprintf(stderr, "%s\n", header);
 
         if (is_zero_block(header)) {
             
@@ -441,7 +442,6 @@ int main(int argc, char *argv[]) {
 
         }
         
-        fprintf(stderr, "shhs\n");
         int advance_ret = advance_offset(size, &offset, &block_no, file);
         if (advance_ret == 2) {
             return advance_ret;
