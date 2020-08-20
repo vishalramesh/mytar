@@ -100,7 +100,7 @@ int advance_offset(char size[], int *offset, int *block_no, FILE* file) {
             return 2;
         }
     }
-    fprintf(stderr, "%d\n", *offset);
+    // fprintf(stderr, "%d\n", *offset);
     fseek(file, *offset, SEEK_SET);
     if (file == NULL) {
         return 2;
