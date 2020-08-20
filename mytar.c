@@ -309,7 +309,7 @@ int main(int argc, char *argv[]) {
 
         int pos = 0;
         d = get_block(header, file, &pos);
-        fseek(file, offset, SEEK_SET)
+        fseek(file, offset, SEEK_SET);
         block_no += 1;
 
         if (is_zero_block(header)) {
