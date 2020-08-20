@@ -216,11 +216,12 @@ int main(int argc, char *argv[]) {
             continue;
         } else if (ch == 'f') {
             if (i >= argc - 1) {
-                fprintf(stderr, "mytar: option requires an argument -- -%c\n", ch);
+                fprintf(stderr, "mytar: option requires an argument";
+                fprintf(stderr, " -- -%c\n", ch);
                 return 64;
             }
             if (i < argc - 1 && (strcmp(argv[i + 1], "-t") == 0)) {
-                fprintf(stderr, "mytar: You must specify one of the options\n");
+                fprintf(stderr, "mytar: Must specify one of the options\n");
                 return 2;
             }
             file_arg_index = i + 1;
@@ -240,7 +241,8 @@ int main(int argc, char *argv[]) {
     }
 
     if (!args_present[0]) {
-        fprintf(stderr, "mytar: Refusing to read archive contents from terminal (missing-f option?)\n");
+        fprintf(stderr, "mytar: Refusing to read archive contents");
+        fprintf(stderr, " (missing -f option?)\n");
         fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
         return 2;
     }
@@ -331,7 +333,8 @@ int main(int argc, char *argv[]) {
         if (d == EOF) {
             if (pos != 0) {
                 fprintf(stderr, "mytar: Unexpected EOF in archive\n");
-                fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
+                fprintf(stderr, "mytar: Error is not recoverable:");
+                fprintf(stderr, " exiting now\n");
                 return 2;
             }
             if (pos == 0) {
