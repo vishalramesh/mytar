@@ -101,6 +101,9 @@ int advance_offset_and_block(char size[], int *offset, int *block_no, FILE* file
         }
     }
     fseek(file, *offset, SEEK_SET);
+    if (file == NULL) {
+        return 2;
+    }
     return 0;
 }
 
@@ -342,7 +345,6 @@ int main(int argc, char *argv[]) {
         magic[5] = '\0';
         typeflag = header[156];
 
-        // if (magic[0] != 'u' || magic[1] != 's' || magic[2] != 't' || magic[3] != 'a' || magic[4] != 'r') {
         if (strcmp(magic, "ustar") != 0) {
             fprintf(stderr, "mytar: This does not look like a tar archive\n");
             fprintf(stderr, "mytar: Exiting with failure status due to previous errors\n");
