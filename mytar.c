@@ -380,6 +380,7 @@ int main(int argc, char *argv[]) {
         }
 
         if (!list_arg_present && args_present[1]) {
+            printf("shhs\n");
             printf("%s\n", file_name);
             fflush(stdout);
         }
