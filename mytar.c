@@ -118,21 +118,21 @@ char get_block(char header[], FILE *file, int *pos) {
     return d;
 }
 
-void print_list_arg_output(char *argv[], int print_file[], char file_name[], int list_arg_index, int final_list_arg_index) {
+void print_list_arg_output(char *argv[], int print_file[], char file_name[], int list_index, int final_list_index) {
 
-    for (int q = list_arg_index; q <= final_list_arg_index; q++) {
+    for (int q = list_index; q <= final_list_index; q++) {
         if (is_equal(argv[q], file_name) || is_prefix(argv[q], file_name) || is_suffix(argv[q], file_name)) {
             printf("%s\n", file_name);
             fflush(stdout);
-            print_file[q - list_arg_index] = 1; 
+            print_file[q - list_index] = 1; 
         }
     }
 }
 
-int print_list_arg_error(char *argv[], int print_file[], int list_arg_index, int final_list_arg_index) {
+int print_list_arg_error(char *argv[], int print_file[], int list_index, int final_list_index) {
     int fail = 0;
-    for (int i = list_arg_index; i <= final_list_arg_index; ++i) {
-        if (!print_file[i - list_arg_index]) {
+    for (int i = list_index; i <= final_list_index; ++i) {
+        if (!print_file[i - list_index]) {
             fprintf(stderr, "mytar: %s: Not found in archive\n", argv[i]);
             fail = 1;
         }
@@ -144,25 +144,25 @@ int print_list_arg_error(char *argv[], int print_file[], int list_arg_index, int
     return 0;
 }
 
-int la_present(int argc, char *argv[], int list_arg_index, int file_arg_index) {
+int la_present(int argc, char *argv[], int list_index, int file_index) {
 
-    if (list_arg_index >= argc) {
+    if (list_index >= argc) {
         return 0;
-    } else if (strcmp(argv[list_arg_index], "-f") == 0 && file_arg_index == argc - 1) {
+    } else if (strcmp(argv[list_index], "-f") == 0 && file_index == argc - 1) {
         return 0;
     }
     return 1;
 }
 
-int get_final_arg_index(int argc, char *argv[], int list_arg_index) {
-    int final_list_arg_index = list_arg_index;
-    while (final_list_arg_index < argc - 1) {
-        if (strcmp(argv[final_list_arg_index + 1], "-f") == 0) {
+int get_final_arg_index(int argc, char *argv[], int list_index) {
+    int final_list_index = list_index;
+    while (final_list_index < argc - 1) {
+        if (strcmp(argv[final_list_index + 1], "-f") == 0) {
             break;
         }
-        final_list_arg_index += 1;
+        final_list_index += 1;
     }
-    return final_list_arg_index;
+    return final_list_index;
 }
 
 int write_to_file(FILE* file, FILE* create_file, int *offset, int *block_no, char size[]) {
@@ -199,9 +199,9 @@ int main(int argc, char *argv[]) {
 
     int args_present[4] = {0, 0, 0, 0};
 
-    int file_arg_index = 0;
-    int list_arg_index = 0;
-    int extract_arg_index = 0;
+    int file_index = 0;
+    int list_index = 0;
+    int extract_index = 0;
 
     if (!(argc >= 2)) {
         fprintf(stderr, "mytar: need at least one option\n");
@@ -224,15 +224,15 @@ int main(int argc, char *argv[]) {
                 fprintf(stderr, "mytar: Must specify one of the options\n");
                 return 2;
             }
-            file_arg_index = i + 1;
+            file_index = i + 1;
             args_present[0] = 1;
         } else if (ch == 't') {
-            list_arg_index = i + 1;
+            list_index = i + 1;
             args_present[1] = 1;            
         } else if (ch == 'v') {
             args_present[2] = 1;  
         } else if (ch == 'x') {
-            extract_arg_index = i + 1;
+            extract_index = i + 1;
             args_present[3] = 1;
         } else {
             fprintf(stderr, "mytar: Unknown option: %c\n", ch);
@@ -252,37 +252,37 @@ int main(int argc, char *argv[]) {
         return 2;
     }
 
-    if (strcmp(argv[list_arg_index], "-v") == 0) {
-        list_arg_index += 1;
+    if (strcmp(argv[list_index], "-v") == 0) {
+        list_index += 1;
     }
 
-    if (strcmp(argv[extract_arg_index], "-v") == 0) {
-        extract_arg_index += 1;
+    if (strcmp(argv[extract_index], "-v") == 0) {
+        extract_index += 1;
     }
     
-    if (strcmp(argv[list_arg_index], "-f") == 0 && file_arg_index < argc - 1) {
-        list_arg_index = file_arg_index + 1;
+    if (strcmp(argv[list_index], "-f") == 0 && file_index < argc - 1) {
+        list_index = file_index + 1;
     }
 
-    if (strcmp(argv[extract_arg_index], "-f") == 0 && file_arg_index < argc - 1) {
-        list_arg_index = file_arg_index + 1;
+    if (strcmp(argv[extract_index], "-f") == 0 && file_index < argc - 1) {
+        list_index = file_index + 1;
     }
 
-    FILE *file = fopen(argv[file_arg_index], "r");
+    FILE *file = fopen(argv[file_index], "r");
     if (file == NULL) {
-        fprintf(stderr, "mytar: %s: Cannot open: No such file or directory\n", argv[file_arg_index]);
+        fprintf(stderr, "mytar: %s: Cannot open: No such file or directory\n", argv[file_index]);
         fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
         return 2;
     }
     
-    int list_arg_present = la_present(argc, argv, list_arg_index, file_arg_index) && args_present[1];
-    int extract_arg_present = la_present(argc, argv, extract_arg_index, file_arg_index) && args_present[3];
+    int list_arg_present = la_present(argc, argv, list_index, file_index) && args_present[1];
+    int extract_arg_present = la_present(argc, argv, extract_index, file_index) && args_present[3];
    
-    int final_list_arg_index = get_final_arg_index(argc, argv, list_arg_index);
-    int final_extract_arg_index = get_final_arg_index(argc, argv, extract_arg_index);
+    int final_list_index = get_final_arg_index(argc, argv, list_index);
+    int final_extract_index = get_final_arg_index(argc, argv, extract_index);
 
-    int print_file[final_list_arg_index - list_arg_index + 1];
-    for (int i = 0; i < final_list_arg_index - list_arg_index + 1; ++i) {
+    int print_file[final_list_index - list_index + 1];
+    for (int i = 0; i < final_list_index - list_index + 1; ++i) {
         print_file[i] = 0;
     }
 
@@ -314,7 +314,7 @@ int main(int argc, char *argv[]) {
                     
                     int this_ret = 0;
                     if (list_arg_present) {
-                        this_ret = print_list_arg_error(argv, print_file, list_arg_index, final_list_arg_index);
+                        this_ret = print_list_arg_error(argv, print_file, list_index, final_list_index);
                     }
 
                     printf("mytar: A lone zero block at %d\n", block_no); // ???
@@ -324,7 +324,7 @@ int main(int argc, char *argv[]) {
             }
 
             if (list_arg_present) {
-                return print_list_arg_error(argv, print_file, list_arg_index, final_list_arg_index);
+                return print_list_arg_error(argv, print_file, list_index, final_list_index);
             }
 
             return 0;
@@ -371,7 +371,7 @@ int main(int argc, char *argv[]) {
         }
 
         if (list_arg_present) {
-            print_list_arg_output(argv, print_file, file_name, list_arg_index, final_list_arg_index);
+            print_list_arg_output(argv, print_file, file_name, list_index, final_list_index);
         }
 
         if (!extract_arg_present && args_present[3]) {
@@ -381,7 +381,7 @@ int main(int argc, char *argv[]) {
             }
             FILE* create_file = fopen(file_name, "w");
             if (create_file == NULL) {
-                fprintf(stderr, "mytar: %s: Cannot extract: Error creating file\n", argv[file_arg_index]);
+                fprintf(stderr, "mytar: %s: Cannot extract: Error creating file\n", argv[file_index]);
                 fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
                 return 2;
             }
@@ -396,20 +396,20 @@ int main(int argc, char *argv[]) {
         if (extract_arg_present) {
 
             int c = 0;
-            for (int q = extract_arg_index; q <= final_extract_arg_index; q++) {
+            for (int q = extract_index; q <= final_extract_index; q++) {
                 if (is_equal(argv[q], file_name) || is_prefix(argv[q], file_name) || is_suffix(argv[q], file_name)) {
                     if (args_present[2]) {
                         printf("%s\n", file_name);
                     }
                     FILE* create_file = fopen(file_name, "w");
                     if (create_file == NULL) {
-                        fprintf(stderr, "mytar: %s: Cannot extract: Error creating file\n", argv[file_arg_index]);
+                        fprintf(stderr, "mytar: %s: Cannot extract: Error creating file\n", argv[file_index]);
                         fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
                         return 2;
                     }
                     int write_ret = write_to_file(file, create_file, &offset, &block_no, size);
                     fclose(create_file);
-                    print_file[q - list_arg_index] = 1; 
+                    print_file[q - list_index] = 1; 
                     if (write_ret != 0) {
                         return write_ret;
                     }
@@ -430,14 +430,14 @@ int main(int argc, char *argv[]) {
     }
 
     if (list_arg_present) {
-        return print_list_arg_error(argv, print_file, list_arg_index, final_list_arg_index);
+        return print_list_arg_error(argv, print_file, list_index, final_list_index);
     }
 
     if (extract_arg_present) {
 
         int fail = 0;
-        for (int i = extract_arg_index; i <= final_extract_arg_index; ++i) {
-            if (!print_file[i - extract_arg_index]) {
+        for (int i = extract_index; i <= final_extract_index; ++i) {
+            if (!print_file[i - extract_index]) {
                 fprintf(stderr, "mytar: %s: Not found in archive\n", argv[i]);
                 fail = 1;
             }
