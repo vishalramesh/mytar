@@ -446,6 +446,9 @@ int main(int argc, char *argv[]) {
         if (advance_ret == 2) {
             return advance_ret;
         }
+        FILE * q = file;
+        if (fgetc(q) == EOF)
+            return 0;
     }
 
     if (list_arg_present) {
