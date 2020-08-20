@@ -110,12 +110,12 @@ int advance_offset(char size[], int *offset, int *block_no, FILE* file) {
 char get_block(char header[], FILE *file, int *pos) {
     int d;
     int start = 0;
-    // fread(header, 512, 1, file);
-    while (start < 512 && (d = fgetc(file)) != EOF) {
-        header[start] = d;
-        start += 1;
-    }
-    // start = 512;
+    fread(header, 512, 1, file);
+    // while (start < 512 && (d = fgetc(file)) != EOF) {
+    //     header[start] = d;
+    //     start += 1;
+    // }
+    start = 512;
     *pos = start;
     return d;
 }
@@ -309,6 +309,7 @@ int main(int argc, char *argv[]) {
 
         int pos = 0;
         d = get_block(header, file, &pos);
+        fseek(file, offset, SEEK_SET)
         block_no += 1;
 
         if (is_zero_block(header)) {
@@ -434,7 +435,7 @@ int main(int argc, char *argv[]) {
             }
 
         }
-
+        
         int advance_ret = advance_offset(size, &offset, &block_no, file);
         if (advance_ret == 2) {
             return advance_ret;
