@@ -115,6 +115,7 @@ char get_block(char header[], FILE *file, int *pos) {
         start += 1;
     }
     *pos = start;
+    // fread(header, 512, 1, file);
     return d;
 }
 
@@ -123,7 +124,7 @@ int is_condition(char ar[], char file_name[]) {
         is_suffix(ar, file_name);
 }
 
-void print_list_arg_output(char *argv[], int print_file[], char file_name[], int list_start, int list_end) {
+void print_list_output(char *argv[], int print_file[], char file_name[], int list_start, int list_end) {
 
     for (int q = list_start; q <= list_end; q++) {
         if (is_condition(argv[q], file_name)) {
@@ -134,7 +135,7 @@ void print_list_arg_output(char *argv[], int print_file[], char file_name[], int
     }
 }
 
-int print_list_arg_error(char *argv[], int print_file[], int list_start, int list_end) {
+int print_list_error(char *argv[], int print_file[], int list_start, int list_end) {
     int fail = 0;
     for (int i = list_start; i <= list_end; ++i) {
         if (!print_file[i - list_start]) {
@@ -159,7 +160,7 @@ int la_present(int argc, char *argv[], int list_start, int file_index) {
     return 1;
 }
 
-int get_end_arg_index(int argc, char *argv[], int list_start) {
+int get_arg_end(int argc, char *argv[], int list_start) {
     int list_end = list_start;
     while (list_end < argc - 1) {
         if (strcmp(argv[list_end + 1], "-f") == 0) {
@@ -284,8 +285,8 @@ int main(int argc, char *argv[]) {
     int list_arg_present = la_present(argc, argv, list_start, file_index) && args_present[1];
     int extract_arg_present = la_present(argc, argv, extract_index, file_index) && args_present[3];
    
-    int list_end = get_end_arg_index(argc, argv, list_start);
-    int end_extract_index = get_end_arg_index(argc, argv, extract_index);
+    int list_end = get_arg_end(argc, argv, list_start);
+    int end_extract_index = get_arg_end(argc, argv, extract_index);
 
     int print_file[list_end - list_start + 1];
     for (int i = 0; i < list_end - list_start + 1; ++i) {
@@ -320,7 +321,7 @@ int main(int argc, char *argv[]) {
                     
                     int this_ret = 0;
                     if (list_arg_present) {
-                        this_ret = print_list_arg_error(argv, print_file, list_start, list_end);
+                        this_ret = print_list_error(argv, print_file, list_start, list_end);
                     }
 
                     printf("mytar: A lone zero block at %d\n", block_no); // ???
@@ -330,7 +331,7 @@ int main(int argc, char *argv[]) {
             }
 
             if (list_arg_present) {
-                return print_list_arg_error(argv, print_file, list_start, list_end);
+                return print_list_error(argv, print_file, list_start, list_end);
             }
 
             return 0;
@@ -377,7 +378,7 @@ int main(int argc, char *argv[]) {
         }
 
         if (list_arg_present) {
-            print_list_arg_output(argv, print_file, file_name, list_start, list_end);
+            print_list_output(argv, print_file, file_name, list_start, list_end);
         }
 
         if (!extract_arg_present && args_present[3]) {
@@ -440,7 +441,7 @@ int main(int argc, char *argv[]) {
     }
 
     if (list_arg_present) {
-        return print_list_arg_error(argv, print_file, list_start, list_end);
+        return print_list_error(argv, print_file, list_start, list_end);
     }
 
     if (extract_arg_present) {
