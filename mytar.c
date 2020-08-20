@@ -84,7 +84,7 @@ int is_zero_block(char header[]) {
     return 1;
 }
 
-int advance_offset_and_block(char size[], int *offset, int *block_no, FILE* file) {
+int advance_offset(char size[], int *offset, int *block_no, FILE* file) {
     int size_len = 12;
     int dec = ascii_to_decimal(size, size_len);
     *offset += 512;
@@ -428,7 +428,7 @@ int main(int argc, char *argv[]) {
 
         }
 
-        int advance_ret = advance_offset_and_block(size, &offset, &block_no, file);
+        int advance_ret = advance_offset(size, &offset, &block_no, file);
         if (advance_ret == 2) {
             return advance_ret;
         }
@@ -447,12 +447,11 @@ int main(int argc, char *argv[]) {
                 fail = 1;
             }
         }
-        if (fail) {
-            fprintf(stderr, "mytar: Exiting with failure status due to previous errors\n");
-            return 2;
+        if (!fail) {
+            return 0;
         }
-        return 0;
-        
+        fprintf(stderr, "mytar: Exiting with failure status due to previous errors\n");
+        return 2;
     }
 
     fclose(file);
