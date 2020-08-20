@@ -110,12 +110,13 @@ int advance_offset(char size[], int *offset, int *block_no, FILE* file) {
 char get_block(char header[], FILE *file, int *pos) {
     int d;
     int start = 0;
+    fread(header, 512, 1, file);
     while (start < 512 && (d = fgetc(file)) != EOF) {
         header[start] = d;
         start += 1;
     }
     *pos = start;
-    fread(header, 512, 1, file);
+    // fread(header, 512, 1, file);
     return d;
 }
 
