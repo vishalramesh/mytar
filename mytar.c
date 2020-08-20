@@ -118,6 +118,9 @@ char get_block(char header[], FILE *file, int *pos) {
     // *pos = start;
     // start = 512;
     d = header[start - 1];
+    if (start == 0) {
+        d = EOF;
+    }
     *pos = start;
     fprintf(stderr, "%d\n", start);
     fprintf(stderr, "%d\n", *pos);
