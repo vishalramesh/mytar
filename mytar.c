@@ -111,25 +111,11 @@ char get_block(char header[], FILE *file, int *pos) {
     int d;
     int start = 0;
     start = fread(header, 512, 1, file);
-    // while (start < 512 && (d = fgetc(file)) != EOF) {
-    //     header[start] = d;
-    //     start += 1;
-    // }
-    // *pos = start;
-    // start = 512;
     d = header[start - 1];
     if (start == 0) {
         d = EOF;
     }
     *pos = start;
-    //fprintf(stderr, "%d\n", start);
-    //fprintf(stderr, "%d\n", *pos);
-    // if (d == EOF) {
-    //     *pos = start - 1;
-    // } else {
-    //     *pos = start;
-    // }
-    
     return d;
 }
 
