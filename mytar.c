@@ -216,7 +216,7 @@ int main(int argc, char *argv[]) {
             continue;
         } else if (ch == 'f') {
             if (i >= argc - 1) {
-                fprintf(stderr, "mytar: option requires an argument";
+                fprintf(stderr, "mytar: option requires an argument");
                 fprintf(stderr, " -- -%c\n", ch);
                 return 64;
             }
