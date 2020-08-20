@@ -339,6 +339,7 @@ int main(int argc, char *argv[]) {
         for (int i = 257; i < 263; ++i) {
             magic[i - 257] = header[i];
         }
+        printf("%d\n", magic[5]);
         magic[5] = '\0';
         typeflag = header[156];
 
