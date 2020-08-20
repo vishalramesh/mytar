@@ -116,8 +116,7 @@ char get_block(char header[], FILE *file, int *pos) {
     //     start += 1;
     // }
     // start = 512;
-    // if (start != 512)
-    //     d = EOF;
+    d = header[start - 1];
     *pos = start;
     return d;
 }
