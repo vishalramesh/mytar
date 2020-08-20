@@ -316,7 +316,6 @@ int main(int argc, char *argv[]) {
         d = get_block(header, file, &pos);
         fseek(file, offset + 512, SEEK_SET);
         block_no += 1;
-        fprintf(stderr, "%s\n", header);
 
         if (is_zero_block(header)) {
             
