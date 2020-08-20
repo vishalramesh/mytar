@@ -346,6 +346,7 @@ int main(int argc, char *argv[]) {
 
         if (d == EOF) {
             if (pos != 0) {
+                fprintf(stderr, "jsjs\n");
                 fprintf(stderr, "mytar: Unexpected EOF in archive\n");
                 fprintf(stderr, "mytar: Error is not recoverable:");
                 fprintf(stderr, " exiting now\n");
