@@ -118,7 +118,7 @@ char get_block(char header[], FILE *file, int *pos) {
     // start = 512;
     d = header[start - 1];
     if (d == EOF) {
-        pos = start - 1;
+        *pos = start - 1;
     } else {
         *pos = start;
     }
