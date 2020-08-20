@@ -441,7 +441,7 @@ int main(int argc, char *argv[]) {
 
         }
         
-        printf("shhs\n");
+        fprintf(stderr, "shhs\n");
         int advance_ret = advance_offset(size, &offset, &block_no, file);
         if (advance_ret == 2) {
             return advance_ret;
