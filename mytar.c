@@ -448,7 +448,7 @@ int main(int argc, char *argv[]) {
         }
         FILE * q = file;
         if (fgetc(q) == EOF)
-            return 0;
+            break;
     }
 
     if (list_arg_present) {
