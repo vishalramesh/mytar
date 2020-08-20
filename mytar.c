@@ -115,7 +115,7 @@ char get_block(char header[], FILE *file, int *pos) {
         start += 1;
     }
     *pos = start;
-    // fread(header, 512, 1, file);
+    fread(header, 512, 1, file);
     return d;
 }
 
