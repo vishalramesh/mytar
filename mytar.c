@@ -95,6 +95,7 @@ int advance_offset(char size[], int *offset, int *block_no, FILE* file) {
     for (int i = 0; i < dec; ++i) {
         int d;
         if ((d = fgetc(p)) == EOF) {
+            fprintf(stderr, "ssj\n");
             fprintf(stderr, "mytar: Unexpected EOF in archive\n");
             fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
             return 2;
@@ -346,7 +347,6 @@ int main(int argc, char *argv[]) {
 
         if (d == EOF) {
             if (pos != 0) {
-                fprintf(stderr, "jsjs\n");
                 fprintf(stderr, "mytar: Unexpected EOF in archive\n");
                 fprintf(stderr, "mytar: Error is not recoverable:");
                 fprintf(stderr, " exiting now\n");
