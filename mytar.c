@@ -118,9 +118,9 @@ char get_block(char header[], FILE *file, int *pos) {
     return d;
 }
 
-int is_condition(char argv[], char file_name[]) {
-    return is_equal(argv[q], file_name) || is_prefix(argv[q], file_name) ||
-        is_suffix(argv[q], file_name);
+int is_condition(char ar[], char file_name[]) {
+    return is_equal(ar, file_name) || is_prefix(ar, file_name) ||
+        is_suffix(ar, file_name);
 }
 
 void print_list_arg_output(char *argv[], int print_file[], char file_name[], int list_start, int list_end) {
