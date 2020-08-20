@@ -118,10 +118,15 @@ char get_block(char header[], FILE *file, int *pos) {
     return d;
 }
 
+int is_condition(char arg_file_name[], char char file_name[]) {
+    return is_equal(argv[q], file_name) || is_prefix(argv[q], file_name) ||
+        is_suffix(argv[q], file_name)
+}
+
 void print_list_arg_output(char *argv[], int print_file[], char file_name[], int list_start, int list_end) {
 
     for (int q = list_start; q <= list_end; q++) {
-        if (is_equal(argv[q], file_name) || is_prefix(argv[q], file_name) || is_suffix(argv[q], file_name)) {
+        if (is_condition(argv[q], file_name)) {
             printf("%s\n", file_name);
             fflush(stdout);
             print_file[q - list_start] = 1; 
@@ -400,7 +405,7 @@ int main(int argc, char *argv[]) {
 
             int c = 0;
             for (int q = extract_index; q <= end_extract_index; q++) {
-                if (is_equal(argv[q], file_name) || is_prefix(argv[q], file_name) || is_suffix(argv[q], file_name)) {
+                if (is_condition(argv[q], file_name)) {
                     if (args_present[2]) {
                         printf("%s\n", file_name);
                     }
@@ -450,7 +455,8 @@ int main(int argc, char *argv[]) {
         if (!fail) {
             return 0;
         }
-        fprintf(stderr, "mytar: Exiting with failure status due to previous errors\n");
+        fprintf(stderr, "mytar: ");
+        fprintf(stderr, "Exiting with failure status due to previous errors\n");
         return 2;
     }
 
