@@ -184,6 +184,9 @@ int write_to_file(FILE* file, FILE* create_file, int *offset, int *block_no, cha
             return 2;
         }
         fputc(d, create_file);
+        if (create_file == NULL) {
+            return 2;
+        }
     }
     fseek(file, *offset, SEEK_SET);
     if (file == NULL) {
