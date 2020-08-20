@@ -138,7 +138,7 @@ int print_list_arg_error(char *argv[], int print_file[], int list_index, int end
         }
     }
     if (fail) {
-        fprintf(stderr, "mytar: Exiting with failure status due to previous errors\n");
+        fprintf(stderr, "mytar: Exiting due to previous errors\n");
         return 2;
     }
     return 0;
@@ -165,7 +165,7 @@ int get_end_arg_index(int argc, char *argv[], int list_index) {
     return end_list_index;
 }
 
-int write_to_file(FILE* file, FILE* create_file, int *offset, int *block_no, char size[]) {
+int write_to_file(FILE* file, FILE* create, int *offset, int *block_no, char size[]) {
     int size_len = 12;
     FILE *p = file;
 
@@ -183,8 +183,8 @@ int write_to_file(FILE* file, FILE* create_file, int *offset, int *block_no, cha
             fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
             return 2;
         }
-        fputc(d, create_file);
-        if (create_file == NULL) {
+        fputc(d, create);
+        if (create == NULL) {
             return 2;
         }
     }
@@ -270,7 +270,8 @@ int main(int argc, char *argv[]) {
 
     FILE *file = fopen(argv[file_index], "r");
     if (file == NULL) {
-        fprintf(stderr, "mytar: %s: Cannot open: No such file or directory\n", argv[file_index]);
+        fprintf(stderr, "mytar: %s: Cannot open", argv[file_index]);
+        fprintf(stderr, ": No such file or directory\n");
         fprintf(stderr, "mytar: Error is not recoverable: exiting now\n");
         return 2;
     }
@@ -356,7 +357,7 @@ int main(int argc, char *argv[]) {
 
         if (strcmp(magic, "ustar") != 0) {
             fprintf(stderr, "mytar: This does not look like a tar archive\n");
-            fprintf(stderr, "mytar: Exiting with failure status due to previous errors\n");
+            fprintf(stderr, "mytar: Exiting due to previous errors\n");
             return 2;
         }
 
@@ -379,16 +380,16 @@ int main(int argc, char *argv[]) {
                 printf("%s\n", file_name);
 	            fflush(stdout);
             }
-            FILE* create_file = fopen(file_name, "w");
-            if (create_file == NULL) {
+            FILE* create = fopen(file_name, "w");
+            if (create == NULL) {
                 fprintf(stderr, "mytar: %s: ", argv[file_index]);
                 fprintf(stderr, "Cannot extract: Error creating file\n");
                 fprintf(stderr, "mytar: Error is not recoverable");
                 fprintf(stderr, ": exiting now\n");
                 return 2;
             }
-            int write_ret = write_to_file(file, create_file, &offset, &block_no, size);
-            fclose(create_file);
+            int write_ret = write_to_file(file, create, &offset, &block_no, size);
+            fclose(create);
             if (write_ret != 0) {
                 return write_ret;
             }
@@ -403,16 +404,16 @@ int main(int argc, char *argv[]) {
                     if (args_present[2]) {
                         printf("%s\n", file_name);
                     }
-                    FILE* create_file = fopen(file_name, "w");
-                    if (create_file == NULL) {
+                    FILE* create = fopen(file_name, "w");
+                    if (create == NULL) {
                         fprintf(stderr, "mytar: %s: ", argv[file_index]);
                         fprintf(stderr, "Cannot extract: Error creating file\n");
                         fprintf(stderr, "mytar: Error is not recoverable");
                         fprintf(stderr, ": exiting now\n");
                         return 2;
                     }
-                    int write_ret = write_to_file(file, create_file, &offset, &block_no, size);
-                    fclose(create_file);
+                    int write_ret = write_to_file(file, create, &offset, &block_no, size);
+                    fclose(create);
                     print_file[q - list_index] = 1; 
                     if (write_ret != 0) {
                         return write_ret;
@@ -447,7 +448,7 @@ int main(int argc, char *argv[]) {
             }
         }
         if (fail) {
-            fprintf(stderr, "mytar: Exiting with failure status due to previous errors\n");
+            fprintf(stderr, "mytar: Exiting due to previous errors\n");
             return 2;
         }
         return 0;
