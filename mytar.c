@@ -144,7 +144,7 @@ int print_list_arg_error(char *argv[], int print_file[], int list_arg_index, int
     return 0;
 }
 
-int list_arg_present(int argc, char *argv[], int list_arg_index, int file_arg_index) {
+int la_present(int argc, char *argv[], int list_arg_index, int file_arg_index) {
 
     if (list_arg_index >= argc) {
         return 0;
@@ -275,8 +275,8 @@ int main(int argc, char *argv[]) {
         return 2;
     }
     
-    int list_arg_present = list_arg_present(argc, argv, list_arg_index, file_arg_index) && args_present[1];
-    int extract_arg_present = list_arg_present(argc, argv, extract_arg_index, file_arg_index) && args_present[3];
+    int list_arg_present = la_present(argc, argv, list_arg_index, file_arg_index) && args_present[1];
+    int extract_arg_present = la_present(argc, argv, extract_arg_index, file_arg_index) && args_present[3];
    
     int final_list_arg_index = get_final_arg_index(argc, argv, list_arg_index);
     int final_extract_arg_index = get_final_arg_index(argc, argv, extract_arg_index);
